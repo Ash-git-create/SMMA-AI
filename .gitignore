@@ -60,3 +60,9 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+# Claude Code local settings (personal, not shared)
+.claude/settings.local.json
+
+# Thesis expose (personal document, not part of code)
+Jayan.Ashwin.MT.expose.pdf
