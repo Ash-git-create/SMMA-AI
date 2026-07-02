@@ -1,12 +1,5 @@
 # Cascading Knowledge Contamination in Shared Memory Multi-Agent AI Systems
 
-**Master Thesis | SRH University Heidelberg**  
-**Student:** Ashwin Jayan (Matriculation: 100002367)  
-**Programme:** M.Sc. Applied Data Science and Analytics  
-**Supervisor:** Prof. Dr. Ing. Binh Vu  
-**Second Supervisor:** Prof. Dr. Ing. Swati Chandana  
-**Period:** March 2026 – September 2026  
-
 ---
 
 ## The Problem
