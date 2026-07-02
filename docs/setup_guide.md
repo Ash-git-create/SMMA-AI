@@ -28,35 +28,29 @@ pip install -r requirements.txt
 
 Verify the install:
 ```powershell
-python -c "import neo4j, ollama, datasets, pandas; print('All core packages OK')"
+python -c "import neo4j, mistralai, groq, datasets, pandas; print('All core packages OK')"
 ```
 
 ---
 
-## Step 2 — Ollama (Local Model Serving)
+## Step 2 — LLM API Keys (Mistral + Groq)
 
-1. Download Ollama from https://ollama.com/download — install the Windows version.
-2. Verify installation:
-   ```powershell
-   ollama --version
-   ```
-3. Pull both models (this will take a while — Mistral is ~7GB, Llama 3.1 8B is ~5GB):
-   ```powershell
-   ollama pull mistral-nemo
-   ollama pull llama3.1:8b
-   ```
-4. Verify both models are available:
-   ```powershell
-   ollama list
-   ```
-5. Quick sanity check (Ollama must be running):
-   ```powershell
-   ollama run mistral-nemo "Reply with only the word OK."
-   ```
+The pipeline calls hosted APIs by default — local CPU inference proved too slow
+(~3–5 tok/s for Mistral 12B) for experiment-scale runs.
 
-> **Note:** Ollama runs as a background service after installation. Models run CPU-only on this machine (~3–5 tokens/sec for Mistral 12B). This is expected.
+1. **Mistral La Plateforme** (extraction — Mistral Nemo):
+   - Create an account at https://console.mistral.ai
+   - Generate an API key under *API Keys*
+2. **Groq** (orchestration/validation — Llama 3.1 8B):
+   - Create an account at https://console.groq.com
+   - Generate an API key under *API Keys*
+3. Both keys go into `.env` (Step 4).
 
-> **Model name note:** `mistral-nemo` in Ollama refers to Mistral Nemo 12B. Confirm the exact tag with `ollama list` after pulling.
+> **Optional local fallback — Ollama:** for offline development you can install
+> Ollama (https://ollama.com/download), `ollama pull mistral-nemo` and
+> `ollama pull llama3.1:8b`, then set `EXTRACTION_PROVIDER=ollama` /
+> `ORCHESTRATION_PROVIDER=ollama` in `.env`. Expect ~3–5 tok/s on this CPU —
+> fine for smoke tests, not for experiments.
 
 ---
 
@@ -78,13 +72,18 @@ Default connection settings (used in `.env`):
 
 ## Step 4 — Project Configuration
 
-Copy `.env.example` to `.env` and fill in your Neo4j password:
+Copy `.env.example` to `.env` and fill in your values:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Then edit `.env` with your actual values (especially `NEO4J_PASSWORD`).
+Then edit `.env` and set at minimum:
+- `NEO4J_PASSWORD` — from Step 3
+- `MISTRAL_API_KEY` and `GROQ_API_KEY` — from Step 2
+
+Reproducibility settings (`LLM_TEMPERATURE=0.0`, `LLM_LOG_FILE`, `LLM_CACHE_DIR`)
+have sensible defaults in `.env.example` — keep them for experiment runs.
 
 ---
 
@@ -117,13 +116,13 @@ This normalizes all three datasets into unified JSONL files in `data/processed/`
 python scripts/verify_setup.py
 ```
 
-This checks: venv packages, Ollama connectivity, Neo4j connectivity, and processed dataset files.
+This checks: venv packages, Mistral/Groq API connectivity, Neo4j connectivity, and processed dataset files.
 
 ---
 
 ## Hardware Notes
 
-- **GPU:** RX 560X — no ROCm on Windows. All inference runs on CPU.
-- **RAM:** 16GB — Mistral 12B Q4_K_M uses ~8GB RAM. Avoid running Neo4j + both models simultaneously without monitoring memory.
-- **Inference speed:** Expect 3–5 tok/s for Mistral 12B, 8–12 tok/s for Llama 3.1 8B on this CPU.
-- **Large experiments:** Run on Google Colab (GPU) or Groq API. Local is for development and small-scale tests.
+- **Default inference is via hosted APIs** (Mistral + Groq) — local hardware only runs Neo4j and the Python pipeline.
+- **GPU:** RX 560X — no ROCm on Windows, so no local GPU inference. This is why the API pivot happened.
+- **RAM:** 16GB — fine for Neo4j + pipeline. Only relevant to models if using the Ollama fallback (Mistral 12B Q4_K_M needs ~8GB, 3–5 tok/s).
+- **Rate limits:** Groq/Mistral free tiers rate-limit aggressively. The LLM client retries with backoff automatically; the response cache (`LLM_CACHE_DIR`) makes re-runs free.

@@ -4,8 +4,10 @@ python-dotenv>=1.0.0
 # Neo4j
 neo4j>=5.20.0
 
-# LLM / Ollama
-ollama>=0.2.0
+# LLM APIs (Mistral = extraction, Groq = orchestration/validation)
+mistralai>=1.0.0
+groq>=0.9.0
+requests>=2.31.0        # local Ollama fallback (no ollama package needed)
 
 # Data processing
 pandas>=2.2.0

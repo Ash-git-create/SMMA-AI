@@ -108,17 +108,18 @@ docs/              — Thesis outline and supplementary documentation
 
 ## Setup
 
-> Full environment setup instructions will be added at the end of Phase 1.
+> Full setup instructions: [`docs/setup_guide.md`](docs/setup_guide.md)
 
-**Requirements (preview):**
+**Requirements:**
 - Python 3.11+
-- Ollama (for local model serving)
+- Mistral La Plateforme + Groq API keys (extraction / orchestration)
 - Neo4j Community Edition 5.x
+- Optional: Ollama as offline local fallback
 - See `requirements.txt` for Python dependencies
 
 ---
 
 ## Status
 
-**Current Phase:** Phase 1 — Foundation & Setup (W7 of 8)  
-**Last Updated:** 2026-05-08
+**Current Phase:** Phase 2 — Baseline pipeline & contamination measurement  
+**Last Updated:** 2026-07-02
