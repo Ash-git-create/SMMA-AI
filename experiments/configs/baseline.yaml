@@ -1,0 +1,15 @@
+# Phase 2 baseline — unmitigated system. No Trio confidence floor, no cascade.
+# Keys match run_simulation.py CLI flags (applied as argparse defaults;
+# explicit CLI flags override).
+
+# SIR dynamics
+steps: 10
+seed_infected: 50
+beta: 0.3
+gamma: 0.05
+
+# Validation
+audit_sample: 100
+
+# Reproducibility — every experiment run MUST be seeded
+random_seed: 42
