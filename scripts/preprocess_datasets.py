@@ -50,8 +50,10 @@ from typing import Any
 
 from loguru import logger
 
-
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+from src.graph.wikidata_labels import label_for
 RAW_DIR = ROOT / "data" / "raw"
 PROC_DIR = ROOT / "data" / "processed"
 PROC_DIR.mkdir(parents=True, exist_ok=True)
@@ -98,7 +100,9 @@ def preprocess_trex() -> None:
         subject = (rec.get("head") or "").strip()
         obj = (rec.get("tail") or "").strip()
         relation = (rec.get("relation") or "").strip()
-        predicate_label = _template_to_predicate_label(relation)
+        # Most relbert/t_rex relations are bare Wikidata PIDs (P17, P54, ...),
+        # which are opaque to LLM agents — map them to English labels.
+        predicate_label = label_for(_template_to_predicate_label(relation))
 
         if not subject or not obj or not relation:
             skipped += 1
@@ -109,7 +113,7 @@ def preprocess_trex() -> None:
             "subject": subject,
             "predicate": predicate_label,
             "object": obj,
-            "predicate_id": "",
+            "predicate_id": relation if relation != predicate_label else "",
             "subject_uri": "",
             "object_uri": "",
             "source_text": (rec.get("text") or "")[:500],
