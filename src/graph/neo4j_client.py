@@ -189,6 +189,35 @@ class Neo4jClient:
             )
             return [dict(rec["t"]) for rec in result]
 
+    def get_related_triplets(
+        self,
+        subject: str,
+        obj: str,
+        exclude_id: str,
+        min_confidence: float = 0.0,
+        limit: int = 20,
+    ) -> list[dict]:
+        """
+        Retrieve triplets that share an entity with (subject, obj), highest
+        confidence first. This is the evidence-retrieval used for validation:
+        related facts only — never arbitrary rows.
+        """
+        with self._driver.session() as s:
+            result = s.run(
+                """
+                MATCH (t:Triplet)
+                WHERE t.id <> $exclude_id
+                  AND t.confidence >= $min_confidence
+                  AND (t.subject IN [$subject, $obj] OR t.object IN [$subject, $obj])
+                RETURN t
+                ORDER BY t.confidence DESC
+                LIMIT $limit
+                """,
+                subject=subject, obj=obj, exclude_id=exclude_id,
+                min_confidence=min_confidence, limit=limit,
+            )
+            return [dict(rec["t"]) for rec in result]
+
     def get_downstream(self, triplet_id: str) -> list[dict]:
         """Return all triplets derived (directly or transitively) from triplet_id."""
         with self._driver.session() as s:
@@ -207,7 +236,13 @@ class Neo4jClient:
         predicate: Optional[str] = None,
         state: Optional[str] = None,
         limit: int = 100,
+        randomize: bool = False,
     ) -> list[dict]:
+        """
+        Filtered triplet lookup. Set randomize=True for a uniform random
+        sample — audit passes and infection seeding MUST use this, otherwise
+        Neo4j returns the same rows every call and biases the SIR estimates.
+        """
         filters = []
         params: dict = {"limit": limit}
         if subject:
@@ -220,8 +255,9 @@ class Neo4jClient:
             filters.append("t.state = $state")
             params["state"] = state
         where = ("WHERE " + " AND ".join(filters)) if filters else ""
+        order = "ORDER BY rand()" if randomize else ""
         with self._driver.session() as s:
             result = s.run(
-                f"MATCH (t:Triplet) {where} RETURN t LIMIT $limit", **params
+                f"MATCH (t:Triplet) {where} RETURN t {order} LIMIT $limit", **params
             )
             return [dict(rec["t"]) for rec in result]

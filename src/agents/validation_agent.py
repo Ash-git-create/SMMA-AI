@@ -124,9 +124,15 @@ class ValidationAgent:
     # ------------------------------------------------------------------
 
     def _audit(self, client: Neo4jClient, sample_size: int) -> dict:
-        # Pull candidates: Susceptible + Infected nodes to check
-        candidates = client.search_triplets(state=STATE_SUSCEPTIBLE, limit=sample_size // 2)
-        candidates += client.search_triplets(state=STATE_INFECTED, limit=sample_size // 2)
+        # Pull candidates: uniform random sample of Susceptible + Infected nodes.
+        # randomize=True is required — without it Neo4j returns the same rows
+        # every pass, so the audit would re-check identical nodes each step.
+        candidates = client.search_triplets(
+            state=STATE_SUSCEPTIBLE, limit=sample_size // 2, randomize=True
+        )
+        candidates += client.search_triplets(
+            state=STATE_INFECTED, limit=sample_size // 2, randomize=True
+        )
 
         audited = len(candidates)
         quarantined = 0

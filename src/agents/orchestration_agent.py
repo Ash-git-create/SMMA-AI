@@ -58,6 +58,8 @@ class OrchestrationAgent:
         If revised confidence falls below this, the triplet is marked state=I.
     retrieval_threshold:
         Minimum confidence to pull context triplets from the KG.
+        0.0 = no floor (Phase 2 baseline, unmitigated). The Trio mitigation
+        (Phase 3) raises this — it is the experimental variable of RQ4.
     neo4j_client:
         Optional pre-built client.
     """
@@ -66,7 +68,7 @@ class OrchestrationAgent:
         self,
         agent_id: str = "orchestration_agent",
         infection_threshold: float = 0.4,
-        retrieval_threshold: float = 0.5,
+        retrieval_threshold: float = 0.0,
         neo4j_client: Optional[Neo4jClient] = None,
     ):
         self.agent_id = agent_id
@@ -129,23 +131,31 @@ class OrchestrationAgent:
             return {"triplet_id": triplet_id, "verdict": "NOT_FOUND", "error": True}
 
         if context_triplets is None:
-            context_triplets = client.search_triplets(
+            # Evidence = triplets sharing an entity with the target, best
+            # confidence first, above the retrieval floor (0.0 = no floor).
+            context_triplets = client.get_related_triplets(
                 subject=target["subject"],
-                state=STATE_SUSCEPTIBLE,
-                limit=10,
+                obj=target["object"],
+                exclude_id=triplet_id,
+                min_confidence=self.retrieval_threshold,
+                limit=20,
             )
-            # Also pull high-confidence context (Trio threshold)
-            context_triplets += client.get_triplets_above_threshold(self.retrieval_threshold)
-            # De-duplicate by id, exclude the target itself
-            seen = {triplet_id}
-            unique_ctx = []
-            for t in context_triplets:
-                if t["id"] not in seen:
-                    seen.add(t["id"])
-                    unique_ctx.append(t)
-            context_triplets = unique_ctx[:20]  # cap at 20 context items
 
         verdict_data = self._call_llm(target, context_triplets)
+        if verdict_data is None:
+            # LLM call or parse failed — do NOT touch the KG. Writing a
+            # fallback confidence here would let infra failures masquerade
+            # as contamination in the measurements.
+            logger.warning(f"[{self.agent_id}] LLM failure — no update for {triplet_id}")
+            return {
+                "triplet_id":     triplet_id,
+                "verdict":        "ERROR",
+                "old_confidence": target.get("confidence", 1.0),
+                "new_confidence": target.get("confidence", 1.0),
+                "state":          target.get("state", STATE_SUSCEPTIBLE),
+                "reason":         "LLM call or parse failure — skipped",
+                "error":          True,
+            }
 
         old_conf = target.get("confidence", 1.0)
         new_conf = verdict_data.get("confidence", old_conf)
@@ -177,8 +187,12 @@ class OrchestrationAgent:
             "reason":         reason,
         }
 
-    def _call_llm(self, target: dict, context: list[dict]) -> dict:
-        """Ask Llama 3.1 8B to judge whether the target triplet is supported."""
+    def _call_llm(self, target: dict, context: list[dict]) -> Optional[dict]:
+        """Ask Llama 3.1 8B to judge whether the target triplet is supported.
+
+        Returns None on API failure or unparseable output — callers must
+        treat that as "no judgment", never as a confidence value.
+        """
         ctx_lines = "\n".join(
             f"  - ({t['subject']}) --[{t['predicate']}]--> ({t['object']})"
             for t in context[:20]
@@ -194,9 +208,9 @@ class OrchestrationAgent:
             return self._parse_response(response.content)
         except Exception as exc:
             logger.warning(f"[{self.agent_id}] LLM call failed: {exc}")
-            return {"verdict": "UNCERTAIN", "confidence": 0.5, "reason": "LLM error"}
+            return None
 
-    def _parse_response(self, content: str) -> dict:
+    def _parse_response(self, content: str) -> Optional[dict]:
         cleaned = re.sub(r"```(?:json)?\s*", "", content).replace("```", "").strip()
         try:
             data = json.loads(cleaned)
@@ -211,5 +225,5 @@ class OrchestrationAgent:
                 "reason":     str(data.get("reason", "")),
             }
         except (json.JSONDecodeError, ValueError, TypeError) as exc:
-            logger.warning(f"[{self.agent_id}] Failed to parse LLM output: {exc}")
-            return {"verdict": "UNCERTAIN", "confidence": 0.5, "reason": "parse error"}
+            logger.warning(f"[{self.agent_id}] Failed to parse LLM output: {exc}\nRaw: {content[:200]}")
+            return None

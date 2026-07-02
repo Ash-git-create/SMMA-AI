@@ -7,6 +7,14 @@ SIR states:
   I — Infected: contains an error (injected or hallucinated)
   R — Recovered: flagged by ValidationAgent, quarantined
 
+IMPORTANT — ground truth vs detection:
+  `state` records the *detected/operational* SIR status, written by agents
+  (OrchestrationAgent marks I, ValidationAgent marks R). Ground-truth
+  contamination is marked independently via `error_type`, set ONLY by the
+  ErrorInjector. Detection metrics (AUROC) compare state against error_type;
+  agents must never write error_type, and truth must never be inferred from
+  state alone.
+
 Lineage formula: DNF boolean string linking a derived node to its ancestors.
   Baseline triplet: lineage = its own source_id  (it IS the source)
   Derived triplet:  lineage = "src_a AND src_b"  (conjunction of parents)

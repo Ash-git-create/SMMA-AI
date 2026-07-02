@@ -15,6 +15,10 @@ No Neo4j or LLM calls required. Run from project root with venv active:
 import sys
 from pathlib import Path
 
+# Windows consoles default to cp1252, which can't print → and other symbols
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
@@ -85,7 +89,7 @@ def test_orchestration_parsing():
     check("confidence clamped to 1.0", r["confidence"] == 1.0)
 
     r = agent._parse_response("bad json !!!")
-    check("bad JSON → UNCERTAIN fallback", r["verdict"] == "UNCERTAIN")
+    check("bad JSON → None (no fake verdict)", r is None)
 
 
 def test_sir_model():
@@ -95,12 +99,11 @@ def test_sir_model():
 
     check("trajectory length = steps+1", len(trajectory) == 101)
 
-    # Conservation: N must be constant throughout
+    # Conservation: N must be constant throughout the whole trajectory
     N0 = trajectory[0]["N"]
-    for t in trajectory:
-        check(f"N constant at step {t['step']}", abs(t["N"] - N0) < 0.01,
-              f"N={t['N']:.2f}, expected {N0:.2f}")
-        break  # Check first deviation only for brevity
+    max_dev = max(abs(t["N"] - N0) for t in trajectory)
+    check("N conserved across all steps", max_dev < 0.01,
+          f"max deviation = {max_dev:.4f}")
 
     # With R₀ > 1, I should peak above initial value
     peak = model.peak_infected(S0=49990, I0=10, R0=0, steps=200)
