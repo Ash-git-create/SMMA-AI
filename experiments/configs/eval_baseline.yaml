@@ -1,0 +1,9 @@
+# Phase 2.2 baseline evaluation — task performance against the clean KG.
+# Keys match run_baseline_eval.py CLI flags.
+
+dataset: both
+num_questions: 50
+facts_per_key: 5
+random_seed: 42
+sleep: 1.0
+tag: baseline

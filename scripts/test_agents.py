@@ -24,7 +24,16 @@ sys.path.insert(0, str(ROOT))
 
 from src.agents.extraction_agent import ExtractionAgent
 from src.agents.orchestration_agent import OrchestrationAgent
+from src.evaluation.metrics import (
+    detection_auroc,
+    exact_match,
+    normalize_answer,
+    token_f1,
+    unsupported_ratio,
+    veracity_report,
+)
 from src.graph.provenance_schema import LineageFormula
+from src.injection.error_injector import ErrorInjector
 from src.sir.r0_calculator import R0Calculator
 from src.sir.sir_model import SIRModel
 
@@ -166,10 +175,61 @@ def test_lineage_formula():
     check("ancestors parsed", ancestors == {"src_a", "src_b", "src_c"})
 
 
+def test_metrics():
+    print("\n--- evaluation.metrics ---")
+    check("normalize strips articles/punct",
+          normalize_answer("The  Beatles!") == "beatles")
+    check("EM exact hit", exact_match("Paris", "paris.") == 1)
+    check("EM miss", exact_match("London", "Paris") == 0)
+    check("F1 partial overlap", 0.0 < token_f1("John Doman actor", "John Doman") < 1.0)
+    check("F1 empty pred", token_f1("", "Paris") == 0.0)
+
+    rep = veracity_report(["SUPPORTS", "REFUTES", "BOGUS"],
+                          ["SUPPORTS", "SUPPORTS", "NOT ENOUGH INFO"])
+    check("veracity accuracy", abs(rep["accuracy"] - 2 / 3) < 1e-9)
+    check("bogus label mapped to NEI", rep["confusion"]["NOT ENOUGH INFO"].get("NOT ENOUGH INFO") == 1)
+
+    check("AUROC separable", detection_auroc([0, 0, 1, 1], [0.1, 0.2, 0.8, 0.9]) == 1.0)
+    check("AUROC single class → 0.5", detection_auroc([0, 0], [0.1, 0.9]) == 0.5)
+    check("USR", unsupported_ratio([True, False, False]) == 2 / 3)
+
+
+def test_error_injector_transforms():
+    print("\n--- ErrorInjector pure transforms ---")
+    check("qualifier: parenthetical stripped",
+          ErrorInjector.strip_qualifier("Arthur's Magazine (1844-1846)") == "Arthur's Magazine")
+    check("qualifier: trailing comma-qualifier stripped",
+          ErrorInjector.strip_qualifier("Los Angeles, California") == "Los Angeles")
+    check("qualifier: temporal clause stripped",
+          ErrorInjector.strip_qualifier("president from 1990 until 1995").startswith("president"))
+    check("qualifier: none present → None",
+          ErrorInjector.strip_qualifier("Paris") is None)
+    check("qualifier: full date → year",
+          ErrorInjector.strip_qualifier("24 October 1968") == "1968")
+    check("qualifier: ISO date → year",
+          ErrorInjector.strip_qualifier("1968-10-24") == "1968")
+    check("qualifier: bare year untouched",
+          ErrorInjector.strip_qualifier("1968") is None)
+
+    check("strengthen: nominated for → winner of",
+          ErrorInjector.strengthen_predicate("nominated for") == "winner of")
+    check("strengthen: cast member → lead actor",
+          ErrorInjector.strengthen_predicate("cast member") == "lead actor")
+
+    check("strengthen: associated with → caused",
+          ErrorInjector.strengthen_predicate("is associated with") == "is caused")
+    check("strengthen: member of → leader of",
+          ErrorInjector.strengthen_predicate("was a member of") == "was a leader of")
+    check("strengthen: no weak form → None",
+          ErrorInjector.strengthen_predicate("was born in") is None)
+
+
 if __name__ == "__main__":
     test_extraction_parsing()
     test_orchestration_parsing()
     test_sir_model()
     test_r0_calculator()
     test_lineage_formula()
+    test_metrics()
+    test_error_injector_transforms()
     print(f"\n\033[32mAll tests passed.\033[0m\n")
