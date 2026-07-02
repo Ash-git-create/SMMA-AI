@@ -28,6 +28,7 @@ env/
 # Data (large files — track only samples)
 data/raw/
 data/processed/
+data/llm_cache/
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
