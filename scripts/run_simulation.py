@@ -29,6 +29,10 @@ from pathlib import Path
 
 from loguru import logger
 
+# Windows consoles default to cp1252, which can't print β/γ/R₀
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
@@ -45,7 +49,7 @@ RESULTS_DIR = ROOT / "results" / "raw"
 
 def seed_infected(client: Neo4jClient, n: int) -> list[str]:
     """Randomly mark n Susceptible nodes as Infected. Returns their IDs."""
-    candidates = client.search_triplets(state=STATE_SUSCEPTIBLE, limit=n * 2)
+    candidates = client.search_triplets(state=STATE_SUSCEPTIBLE, limit=n * 2, randomize=True)
     if not candidates:
         logger.error("No Susceptible nodes found — load the KG first (scripts/load_kg.py).")
         sys.exit(1)
@@ -146,17 +150,28 @@ def save_csv(trajectory: list[dict], beta: float, gamma: float) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Phase 1 SIR simulation runner")
+    parser.add_argument("--config",         type=str,   default=None, help="YAML config (experiments/configs/*.yaml); CLI flags override")
     parser.add_argument("--steps",          type=int,   default=10,   help="Number of time steps")
     parser.add_argument("--seed-infected",  type=int,   default=50,   help="Nodes to seed as Infected at T=0")
     parser.add_argument("--beta",           type=float, default=0.3,  help="Transmission rate β")
     parser.add_argument("--gamma",          type=float, default=0.05, help="Recovery rate γ")
     parser.add_argument("--audit-sample",   type=int,   default=100,  help="Nodes audited per step (LLM mode)")
+    parser.add_argument("--random-seed",    type=int,   default=42,   help="Seed for Python RNG (reproducibility)")
     parser.add_argument("--no-llm",         action="store_true",      help="Skip LLM audit — count-only mode")
+
+    # Config file values become the defaults; explicit CLI flags still win.
+    pre_args, _ = parser.parse_known_args()
+    if pre_args.config:
+        from src.config import load_config
+        cfg = load_config(pre_args.config)
+        parser.set_defaults(**cfg)
     args = parser.parse_args()
+
+    random.seed(args.random_seed)
 
     logger.info("=== Phase 1 Simulation Runner ===")
     logger.info(f"steps={args.steps}, seed={args.seed_infected}, β={args.beta}, γ={args.gamma}, "
-                f"llm={'OFF' if args.no_llm else 'ON'}")
+                f"rng_seed={args.random_seed}, llm={'OFF' if args.no_llm else 'ON'}")
 
     trajectory = run_simulation(
         steps=args.steps,
@@ -170,8 +185,8 @@ def main() -> None:
     out_path = save_csv(trajectory, args.beta, args.gamma)
 
     # Print summary table
-    print("\n{'step':>4} | {'theo_S':>8} {'theo_I':>8} {'theo_R':>8} | "
-          "{'obs_S':>7} {'obs_I':>7} {'obs_R':>7}")
+    print(f"\n{'step':>4} | {'theo_S':>8} {'theo_I':>8} {'theo_R':>8} | "
+          f"{'obs_S':>7} {'obs_I':>7} {'obs_R':>7}")
     print("-" * 70)
     for row in trajectory:
         print(

@@ -57,6 +57,16 @@ def main(clear: bool, limit: int | None) -> None:
         if clear:
             logger.warning("Clearing existing database...")
             client.clear_all()
+        else:
+            # Triplets are CREATEd with deterministic ids (trex_0, trex_1, ...)
+            # — a second load without --clear would crash on the uniqueness
+            # constraint mid-batch and leave a partially doubled entity graph.
+            existing = client.count_by_state()
+            if existing:
+                total = sum(existing.values())
+                logger.error(f"KG already contains {total:,} triplets: {existing}")
+                logger.error("Re-run with --clear to wipe and reload.")
+                sys.exit(1)
 
         logger.info("Creating indexes and constraints...")
         client.create_indexes()
