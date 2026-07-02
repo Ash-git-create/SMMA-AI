@@ -157,6 +157,26 @@ class Neo4jClient:
                 id=triplet_id, confidence=confidence,
             )
 
+    _UPDATABLE_FIELDS = {
+        "subject", "predicate", "object", "confidence", "state",
+        "error_type", "original_subject", "original_predicate",
+        "original_object", "injected_at",
+    }
+
+    def update_triplet_fields(self, triplet_id: str, **fields) -> None:
+        """Update a fixed set of allowed fields on a triplet (used by the
+        ErrorInjector to apply controlled corruptions with an original-value
+        audit trail)."""
+        bad = set(fields) - self._UPDATABLE_FIELDS
+        if bad:
+            raise ValueError(f"Fields not updatable: {bad}")
+        sets = ", ".join(f"t.{k} = ${k}" for k in fields)
+        with self._driver.session() as s:
+            s.run(
+                f"MATCH (t:Triplet {{id: $id}}) SET {sets}",
+                id=triplet_id, **fields,
+            )
+
     def add_lineage_edge(self, derived_id: str, source_id: str) -> None:
         with self._driver.session() as s:
             s.run(
@@ -179,6 +199,16 @@ class Neo4jClient:
                 "MATCH (t:Triplet) RETURN t.state AS state, count(t) AS n"
             )
             return {row["state"]: row["n"] for row in result}
+
+    def count_by_error_type(self) -> dict[str, int]:
+        """Ground-truth contamination counts: {error_type: n} over triplets
+        with error_type set (seeded injections + propagated infections)."""
+        with self._driver.session() as s:
+            result = s.run(
+                "MATCH (t:Triplet) WHERE t.error_type IS NOT NULL "
+                "RETURN t.error_type AS et, count(t) AS n"
+            )
+            return {row["et"]: row["n"] for row in result}
 
     def get_triplets_above_threshold(self, threshold: float, limit: int = 20) -> list[dict]:
         """Retrieve triplets with confidence >= threshold (Trio retrieval filter)."""

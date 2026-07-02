@@ -39,12 +39,24 @@ Rules:
 3. Subject and object must be named entities or noun phrases.
 4. Predicate must be a short, normalised relation label (snake_case preferred).
 5. Do not invent facts not present in the text.
-6. If no triplets can be extracted, return an empty array: []
+6. Extract exactly what the text ASSERTS, even if you believe the statement is
+   false, unverified, or fictional. You are recording the text's claims, not
+   judging their truth. "X was born in 1978" always yields
+   {"subject": "X", "predicate": "born_in", "object": "1978"}.
+7. Single-sentence texts still contain triplets — a short claim is not a
+   reason to return an empty array.
+8. Only return [] if the text truly contains no subject-predicate-object
+   assertion at all.
 
-Example output:
+Example — text: "Paris is the capital of France, located in Europe."
 [
   {"subject": "Paris", "predicate": "is_capital_of", "object": "France"},
   {"subject": "Paris", "predicate": "located_in", "object": "Europe"}
+]
+
+Example — text: "The Moon is made of cheese." (false, but the text asserts it)
+[
+  {"subject": "The Moon", "predicate": "made_of", "object": "cheese"}
 ]
 """
 
@@ -86,13 +98,24 @@ class ExtractionAgent:
         text: str,
         source_context_ids: Optional[list[str]] = None,
         source_label: str = "agent_extraction",
+        context_facts: Optional[list[dict]] = None,
     ) -> list[dict]:
         """
         Extract triplets from *text* and write them to Neo4j.
 
+        context_facts: KG triplets retrieved as context for this extraction.
+        They are shown to the LLM alongside the passage — this is the channel
+        through which contaminated KG facts influence new extractions (the
+        susceptibility component of beta). Their ids become the lineage
+        parents, and a DERIVED_FROM edge is written per parent so cascade
+        deprecation can walk the graph.
+
         Returns the list of written triplet dicts (each includes the 'id' key).
         """
-        raw_triplets = self._call_llm(text)
+        if context_facts and not source_context_ids:
+            source_context_ids = [f["id"] for f in context_facts if "id" in f]
+
+        raw_triplets = self._call_llm(text, context_facts)
         if not raw_triplets:
             logger.debug(f"[{self.agent_id}] No triplets extracted from text.")
             return []
@@ -102,24 +125,45 @@ class ExtractionAgent:
         client = self._external_client or Neo4jClient()
         try:
             n = client.bulk_load_triplets(records)
-            logger.info(f"[{self.agent_id}] Stored {n} triplets from extraction.")
+            # Materialize lineage as graph edges — the lineage formula string
+            # alone is not walkable by cascade_deprecate.
+            if source_context_ids:
+                for r in records:
+                    for src_id in source_context_ids:
+                        client.add_lineage_edge(r["id"], src_id)
+            logger.info(
+                f"[{self.agent_id}] Stored {n} triplets"
+                + (f" with {len(source_context_ids)} lineage parents each"
+                   if source_context_ids else "")
+            )
         finally:
             if self._external_client is None:
                 client.close()
 
         return records
 
-    def extract_only(self, text: str) -> list[dict]:
+    def extract_only(self, text: str, context_facts: Optional[list[dict]] = None) -> list[dict]:
         """Extract triplets from text without writing to Neo4j."""
-        return self._call_llm(text)
+        return self._call_llm(text, context_facts)
 
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
 
-    def _call_llm(self, text: str) -> list[dict]:
+    def _call_llm(self, text: str, context_facts: Optional[list[dict]] = None) -> list[dict]:
         """Send text to Mistral Nemo and parse the JSON array response."""
-        prompt = f"Extract all SPO triplets from the following text:\n\n{text}"
+        context_block = ""
+        if context_facts:
+            fact_lines = "\n".join(
+                f"  - ({f['subject']}) --[{f['predicate']}]--> ({f['object']})"
+                for f in context_facts
+            )
+            context_block = (
+                "Facts already in the knowledge graph, for context "
+                "(they may be relevant to interpreting the text):\n"
+                f"{fact_lines}\n\n"
+            )
+        prompt = f"{context_block}Extract all SPO triplets from the following text:\n\n{text}"
         try:
             response = self._llm.chat(prompt=prompt, system=_SYSTEM_PROMPT)
             return self._parse_response(response.content)
