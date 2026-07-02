@@ -1,0 +1,17 @@
+# Phase 2.1 baseline extraction — unmitigated write-back loop.
+# retrieval_threshold: 0.0 = no Trio confidence floor (the Phase 3 mitigation
+# raises this). Keys match run_extraction.py CLI flags.
+
+dataset: both
+split: validation      # must match eval; same seed + same count = same docs
+num_docs: 50           # keep equal to eval_baseline.yaml num_questions
+paragraphs_per_doc: 2
+
+# KG context retrieval (the contamination channel)
+kg_context: true
+context_limit: 5
+retrieval_threshold: 0.0
+
+# Reproducibility + rate limiting
+random_seed: 42
+sleep: 1.0
