@@ -1,0 +1,527 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "context_limit": 5,
+    "retrieval_threshold": 0.0,
+    "audits_per_step": 0,
+    "audit_sample": 50,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "extraction_manifest": null,
+    "random_seed": 42,
+    "sleep": 1.0,
+    "tag": "baseline",
+    "allow_dirty": false
+  },
+  "timestamp": "20260704_140032",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260704_140030.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "6f1c034e-428d-49a1-b0ab-73f7979f0dda",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Escondido, California, USA",
+      "after": "Atwater, California",
+      "subject": "Stone Brewing Co."
+    },
+    {
+      "triplet_id": "557664ad-f8fb-40cc-88eb-377904ce09a2",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "FCI",
+      "after": "Byzantines",
+      "subject": "Berger Blanc Suisse"
+    },
+    {
+      "triplet_id": "5f4998f8-1ec5-4426-bbfa-987747db84ba",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "The Braes of Balquhither",
+      "after": "Iona College",
+      "subject": "Wild Mountain Thyme"
+    },
+    {
+      "triplet_id": "c52d9873-2e84-483d-a188-49ae8ba15f96",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Parthian Empire",
+      "after": "1823-1826",
+      "subject": "Sasanian Empire"
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "Copenhagen",
+      "subject": "Hugh McQueen"
+    },
+    {
+      "triplet_id": "c52f2080-7c57-472b-a841-494b7977707f",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Groton, Connecticut",
+      "after": "Agra",
+      "subject": "Naval Submarine Base New London"
+    },
+    {
+      "triplet_id": "trex_10675",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "film actress",
+      "after": "scholar",
+      "subject": "Salma Hayek"
+    },
+    {
+      "triplet_id": "3a42e8f6-4176-4e6e-a182-54c6d5e6d87d",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "a Norwegian drummer",
+      "after": "a Gemini",
+      "subject": "Torstein Ellingsen"
+    },
+    {
+      "triplet_id": "0e308c4f-0159-42c0-98f6-f0b31ac3c027",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "18 March 1985",
+      "after": "Kurt Vonnegut",
+      "subject": "A Pair of Brown Eyes"
+    },
+    {
+      "triplet_id": "6a894573-0447-409b-b265-e19f32418d01",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Jackie Harris",
+      "after": "Carolyn Bigsby",
+      "subject": "Laurie Metcalf"
+    },
+    {
+      "triplet_id": "ec5dfe83-fff7-4c9d-a4b0-7f96a8119b16",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "1992",
+      "after": "1997",
+      "subject": "On Tour Forever"
+    },
+    {
+      "triplet_id": "ead3f5e1-52d6-4297-9327-1ff6dbbe3486",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "historian",
+      "after": "film actress",
+      "subject": "Sergei Aleksandrovich Tokarev"
+    },
+    {
+      "triplet_id": "462a4c9b-f14c-40ed-ab84-65e5b2664bab",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "rough drawings",
+      "after": "handwritten quotations",
+      "subject": "Armageddon in Retrospect"
+    },
+    {
+      "triplet_id": "b05f2971-f469-4776-a708-f6da32670174",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Oklahoma State University",
+      "after": "novel",
+      "subject": "Mike Gundy"
+    },
+    {
+      "triplet_id": "b6b9b9d6-b588-47d4-b789-f3e1bf576a49",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "a spy",
+      "after": "Pulitzer Prize for Fiction",
+      "subject": "John Andr\u00e9"
+    },
+    {
+      "triplet_id": "a3a2fcd1-8a72-4787-b828-902646b5b327",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "1 September 2006",
+      "after": "2006",
+      "subject": "Black Book (film)"
+    },
+    {
+      "triplet_id": "9b08d065-6e55-4b17-a463-b5456e81c309",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "January 27, 2009",
+      "after": "January 27",
+      "subject": "John Updike"
+    },
+    {
+      "triplet_id": "21b0e223-ce6a-4e85-8816-a358ec37ec5c",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "10 November 1975",
+      "after": "1975",
+      "subject": "Halina Reijn"
+    },
+    {
+      "triplet_id": "9e12d3d3-4d10-4913-ae1c-83f7c806e91b",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "assisting Benedict Arnold's attempted surrender of the fort at West Point, New York to the British",
+      "after": "assisting Benedict Arnold's attempted surrender of the fort at West Point",
+      "subject": "John Andr\u00e9"
+    },
+    {
+      "triplet_id": "2a8b07a8-789d-48a1-bc05-7732d461143f",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "September 2, 1966",
+      "after": "September 2",
+      "subject": "Salma Hayek"
+    },
+    {
+      "triplet_id": "947716a6-6e47-490f-a126-6ffd2e837956",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "4 May 1759",
+      "after": "1759",
+      "subject": "Isabella Kelly"
+    },
+    {
+      "triplet_id": "d69c75b2-0991-4b1a-a955-09cc8e479373",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "New Orleans, Louisiana",
+      "after": "New Orleans",
+      "subject": "New Orleans Pelicans"
+    },
+    {
+      "triplet_id": "e13a2a1f-28f5-437b-a3c3-87cf632c28a6",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "August 12, 1967",
+      "after": "August 12",
+      "subject": "Mike Gundy"
+    },
+    {
+      "triplet_id": "a366ad36-24aa-4f7e-9741-6daf0c224ff7",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "29 October 2003",
+      "after": "2003",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "90e0b3af-4a23-4895-bcad-78bfc8a59570",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Atwater, California",
+      "after": "Atwater",
+      "subject": "Sierra Academy of Aeronautics"
+    },
+    {
+      "triplet_id": "37c415d0-a9a0-4538-b157-0b6eaf6bc7e8",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "differences between large corporate breweries and smaller breweries",
+      "after": "differences",
+      "subject": "Beer Wars"
+    },
+    {
+      "triplet_id": "69a74efa-1997-403c-983f-ac6641e085f9",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "1899-12-29",
+      "after": "1899",
+      "subject": "Sergei Aleksandrovich Tokarev"
+    },
+    {
+      "triplet_id": "f400617d-1a75-4cdc-966b-54536fa1d728",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "August 16, 1933",
+      "after": "August 16",
+      "subject": "Stuart Roosa"
+    },
+    {
+      "triplet_id": "b222b83c-aaf0-4790-80c4-278a7dc13669",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Farnell, Angus, Scotland",
+      "after": "Farnell, Angus",
+      "subject": "Lady Charlotte Elliot"
+    },
+    {
+      "triplet_id": "f8da5890-c8e6-4176-9a48-e0e838845db9",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "15 January 1880",
+      "after": "1880",
+      "subject": "Lady Charlotte Elliot"
+    },
+    {
+      "triplet_id": "trex_41412",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Sealey"
+    },
+    {
+      "triplet_id": "trex_47059",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Ivan Ivanovich Zhegalkin"
+    },
+    {
+      "triplet_id": "trex_23899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Oussama Assaidi"
+    },
+    {
+      "triplet_id": "trex_45864",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "cast member",
+      "after": "lead actor",
+      "subject": "Robin and the 7 Hoods"
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Hugh McQueen"
+    },
+    {
+      "triplet_id": "trex_34908",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Ian Callaghan"
+    },
+    {
+      "triplet_id": "trex_20117",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Aldridge"
+    },
+    {
+      "triplet_id": "trex_49633",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Daniel Agger"
+    },
+    {
+      "triplet_id": "trex_32550",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Joe Cole"
+    },
+    {
+      "triplet_id": "trex_45191",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Sammy Reid"
+    }
+  ],
+  "transmissions": [
+    {
+      "step": 1,
+      "id": "09fc5c14-abbd-47b5-8e44-ac1ef487ee8d",
+      "subject": "Sierra Academy of Aeronautics",
+      "predicate": "headquartered_in",
+      "object": "Atwater",
+      "root_type": "qualifier_loss",
+      "payload": "Atwater"
+    },
+    {
+      "step": 1,
+      "id": "5bbe301f-40e6-4164-a959-8be959e3b3a9",
+      "subject": "Armageddon in Retrospect",
+      "predicate": "laden_with",
+      "object": "handwritten_quotations",
+      "root_type": "entity_disambiguation",
+      "payload": "handwritten quotations"
+    },
+    {
+      "step": 2,
+      "id": "c1e3fbe2-8c29-441b-af82-646e4e76df48",
+      "subject": "Stone Brewing Co.",
+      "predicate": "headquartered_in",
+      "object": "Atwater, California",
+      "root_type": "entity_disambiguation",
+      "payload": "Atwater, California"
+    },
+    {
+      "step": 4,
+      "id": "e7fac92e-7258-4316-8f19-5ee3bb298b96",
+      "subject": "Bing Crosby",
+      "predicate": "lead_actor_in",
+      "object": "Robin and the 7 Hoods",
+      "root_type": "relation_strengthening",
+      "payload": "lead actor"
+    },
+    {
+      "step": 4,
+      "id": "7e40dbf6-da3f-4270-8ee8-fdc1f3a37320",
+      "subject": "Naval Submarine Base New London",
+      "predicate": "located_in",
+      "object": "Agra",
+      "root_type": "entity_disambiguation",
+      "payload": "Agra"
+    },
+    {
+      "step": 5,
+      "id": "b3415a61-8da5-415d-b439-e80bccac9901",
+      "subject": "Naval Submarine Base New London",
+      "predicate": "located_in",
+      "object": "Agra",
+      "root_type": "entity_disambiguation",
+      "payload": "Agra"
+    },
+    {
+      "step": 6,
+      "id": "2dba9284-8c4c-421f-afbb-9c5f6e0443c1",
+      "subject": "Berger Blanc Suisse",
+      "predicate": "recognized_by",
+      "object": "Byzantines",
+      "root_type": "entity_disambiguation",
+      "payload": "Byzantines"
+    },
+    {
+      "step": 7,
+      "id": "68589884-796e-46a7-9de1-04493596bc57",
+      "subject": "On Tour Forever",
+      "predicate": "released_in",
+      "object": "1997",
+      "root_type": "entity_disambiguation",
+      "payload": "1997"
+    },
+    {
+      "step": 7,
+      "id": "e6855070-a0fc-4c7d-84ef-0c726a7b1f87",
+      "subject": "New Orleans Pelicans",
+      "predicate": "based_in",
+      "object": "New Orleans",
+      "root_type": "qualifier_loss",
+      "payload": "New Orleans"
+    },
+    {
+      "step": 7,
+      "id": "9aa30e0f-441b-40c6-b5c4-59ea1594dac3",
+      "subject": "New Orleans Pelicans",
+      "predicate": "compete_in",
+      "object": "National Basketball Association",
+      "root_type": "qualifier_loss",
+      "payload": "New Orleans"
+    },
+    {
+      "step": 7,
+      "id": "913b4f63-375e-4c31-bcec-d680d03e58b5",
+      "subject": "New Orleans Pelicans",
+      "predicate": "play_home_games_in",
+      "object": "Smoothie King Center",
+      "root_type": "qualifier_loss",
+      "payload": "New Orleans"
+    },
+    {
+      "step": 7,
+      "id": "5d30c10d-2d0f-4122-8aa2-3dcb701f632d",
+      "subject": "Jalen Jones",
+      "predicate": "currently_works_for",
+      "object": "New Orleans Pelicans",
+      "root_type": "qualifier_loss",
+      "payload": "New Orleans"
+    },
+    {
+      "step": 8,
+      "id": "f3f0a2ba-0bcb-41c3-8e5a-75f8342b6a1c",
+      "subject": "New Orleans Pelicans",
+      "predicate": "based_in",
+      "object": "New Orleans",
+      "root_type": "qualifier_loss",
+      "payload": "New Orleans"
+    },
+    {
+      "step": 8,
+      "id": "4d0458bf-b1c1-416f-aaa6-d695d0b3364e",
+      "subject": "New Orleans Pelicans",
+      "predicate": "play_home_games_in",
+      "object": "Smoothie King Center",
+      "root_type": "qualifier_loss",
+      "payload": "New Orleans"
+    },
+    {
+      "step": 8,
+      "id": "cd183a20-1d08-4cea-a2a0-8d0312f12c49",
+      "subject": "New Orleans Pelicans",
+      "predicate": "compete_in",
+      "object": "National Basketball Association",
+      "root_type": "qualifier_loss",
+      "payload": "New Orleans"
+    },
+    {
+      "step": 8,
+      "id": "82bc2316-2547-49de-88c9-3cb420e89018",
+      "subject": "Jalen Jones",
+      "predicate": "currently_on_roster_of",
+      "object": "New Orleans Pelicans",
+      "root_type": "qualifier_loss",
+      "payload": "New Orleans"
+    },
+    {
+      "step": 8,
+      "id": "cd8de7b4-4de2-463d-93d0-e843ff28eb9d",
+      "subject": "Armageddon in Retrospect",
+      "predicate": "laden_with",
+      "object": "handwritten quotations",
+      "root_type": "entity_disambiguation",
+      "payload": "handwritten quotations"
+    },
+    {
+      "step": 9,
+      "id": "717000d8-6f30-4a6e-8b30-fdee1378add8",
+      "subject": "Armageddon in Retrospect",
+      "predicate": "laden_with",
+      "object": "handwritten quotations",
+      "root_type": "entity_disambiguation",
+      "payload": "handwritten quotations"
+    },
+    {
+      "step": 10,
+      "id": "cb8af34d-1ca6-43a7-9390-a5cfdc05f3c9",
+      "subject": "Black Book (film)",
+      "predicate": "premiere_date",
+      "object": "2006",
+      "root_type": "qualifier_loss",
+      "payload": "2006"
+    },
+    {
+      "step": 10,
+      "id": "bb9425fc-4bc9-44ac-8272-7ddd373487c7",
+      "subject": "Black Book (film)",
+      "predicate": "public_release_date",
+      "object": "14 September 2006",
+      "root_type": "qualifier_loss",
+      "payload": "2006"
+    }
+  ],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_baseline_20260704_140032_trajectory.csv"
+}

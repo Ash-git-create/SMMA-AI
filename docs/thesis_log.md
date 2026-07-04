@@ -245,3 +245,80 @@ the final summary mislabeled pre-existing corrupted nodes as propagated.
 **Run launched:** clean reload (50K) → extraction replay → 10 transmission
 cycles, 12 entities/cycle, 45 index cases (15/type), evals at steps 0/5/10
 with the same 50+50 questions as the Phase 2.2 baseline. Results next entry.
+
+## 2026-07-04 — Phase 2.4 baseline run: THE CASCADE IS REAL
+
+First measured contamination-over-time run (10 cycles, 39 distinct index
+cases seeded in the active subgraph, γ = 0, no retrieval floor). Trajectory
+and full manifest archived at `results/summaries/phase24_baseline_*`.
+
+**Headline: propagation observed and documented.** 20 transmission events
+auto-flagged; manual audit of all 20 against their payloads → **13 genuine
+second-generation contaminated facts** (tracker precision 0.65, see below).
+Textbook cascade examples, straight from the manifest:
+
+- *Entity disambiguation spreads to NEW subjects:* a seeded wrong-location
+  fact produced "(Stone Brewing Co.) --[headquartered_in]--> (Atwater,
+  California)" — the brewery is in Escondido; the wrong city jumped from the
+  corrupted parent onto a different entity entirely. Likewise "(Naval
+  Submarine Base New London) --[located_in]--> (Agra)", derived TWICE
+  (steps 4 and 5) — re-derivation multiplies prevalence, which is exactly
+  the epidemiological mechanism.
+- *Relation strengthening crosses agents:* seeded "cast member → lead actor"
+  re-emerged as "(Bing Crosby) --[lead_actor_in]--> (Robin and the 7 Hoods)".
+- *Qualifier loss propagates degraded precision:* "(Black Book (film))
+  --[premiere_date]--> (2006)" — the stripped year, not the full date.
+
+**Per-type propagation (RQ2, first evidence):** entity_disambiguation was
+the most reliable propagator — 8/8 flagged events genuine (0.57 propagated
+per seed over 10 cycles). qualifier_loss: 11 flagged but only 4 genuine.
+relation_strengthening: 1/10 seeds propagated — predicate wording appears to
+be re-normalized by each synthesis→extraction pass, giving it the lowest
+transmissibility. Wrong ENTITIES survive agent processing verbatim; wrong
+RELATION STRENGTH mostly does not.
+
+**Methodological finding — the ground-truth tracker over-counts on common
+substrings.** All 7 false positives came from one cluster: a qualifier-loss
+payload "New Orleans" (stripped from a longer form) matched inside entity
+NAMES ("New Orleans Pelicans compete_in NBA" is a true fact, flagged only
+because the payload string occurs in the subject). The word-boundary
+heuristic is precise when payloads are distinctive (entity swaps, strong
+predicates) and noisy when the corrupted value is a common name fragment.
+Thesis treatment: report auto-flagged counts alongside audited counts; the
+manifest logs every event with its payload, so the audit is reproducible.
+(Considered and rejected: field-position matching — derived triplets do not
+map fields 1:1 to parents.)
+
+**Task metrics were FLAT (EM 0.16 / F1 0.174 / FEVER 0.62 at steps 0, 5,
+and 10)** despite 59 ground-truth-contaminated nodes by step 10. Two
+mechanisms explain it, both thesis-relevant:
+1. Prevalence is still tiny (59 / 51K ≈ 0.1%) and shallow cascades stay
+   within the neighborhoods they started in.
+2. **Confidence-ranked retrieval is itself a passive mitigation:** derived
+   (agent-written) triplets enter at confidence 0.85, below pristine 1.0, so
+   `ORDER BY confidence DESC` retrieval keeps serving pristine facts to the
+   eval questions. Corruption accumulates in the low-confidence stratum the
+   evaluator rarely sees at the current KG size. This foreshadows RQ4: the
+   Trio confidence floor makes this implicit protection explicit — and
+   suggests the dangerous regime is when derived facts CAN outrank or
+   crowd out pristine ones (small/sparse KGs, higher write volumes, or
+   validation that *raises* confidence of unvalidated derived facts).
+
+**Reproducibility note:** within-run evals are byte-stable (steps 0/5/10
+identical where the KG neighborhoods were unchanged), but step-0 metrics
+differ from the Phase 2.2 baseline taken before the DB reload (EM 0.16 vs
+0.12, FEVER 0.62 vs 0.48). Cause: Neo4j breaks confidence ties in arbitrary
+order, so a reloaded-but-identical KG can return different top-5 fact sets.
+Lesson recorded: **comparisons must be within-run** (same DB instance); the
+runner's fixed-question design does this by construction.
+
+**Defect found and fixed:** the injector marked corruption in the DB but not
+in the caller's in-memory candidate pool, so one triplet received two
+injections across error types (40 records, 39 distinct nodes). Pool dicts
+are now updated in place after each applied injection.
+
+**Phase 2 status: COMPLETE.** All four sub-phases done. Next: Phase 3 (Trio
+mitigation) — the baseline runner already exposes `retrieval_threshold` and
+`audits_per_step`, so mitigated runs are config diffs; what remains is the
+trio_framework module (confidence propagation via lineage arithmetization,
+cascade deprecation on detection) and the ablation configs.
