@@ -19,6 +19,7 @@ Usage:
 import hashlib
 import json
 import os
+import re
 import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -34,6 +35,7 @@ load_dotenv()
 _TEMPERATURE = float(os.getenv("LLM_TEMPERATURE", "0.0"))
 _MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "1024"))
 _MAX_RETRIES = int(os.getenv("LLM_MAX_RETRIES", "3"))
+_MAX_RATE_LIMIT_WAIT = float(os.getenv("LLM_MAX_RATE_LIMIT_WAIT", "300"))
 _LOG_FILE = os.getenv("LLM_LOG_FILE", "")
 _CACHE_DIR = os.getenv("LLM_CACHE_DIR", "")
 
@@ -76,13 +78,31 @@ class _BaseClient:
             except Exception as exc:
                 last_exc = exc
                 if attempt < _MAX_RETRIES - 1:
-                    wait = 2 ** (attempt + 1)  # 2s, 4s, ...
+                    wait: float = 2 ** (attempt + 1)  # 2s, 4s, ...
+                    # Rate-limit errors often state their own wait ("Please
+                    # try again in 3m55.6992s"). Honor it (capped) instead of
+                    # retrying into the same closed window — otherwise long
+                    # experiment batches burn all retries in seconds and the
+                    # infra failures leak into the measurements.
+                    suggested = self._suggested_wait(str(exc))
+                    if suggested is not None:
+                        wait = min(suggested + 2.0, _MAX_RATE_LIMIT_WAIT)
                     logger.warning(
                         f"[llm:{self.provider}] attempt {attempt + 1}/{_MAX_RETRIES} "
-                        f"failed ({exc}) — retrying in {wait}s"
+                        f"failed ({exc}) — retrying in {wait:.0f}s"
                     )
                     time.sleep(wait)
         raise last_exc  # all retries exhausted — caller decides how to degrade
+
+    @staticmethod
+    def _suggested_wait(error_text: str) -> Optional[float]:
+        """Parse 'try again in 3m55.6992s' / 'try again in 12.4s' from a
+        rate-limit message. Returns seconds, or None if absent."""
+        m = re.search(r"try again in (?:(\d+)m)?([\d.]+)s", error_text)
+        if not m:
+            return None
+        minutes = int(m.group(1)) if m.group(1) else 0
+        return minutes * 60 + float(m.group(2))
 
     def _chat_raw(self, prompt: str, system: Optional[str]) -> str:
         raise NotImplementedError
