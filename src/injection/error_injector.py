@@ -223,6 +223,11 @@ class ErrorInjector:
                     injected_at=now,
                     **{field: after, f"original_{field}": before},
                 )
+            # Mark the in-memory dict too: callers reuse the same pool across
+            # error types (targeted seeding), and the not-yet-corrupted check
+            # reads these dicts — without this a triplet can be injected twice.
+            t["error_type"] = error_type
+            t[field] = after
             applied.append({
                 "triplet_id": t["id"],
                 "error_type": error_type,
