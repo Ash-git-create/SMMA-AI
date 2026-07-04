@@ -322,3 +322,71 @@ mitigation) — the baseline runner already exposes `retrieval_threshold` and
 `audits_per_step`, so mitigated runs are config diffs; what remains is the
 trio_framework module (confidence propagation via lineage arithmetization,
 cascade deprecation on detection) and the ablation configs.
+
+## 2026-07-04 — Pre-Phase-3 instrumentation upgrade + canonical baseline rerun
+
+Before building the mitigation, four measurement upgrades were applied so
+both arms of the baseline-vs-mitigated comparison record identically
+(changing instrumentation after the fact would have forced a rerun anyway):
+
+1. **Deterministic retrieval** — `ORDER BY confidence DESC, t.id`: confidence
+   ties were previously returned in arbitrary order that varied across DB
+   reloads, making cross-run metric differences partly noise. Retrieval (and
+   therefore every LLM prompt) is now byte-stable given identical KG content.
+2. **β decomposition instrumented** — each cycle records how many retrieval
+   contexts contained ≥1 contaminated fact and how many contaminated facts
+   were served. β = P(retrieve contaminated) × P(reproduce | exposed) is now
+   estimated from the run itself, which is what couples the empirical
+   pipeline to the SIR model (calibration inputs for the simulation-first
+   answer to RQ3).
+3. **Field-aware transmission matching** — object payloads must equal the
+   derived subject/object exactly (normalized); predicate payloads
+   word-boundary match the derived predicate only. Kills all three
+   false-positive classes from the run-1 audit (name fragments, years inside
+   full dates, payloads appearing in the wrong field); 16/16 regression
+   cases pass, including every genuine run-1 pattern. Counts are now
+   conservative (paraphrases not counted) — a documented lower bound.
+4. **Probe question set** — auto-generated from the corrupted nodes
+   ("What is the '<predicate>' of <subject>?"), answered KG-grounded,
+   answers scored against corrupted vs original values. Separates
+   *reach* (do generic queries encounter contamination — the fixed task
+   sample) from *harm* (does the system reproduce contamination when in
+   scope — the probes).
+
+**Canonical baseline rerun (10 cycles, 40 index cases, seed 42) — headline
+result of Phase 2:**
+
+- **Probe contamination rate 0.85 at step 0, 0.82 at step 10 (n=40→49):**
+  when a corrupted fact is in scope of a question, the KG-grounded system
+  reproduces the corruption in its answer >80% of the time. Only 2/49 probes
+  recovered the original value. Meanwhile the generic task sample stayed
+  flat (EM 0.18, F1 0.22, FEVER 0.60 at steps 0/5/10). Together: **at 0.1%
+  prevalence contamination is invisible to aggregate metrics AND almost
+  always harmful when encountered** — low reach, high harm. This
+  reach-vs-harm decoupling is the central empirical statement of Phase 2.
+- **β components measured:** 9/90 retrieval contexts (10%) contained ≥1
+  contaminated fact; 11/376 facts served (2.9%) were contaminated;
+  9 infections / 39 exposures → per-exposure reproduction ≈ 0.23.
+- **Per-type propagation UNSTABLE at n=1:** this run qualifier_loss 7,
+  entity_disambiguation 1, relation_strengthening 1 — run 1 (audited) had
+  entity_disambiguation ahead. The deterministic-retrieval change altered
+  which triplets were seeded and served, flipping the ranking. Honest
+  conclusion: per-type transmissibility (RQ2) requires the planned
+  multi-seed replication; a single trajectory ranks noise.
+- Injector double-injection fix confirmed: 40 records, 40 distinct nodes.
+- With the tie-break in place this run is the reference: future runs on
+  identical KG content replay byte-identically.
+
+**Plan adjustments recorded (thesis-direction review):**
+- RQ3 (density/write-frequency/validation-interval sweeps) will be answered
+  **simulation-first**: empirical runs calibrate β and γ, the SIR simulator
+  sweeps the parameter space, 2–3 predicted points are validated
+  empirically. Full empirical sweeps do not fit the Phase 4 budget.
+- Headline metrics are the epidemiological ones (velocity, per-type R₀,
+  probe harm rate); generic task metrics are reported as the reach story.
+- Promoted to required before write-up: **natural contamination rate** —
+  audit ~50 derived triplets against their source passages to quantify
+  extraction/synthesis error without any injection (grounds the
+  "non-adversarial" premise).
+- Phase 3 must measure mitigation collateral damage (clean facts wrongly
+  quarantined by cascade deprecation), not just contamination reduction.

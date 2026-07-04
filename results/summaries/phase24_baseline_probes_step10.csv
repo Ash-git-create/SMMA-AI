@@ -1,0 +1,50 @@
+node_id,seeded,root_type,question,corrupted_value,original_value,answer,verdict,n_facts
+0a78703e-f0ed-41aa-bf65-76a6730d0386,1,qualifier_loss,What is the 'born on' of Chiwetel Ejiofor?,1977,10 July 1977,1977,contaminated,7
+0f2b9807-9226-4c5b-8230-c936ea7ce69a,1,entity_disambiguation,What is the 'area' of Mwabvi Wildlife Reserve?,Believe,135km²,Believe,contaminated,8
+0ffc93ac-0d77-4930-b750-c2cc622e0f21,1,entity_disambiguation,What is the 'distance from' of Black Crescent Mountain?,Crawley,4.7 mi southwest of Berlin,"4.4 mi north of Randolph, Crawley",contaminated,5
+15b247cb-3df8-4a44-b31b-1a6b297a8376,1,qualifier_loss,What is the 'born in' of Sergei Aleksandrovich Tokarev?,1899,1899-12-29,1899,contaminated,8
+1ab59946-437a-4509-9fa6-b27e75d832f7,1,entity_disambiguation,What is the 'also known as' of Wild Mountain Thyme?,abstract hip hop,Purple Heather,"abstract hip hop, Will Ye Go, Lassie",contaminated,6
+1b4b7146-cbaa-4388-8916-66ac984f0d3d,1,qualifier_loss,What is the 'born in' of Bing Crosby?,May 3,"May 3, 1903",May 3,contaminated,8
+23a78044-a5a0-44d9-a6eb-c51a732740ed,1,qualifier_loss,What is the 'wrote' of Hans Zimmer?,12 Years a Slave,12 Years a Slave (score),12 Years a Slave,contaminated,3
+27e627ce-2982-4c20-9449-5e80c58f5eb7,1,qualifier_loss,What is the 'born on' of Benedict Arnold?,January 14,"January 14, 1741",January 14,contaminated,8
+29aef01c-1f10-4c68-8aae-bb771aa76018,1,entity_disambiguation,What is the 'born in' of Salma Hayek?,1899-12-29,Mexico,United States,other,8
+2d25dcc5-f051-4240-84e9-67f5efb1fed7,1,entity_disambiguation,What is the 'headquartered in' of Stone Brewing Co.?,"Atwater, California","Escondido, California, USA","Atwater, California",contaminated,4
+2e07b97d-821d-4b47-9652-70d6de44d3f3,1,qualifier_loss,What is the 'located in' of New York State Route 9R?,northeastern Albany County,"northeastern Albany County, New York",northeastern Albany County,contaminated,8
+40c45645-265f-4525-8518-b831c780e63a,1,qualifier_loss,What is the 'died on' of Stuart Roosa?,December 12,"December 12, 1994",December 12,contaminated,8
+4a552b7b-5ed6-4763-9adf-226b7ba3694e,1,entity_disambiguation,What is the 'played college basketball for' of Jalen Jones?,Texas A&M,Southern Methodist,Texas A&M,contaminated,8
+4b3a0ebc-ccd8-492b-86d0-2ba6f437ca2a,0,qualifier_loss,What is the 'born on' of Bing Crosby?,May 3,"May 3, 1903",May 3,contaminated,8
+4d12ab60-da88-4b2f-8712-9a55b6b119c5,1,qualifier_loss,What is the 'also known as' of Wild Mountain Thyme?,"Will Ye Go, Lassie","Will Ye Go, Lassie, Go?","abstract hip hop, Will Ye Go, Lassie",contaminated,6
+509a76e2-e0c4-468a-b679-bc500b0e9a1a,1,qualifier_loss,What is the 'formed on' of No. 1455 Flight RAF?,1941,7 July 1941,1941,contaminated,8
+6d7d62eb-2b41-4efc-8ca3-cd59d2c2c043,1,entity_disambiguation,What is the 'was' of Sergei Aleksandrovich Tokarev?,an ethnographer,a researcher of religious beliefs,"a professor at Moscow State University, a Russian scholar, an ethnographer, a historian",contaminated,8
+711dd586-e18d-4fe3-8006-5965f39d2906,1,qualifier_loss,What is the 'finished the season' of 2015–16 Iona Gaels men's basketball team?,22–11,"22–11, 16–4 in MAAC play",22–11,contaminated,8
+77ff8ada-c685-4851-b8af-701f35016644,1,entity_disambiguation,What is the 'was the command module pilot for' of Stuart Roosa?,Dr. Jenna James,Apollo 14 mission,Apollo 14 mission,original,8
+782947d4-6479-4f22-a6e3-d69c64a49900,1,qualifier_loss,What is the 'born on' of Halina Reijn?,1975,10 November 1975,1975,contaminated,3
+81fac6ca-16df-4458-8384-7e2e0f126661,0,relation_strengthening,What is the relationship between Bing Crosby and Robin and the 7 Hoods?,lead actor,cast member,lead actor,contaminated,8
+83dbecec-84db-48cc-846f-4ae451571759,1,entity_disambiguation,What is the 'born on' of Stuart Roosa?,10 November 1975,"August 16, 1933",unknown,other,8
+8443a361-d058-4755-a0f3-cf7f6876c43f,1,entity_disambiguation,What is the 'is a' of Beer Wars?,stringed_instrument,2009 documentary film,stringed_instrument,contaminated,4
+8830f3fd-5e1d-4fdc-8711-582bc889418f,1,qualifier_loss,What is the 'born on' of Mike Gundy?,August 12,"August 12, 1967",unknown,other,8
+a1669f51-8f4a-4b78-9fe4-6e80b252d7be,0,qualifier_loss,What is the 'located in' of New York State Route 9R?,northeastern Albany County,"northeastern Albany County, New York",northeastern Albany County,contaminated,8
+bfd64145-5c93-409d-90f0-8f96bd8b539a,0,qualifier_loss,What is the 'born on' of Benedict Arnold?,January 14,"January 14, 1741",January 14,contaminated,8
+c0bfde1e-e5e7-441a-bfcf-9f7be60cd990,1,entity_disambiguation,What is the 'appeared in film' of Laurie Metcalf?,Making Mr. Right,Scream 2,Mistress,other,8
+cb0e09c7-9bae-4bc8-b2cc-c6d3bbcce44a,0,qualifier_loss,What is the 'born on' of Bing Crosby?,May 3,"May 3, 1903",May 3,contaminated,8
+d469ba99-8c1b-41a7-a259-2abec7e54e84,1,entity_disambiguation,What is the 'born on' of Torstein Ellingsen?,10 July 1977,7 August 1966,10 July 1977,contaminated,4
+d4fb7406-bb5b-418a-8438-f37ba340c362,0,qualifier_loss,What is the 'died on' of Stuart Roosa?,December 12,"December 12, 1994",December 12,contaminated,8
+dd377cbb-b4a1-4bbf-8e30-66d2de3d1668,1,entity_disambiguation,What is the 'is song by' of With or Without You?,Agra,U2,U2,original,8
+e50e1118-a61d-4d2e-a65d-bef333f99172,1,qualifier_loss,What is the 'covers' of Beer Wars?,differences,differences between large corporate breweries and smaller breweries,"use of advertising and lobbyists in beer market, differences",contaminated,4
+e59662bf-d53c-45d5-9177-cae72561a449,1,qualifier_loss,What is the 'born on' of Greg Monroe?,June 4,"June 4, 1990",June 4,contaminated,1
+e89c13f3-eea3-4889-b49f-fa7e14ada663,0,qualifier_loss,What is the 'born in' of Sergei Aleksandrovich Tokarev?,1899,1899-12-29,1899,contaminated,8
+ee32449b-e539-4eb8-94fc-0250e8dc561a,0,entity_disambiguation,What is the 'headquartered in' of Stone Brewing Co.?,"Atwater, California","Escondido, California, USA","Atwater, California",contaminated,4
+f6e8e15a-3876-4f8c-bff9-a2905bceb8c9,1,entity_disambiguation,What is the 'lead single of' of With or Without You?,American,The Joshua Tree,unknown,other,8
+f89aca39-a2af-41fb-8eaf-4e70664180fe,1,entity_disambiguation,What is the 'distinguished by' of Sarod?,Liverpool,sympathetic_strings,deep_weighty_sound,other,8
+fa9fa3d2-cfa9-4a13-bebc-cf5a82827e9b,1,qualifier_loss,What is the 'born on' of John André?,1750,2 May 1750,1750,contaminated,6
+fe85a228-dc27-4ad0-ad42-28d681fc0adc,0,qualifier_loss,What is the 'runs through' of New York State Route 9R?,northeastern Albany County,"northeastern Albany County, New York",northeastern Albany County,contaminated,8
+trex_20117,1,relation_strengthening,What is the relationship between John Aldridge and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1
+trex_23899,1,relation_strengthening,What is the relationship between Oussama Assaidi and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1
+trex_32550,1,relation_strengthening,What is the relationship between Joe Cole and Liverpool?,leader of sports team,member of sports team,leader,other,2
+trex_34908,1,relation_strengthening,What is the relationship between Ian Callaghan and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1
+trex_39255,1,relation_strengthening,What is the relationship between Hugh McQueen and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1
+trex_41412,1,relation_strengthening,What is the relationship between John Sealey and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1
+trex_45191,1,relation_strengthening,What is the relationship between Sammy Reid and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1
+trex_45864,1,relation_strengthening,What is the relationship between Robin and the 7 Hoods and Bing Crosby?,lead actor,cast member,lead actor,contaminated,3
+trex_47059,1,relation_strengthening,What is the relationship between Ivan Ivanovich Zhegalkin and Moscow State University?,graduated top of class at,educated at,graduated top of class at,contaminated,1
+trex_49633,1,relation_strengthening,What is the relationship between Daniel Agger and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,2
