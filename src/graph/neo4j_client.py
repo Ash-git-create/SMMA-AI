@@ -210,6 +210,42 @@ class Neo4jClient:
             )
             return {row["et"]: row["n"] for row in result}
 
+    def detection_confusion(self) -> dict[str, int]:
+        """Cross-tab of detected state (agents' judgment) x ground-truth
+        contamination (error_type presence): {'S_clean': n, 'R_contam': n, ...}.
+        R_contam = true quarantines; R_clean = mitigation collateral damage."""
+        with self._driver.session() as s:
+            result = s.run(
+                "MATCH (t:Triplet) "
+                "RETURN t.state AS state, t.error_type IS NOT NULL AS contam, "
+                "count(t) AS n"
+            )
+            return {
+                f"{row['state']}_{'contam' if row['contam'] else 'clean'}": row["n"]
+                for row in result
+            }
+
+    def get_contamination_confidences(
+        self, clean_sample: int = 500
+    ) -> tuple[list[float], list[float]]:
+        """(contaminated_confidences, clean_confidences) for detection AUROC:
+        all ground-truth-contaminated nodes vs a random clean sample."""
+        with self._driver.session() as s:
+            contam = [
+                row["c"] for row in s.run(
+                    "MATCH (t:Triplet) WHERE t.error_type IS NOT NULL "
+                    "RETURN t.confidence AS c"
+                )
+            ]
+            clean = [
+                row["c"] for row in s.run(
+                    "MATCH (t:Triplet) WHERE t.error_type IS NULL "
+                    "RETURN t.confidence AS c ORDER BY rand() LIMIT $n",
+                    n=clean_sample,
+                )
+            ]
+        return contam, clean
+
     def get_triplets_above_threshold(self, threshold: float, limit: int = 20) -> list[dict]:
         """Retrieve triplets with confidence >= threshold (Trio retrieval filter)."""
         with self._driver.session() as s:

@@ -29,6 +29,7 @@ from src.graph.provenance_schema import (
     STATE_RECOVERED,
     STATE_SUSCEPTIBLE,
 )
+from src.mitigation import trio_framework
 
 
 class ValidationAgent:
@@ -65,19 +66,28 @@ class ValidationAgent:
     # Public API
     # ------------------------------------------------------------------
 
-    def run_audit_pass(self, sample_size: int = 100) -> dict:
+    def run_audit_pass(
+        self,
+        sample_size: int = 100,
+        candidates: Optional[list[str]] = None,
+    ) -> dict:
         """
         Run one audit pass over Susceptible and Infected triplets.
 
-        Samples up to *sample_size* triplets, validates each, quarantines failures,
-        then cascades deprecation from confirmed infected nodes.
+        candidates: optional explicit triplet IDs to audit (capped at
+        sample_size). This is TARGETED validation — auditing the facts agents
+        actually read and wrote this cycle. Uniform random sampling (the
+        default) audits each node with probability sample_size/|KG|, which at
+        KG scale makes gamma vanish: 50 audits over a 51K-node graph touch a
+        given corrupted node with p≈0.001 per pass. Where the validator looks
+        is as much a design variable as how often it runs.
 
         Returns a summary dict:
             {audited, quarantined, cascaded, sir_counts}
         """
         client = self._external_client or Neo4jClient()
         try:
-            return self._audit(client, sample_size)
+            return self._audit(client, sample_size, candidates)
         finally:
             if self._external_client is None:
                 client.close()
@@ -96,25 +106,14 @@ class ValidationAgent:
     def cascade_deprecate(self, source_triplet_id: str) -> int:
         """
         Walk the lineage graph from *source_triplet_id* and quarantine all
-        triplets derived from it (transitively).
+        triplets derived from it (transitively). Delegates to the Trio
+        framework — the algorithm is the mitigation mechanism itself.
 
         Returns the count of newly quarantined nodes.
         """
         client = self._external_client or Neo4jClient()
         try:
-            downstream = client.get_downstream(source_triplet_id)
-            count = 0
-            for t in downstream:
-                if t.get("state") != STATE_RECOVERED:
-                    client.update_state(t["id"], STATE_RECOVERED)
-                    client.update_confidence(t["id"], 0.0)
-                    count += 1
-            if count:
-                logger.info(
-                    f"[{self.agent_id}] Cascade deprecation from {source_triplet_id}: "
-                    f"{count} downstream nodes quarantined."
-                )
-            return count
+            return trio_framework.cascade_deprecate(client, source_triplet_id)
         finally:
             if self._external_client is None:
                 client.close()
@@ -123,16 +122,29 @@ class ValidationAgent:
     # Internal helpers
     # ------------------------------------------------------------------
 
-    def _audit(self, client: Neo4jClient, sample_size: int) -> dict:
-        # Pull candidates: uniform random sample of Susceptible + Infected nodes.
-        # randomize=True is required — without it Neo4j returns the same rows
-        # every pass, so the audit would re-check identical nodes each step.
-        candidates = client.search_triplets(
-            state=STATE_SUSCEPTIBLE, limit=sample_size // 2, randomize=True
-        )
-        candidates += client.search_triplets(
-            state=STATE_INFECTED, limit=sample_size // 2, randomize=True
-        )
+    def _audit(
+        self,
+        client: Neo4jClient,
+        sample_size: int,
+        candidate_ids: Optional[list[str]] = None,
+    ) -> dict:
+        if candidate_ids is not None:
+            # Targeted mode: audit the given nodes (skip already-quarantined).
+            candidates = []
+            for tid in candidate_ids[:sample_size]:
+                t = client.get_triplet(tid)
+                if t is not None and t.get("state") != STATE_RECOVERED:
+                    candidates.append(t)
+        else:
+            # Uniform random sample of Susceptible + Infected nodes.
+            # randomize=True is required — without it Neo4j returns the same
+            # rows every pass, so the audit would re-check identical nodes.
+            candidates = client.search_triplets(
+                state=STATE_SUSCEPTIBLE, limit=sample_size // 2, randomize=True
+            )
+            candidates += client.search_triplets(
+                state=STATE_INFECTED, limit=sample_size // 2, randomize=True
+            )
 
         audited = len(candidates)
         quarantined = 0
