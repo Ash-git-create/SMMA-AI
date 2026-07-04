@@ -390,3 +390,107 @@ result of Phase 2:**
   "non-adversarial" premise).
 - Phase 3 must measure mitigation collateral damage (clean facts wrongly
   quarantined by cascade deprecation), not just contamination reduction.
+
+## 2026-07-04 — Phase 3.1: Trio framework built
+
+**Done:** `src/mitigation/trio_framework.py` — the three ULDB-inspired
+mechanisms as a coherent module:
+1. *Confidence propagation* (write time, ExtractionAgent flag): derived
+   confidence = base × ∏(parent confidences) — arithmetized conjunction
+   under an independence assumption (documented limitation). Pristine
+   parents (1.0) leave the extractor's base 0.85 untouched; uncertainty
+   compounds down derivation chains. With a 0.5 floor, a pure
+   derived-from-derived chain is excluded at generation 5 (0.85⁵ ≈ 0.44).
+   Without this mechanism every agent write lands at a flat default and the
+   floor separates nothing — the floor and the propagation are one
+   mitigation, not two.
+2. *Retrieval confidence floor*: enforced via min_confidence at every
+   retrieval site — transmission cycles, task evaluation, probes, and the
+   validator's own evidence gathering. Confidence is the only visibility
+   currency; quarantine works by zeroing it, not by a state check.
+3. *Cascade deprecation*: the lineage walk moved into the Trio module
+   (ValidationAgent delegates). Intentionally over-quarantines (a derived
+   node may have had clean parents) — collateral damage is now measured
+   every step via the state × error_type confusion
+   (R_contam = true quarantines, R_clean = collateral).
+
+**Design decision — targeted validation.** Uniform random audits are
+statistically useless at KG scale: 50 audits/step over 51K nodes touch a
+given corrupted node with p ≈ 0.001 per pass, so γ ≈ 0 no matter how good
+the detector is. The mitigated runs audit *what agents read and wrote this
+cycle* instead (`audit_targeted`), modeling read/write-time validation.
+WHERE the validator looks is as much a design variable as HOW OFTEN it
+runs — worth an explicit subsection in the mitigation chapter; uniform
+mode is kept for ablation.
+
+**Finding (smoke run) — circular validation can AMPLIFY contamination
+confidence.** In the mitigated smoke test, the validator re-scored
+generation-2 derived facts from Trio-propagated confidence 0.38 up to
+0.95–1.00 with verdict SUPPORTED. Cause: the evidence retrieved for a
+derived fact includes its own lineage parents — the very facts it was
+synthesized from — so validation confirms the fact against its own source
+and *undoes the Trio confidence decay*. If the parent is contaminated, a
+corrupted derived fact gets validated back up to full trust: validation
+acting as an infection amplifier, the exact "dangerous regime" predicted
+in the 2026-07-04 baseline entry (validation raising confidence of
+unvalidated derived facts). Kept as-is for the measured runs — it is a
+real property of naive evidence-based validation in shared-memory systems,
+and arguably a headline mechanism finding for RQ4's "under what conditions
+does mitigation help" discussion. Candidate refinement (future ablation,
+not silently patched): exclude a node's own lineage ancestors from its
+validation evidence.
+
+**Ablation configs (Phase 3.2):** `contamination_mitigated.yaml` (all
+mechanisms), `contamination_ablation_floor.yaml` (floor + propagation, no
+validation), `contamination_ablation_validation.yaml` (validation, no
+floor). Each differs from baseline/mitigated by exactly one block — the
+RQ4 comparison is a config diff by construction. Detection AUROC computed
+at the final step of every run (0.5 expected in arms with no re-scoring).
+
+## 2026-07-04 — First full-Trio run: mitigation did not mitigate
+
+First measured mitigated run (floor 0.5, targeted audits 25/step,
+confidence propagation, seed 42), same protocol as the canonical baseline.
+
+**Within-run results (valid):**
+- **Propagation not reduced:** 12 propagated infections vs baseline's 9;
+  probe contamination rate ended at 0.81 — statistically identical to the
+  unmitigated 0.82. The floor cannot filter what it cannot see: undetected
+  index cases carry confidence 1.0 by construction, above any floor.
+- **Detection is the bottleneck, and it is weak:** 72 nodes quarantined
+  over 10 steps — quarantine precision 8.3% (6 true / 66 collateral),
+  recall 11.5% (6 of 52 ground-truth-contaminated). Cascade deprecation
+  amplified the damage (single audit passes cascading up to 28 clean
+  descendants). The collateral is visible in the task metric: HotpotQA EM
+  fell 0.16 → 0.14 *within the mitigated run* while the baseline stayed
+  flat — the mitigation destroyed usable clean knowledge without removing
+  contamination. Full-Trio-with-a-weak-detector is NET NEGATIVE.
+- **Circular validation confirmed at scale:** the validator's evidence for
+  a derived fact includes the fact's own lineage parents, so derived facts
+  (clean and corrupted alike) get re-scored up to 0.9–1.0, erasing Trio
+  confidence decay.
+- **Detection AUROC 0.82** — with a caveat: much of the separation comes
+  from propagated infections carrying decayed *derived* confidences, i.e.
+  the score partly detects "agent-written", not "contaminated". Undetected
+  seeds at 1.0 are indistinguishable from pristine facts by construction.
+
+**RQ4 answer taking shape:** provenance machinery is only as good as the
+detector feeding it. With a weak, circularly-validated detector, the
+confidence floor is inert against index cases, cascade deprecation
+destroys clean knowledge, and the system is better off unmitigated. The
+interesting question the ablations now answer: which mechanism carries the
+damage, and does any carry benefit alone?
+
+**Residual nondeterminism found and fixed:** extracted triplets carried
+random `uuid4` IDs while retrieval tie-breaks on `t.id` — confidence-tied
+facts therefore ordered differently across otherwise-identical runs
+(step-0 metrics differed slightly between arms; an interim "floor
+backfired at step 0" reading was traced to this noise and retracted — at
+step 0 the floor excludes nothing, as every confidence is ≥ 0.85).
+ExtractionAgent now mints deterministic counter-derived UUIDv5 IDs: an
+identical pipeline replay produces identical IDs, making arms
+byte-comparable end to end.
+
+**Phase 3.2 batch launched:** all four arms (baseline, floor-only,
+validation-only, full Trio) rerun fresh from byte-identical starting
+states under deterministic IDs — the definitive comparison set.
