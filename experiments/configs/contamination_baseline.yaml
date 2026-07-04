@@ -1,0 +1,27 @@
+# Phase 2.4 unmitigated contamination experiment.
+# gamma = 0 (no validation audits), no retrieval confidence floor — pure
+# transmission dynamics. The Phase 3 mitigated variants change ONLY
+# retrieval_threshold / audits_per_step, so baseline-vs-mitigated is a
+# config diff, not a code diff. Keys match run_contamination.py CLI flags.
+
+steps: 10
+entities_per_step: 12
+injections_per_type: 15    # 45 index cases, seeded inside the active subgraph
+pool_per_key: 50
+
+# Retrieval (the beta channel)
+context_limit: 5
+retrieval_threshold: 0.0   # unmitigated: no Trio confidence floor
+
+# Validation (the gamma channel)
+audits_per_step: 0         # unmitigated: no validation
+audit_sample: 50
+
+# Task measurement — same seed/count as eval_baseline.yaml → identical questions
+eval_every: 5
+eval_questions: 50
+
+# Reproducibility + rate limiting
+random_seed: 42
+sleep: 1.0
+tag: baseline
