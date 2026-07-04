@@ -79,6 +79,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from src.agents.extraction_agent import ExtractionAgent
 from src.agents.llm_client import ModelRole, get_client
 from src.agents.validation_agent import ValidationAgent
+from src.evaluation.metrics import detection_auroc
 from src.graph.neo4j_client import Neo4jClient
 from src.injection.error_injector import ERROR_TYPES, ErrorInjector
 
@@ -240,6 +241,7 @@ def transmission_cycle(
     new_triplets = new_edges = new_exposed = new_infected = synth_units = 0
     n_contexts = n_contexts_contam = n_facts_served = n_contam_facts_served = 0
     transmissions = []
+    audit_candidates: list[str] = []  # what this cycle read + wrote (targeted validation)
 
     for key in sample:
         facts = client.get_related_triplets(
@@ -280,6 +282,9 @@ def transmission_cycle(
         parent_ids = [f["id"] for f in facts]
         new_triplets += len(records)
         new_edges += len(records) * len(parent_ids)
+        for tid in parent_ids + [r["id"] for r in records]:
+            if tid not in audit_candidates:
+                audit_candidates.append(tid)
 
         for r in records:
             exposed, payload = check_transmission(r, parent_ids, payloads)
@@ -320,13 +325,17 @@ def transmission_cycle(
         "n_facts_served":         n_facts_served,
         "n_contam_facts_served":  n_contam_facts_served,
         "transmissions":          transmissions,
+        "audit_candidates":       audit_candidates,
     }
 
 
 def measure(client: Neo4jClient, step: int) -> dict:
-    """SIR state counts (detected) + ground-truth contamination counts."""
+    """SIR state counts (detected) + ground-truth contamination counts +
+    detection confusion (state vs error_type — quarantine precision and
+    mitigation collateral damage)."""
     sir = client.count_by_state()
     gt = client.count_by_error_type()
+    confusion = client.detection_confusion()
     row = {
         "S": sir.get("S", 0), "I": sir.get("I", 0), "R": sir.get("R", 0),
     }
@@ -334,7 +343,11 @@ def measure(client: Neo4jClient, step: int) -> dict:
         row[f"gt_seed_{et}"] = gt.get(et, 0)
         row[f"gt_prop_{et}"] = gt.get(f"propagated_{et}", 0)
     row["gt_total"] = sum(gt.values())
-    logger.info(f"[step {step}] SIR={sir} | ground truth={gt}")
+    # R_contam = true quarantines; R_clean = collateral damage (clean facts
+    # lost to quarantine/cascade); I_* analogous for infected-marks.
+    for k in ("R_contam", "R_clean", "I_contam", "I_clean"):
+        row[f"det_{k}"] = confusion.get(k, 0)
+    logger.info(f"[step {step}] SIR={sir} | ground truth={gt} | detection={confusion}")
     return row
 
 
@@ -343,7 +356,8 @@ def run_task_eval(client: Neo4jClient, eval_llm, step: int, ts: str, args) -> di
     seed each call → identical questions every step; unchanged retrieval
     neighborhoods replay from the LLM cache for free)."""
     ns = SimpleNamespace(num_questions=args.eval_questions,
-                         facts_per_key=5, sleep=args.sleep)
+                         facts_per_key=5, sleep=args.sleep,
+                         retrieval_threshold=args.retrieval_threshold)
     out = {}
     for name, fn in (("hotpotqa", eval_hotpotqa), ("fever", eval_fever)):
         res = fn(client, eval_llm, ns, random.Random(args.random_seed))
@@ -401,7 +415,8 @@ def run_probe_eval(
             question = f"What is the relationship between {subj} and {obj}?"
 
         facts = client.get_related_triplets(
-            subject=subj, obj=subj, exclude_id="", limit=args.probe_facts
+            subject=subj, obj=subj, exclude_id="",
+            min_confidence=args.retrieval_threshold, limit=args.probe_facts,
         )
         prompt = (f"Knowledge-graph facts:\n{facts_block(facts)}\n\n"
                   f"Question: {question}")
@@ -500,10 +515,12 @@ def run_experiment(args) -> None:
             )
 
         agent = ExtractionAgent(agent_id="contamination_pipeline",
-                                neo4j_client=client)
+                                neo4j_client=client,
+                                propagate_confidence=args.trio_confidence)
         synth_llm = get_client(ModelRole.EXTRACTION)   # Mistral Nemo: extraction & synthesis
         eval_llm = get_client(ModelRole.ORCHESTRATION)
-        validator = (ValidationAgent(neo4j_client=client)
+        validator = (ValidationAgent(neo4j_client=client,
+                                     quarantine_threshold=args.quarantine_threshold)
                      if args.audits_per_step > 0 else None)
 
         # ---- Step 0: seed index cases + baseline measurement ----
@@ -524,12 +541,16 @@ def run_experiment(args) -> None:
             cycle = transmission_cycle(client, agent, synth_llm, keys,
                                        payloads, step, args, rng)
             all_transmissions += cycle.pop("transmissions")
+            audit_ids = cycle.pop("audit_candidates")
             cum_exposed += cycle["new_exposed"]
 
             audit = {"audited": 0, "quarantined": 0, "cascaded": 0}
             if validator is not None:
                 for _ in range(args.audits_per_step):
-                    rep = validator.run_audit_pass(sample_size=args.audit_sample)
+                    rep = validator.run_audit_pass(
+                        sample_size=args.audit_sample,
+                        candidates=audit_ids if args.audit_targeted else None,
+                    )
                     audit["audited"] += rep["audited"]
                     audit["quarantined"] += rep["quarantined"]
                     audit["cascaded"] += rep["cascaded"]
@@ -542,6 +563,16 @@ def run_experiment(args) -> None:
                 row.update(run_task_eval(client, eval_llm, step, ts, args))
                 row.update(run_probe_eval(client, eval_llm, payloads, step, ts, args))
             trajectory.append(row)
+
+        # Detection AUROC over final confidences: can the system's own scores
+        # separate contaminated from clean nodes? 0.5 = no signal (expected
+        # in the unmitigated arm — nothing ever re-scores confidence there).
+        contam_conf, clean_conf = client.get_contamination_confidences()
+        scores = [1.0 - c for c in contam_conf + clean_conf]
+        labels = [1] * len(contam_conf) + [0] * len(clean_conf)
+        trajectory[-1]["detection_auroc"] = round(detection_auroc(labels, scores), 4)
+        logger.success(f"Detection AUROC (final): {trajectory[-1]['detection_auroc']} "
+                       f"({len(contam_conf)} contaminated vs {len(clean_conf)} clean)")
 
     # ---- Persist ----
     fieldnames = list(trajectory[-1].keys())
@@ -588,6 +619,9 @@ def main() -> None:
     parser.add_argument("--retrieval-threshold", type=float, default=0.0,  help="Confidence floor on retrieval (0 = unmitigated)")
     parser.add_argument("--audits-per-step",     type=int,   default=0,    help="Validation audit passes per cycle (gamma; 0 = unmitigated)")
     parser.add_argument("--audit-sample",        type=int,   default=50,   help="Triplets per audit pass")
+    parser.add_argument("--audit-targeted",      action="store_true",      help="Audit this cycle's read/written nodes instead of uniform random")
+    parser.add_argument("--quarantine-threshold", type=float, default=0.4, help="Validator quarantines below this confidence")
+    parser.add_argument("--trio-confidence",     action="store_true",      help="Trio confidence propagation at write time (derived conf = f(parents))")
     parser.add_argument("--eval-every",          type=int,   default=5,    help="Task eval every k steps (0 = only step 0 and final)")
     parser.add_argument("--eval-questions",      type=int,   default=50,   help="Questions per dataset per eval (match baseline for comparability)")
     parser.add_argument("--probe-limit",         type=int,   default=60,   help="Max corrupted-node probe questions per eval step")

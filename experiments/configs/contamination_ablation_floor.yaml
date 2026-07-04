@@ -1,0 +1,28 @@
+# Phase 3 ablation: retrieval floor + confidence propagation ONLY (no
+# validation, gamma = 0). Isolates the passive Trio mechanisms: does
+# confidence decay + the floor alone contain propagation, without any
+# detector? Diff vs contamination_mitigated.yaml: audits_per_step 1 -> 0.
+
+steps: 10
+entities_per_step: 12
+injections_per_type: 15
+pool_per_key: 50
+
+context_limit: 5
+retrieval_threshold: 0.5
+
+audits_per_step: 0
+audit_sample: 25
+audit_targeted: true
+quarantine_threshold: 0.4
+
+trio_confidence: true
+
+eval_every: 5
+eval_questions: 50
+probe_limit: 60
+probe_facts: 8
+
+random_seed: 42
+sleep: 1.0
+tag: ablation_floor

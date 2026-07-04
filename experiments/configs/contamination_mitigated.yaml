@@ -1,0 +1,32 @@
+# Phase 3 FULL Trio mitigation — all three mechanisms on.
+# Identical to contamination_baseline.yaml except the mitigation block:
+# the baseline-vs-mitigated comparison is exactly this diff (RQ4).
+
+steps: 10
+entities_per_step: 12
+injections_per_type: 15
+pool_per_key: 50
+
+# Retrieval (the beta channel) — Trio confidence floor ON
+context_limit: 5
+retrieval_threshold: 0.5
+
+# Validation (the gamma channel) — targeted audits ON
+audits_per_step: 1
+audit_sample: 25           # capped: each audited node = 1 LLM call
+audit_targeted: true       # audit what agents read/wrote this cycle
+quarantine_threshold: 0.4
+
+# Trio confidence propagation at write time — derived conf = f(parents)
+trio_confidence: true
+
+# Task measurement — identical to baseline
+eval_every: 5
+eval_questions: 50
+probe_limit: 60
+probe_facts: 8
+
+# Reproducibility + rate limiting
+random_seed: 42
+sleep: 1.0
+tag: mitigated

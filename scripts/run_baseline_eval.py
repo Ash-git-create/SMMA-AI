@@ -97,11 +97,16 @@ def entity_keys(text: str, max_keys: int = 4) -> list[str]:
     return keys[:max_keys]
 
 
-def retrieve_facts(client: Neo4jClient, keys: list[str], per_key: int, cap: int = 15) -> list[dict]:
+def retrieve_facts(client: Neo4jClient, keys: list[str], per_key: int,
+                   cap: int = 15, min_confidence: float = 0.0) -> list[dict]:
+    """min_confidence is the Trio retrieval floor — 0.0 in the unmitigated
+    baseline; mitigated runs raise it so the evaluator (itself an agent
+    reading the shared memory) honors the same floor as the pipeline."""
     facts, seen = [], set()
     for key in keys:
         for t in client.get_related_triplets(subject=key, obj=key,
-                                             exclude_id="", limit=per_key):
+                                             exclude_id="", limit=per_key,
+                                             min_confidence=min_confidence):
             if t["id"] not in seen:
                 seen.add(t["id"])
                 facts.append(t)
@@ -137,7 +142,8 @@ def eval_hotpotqa(client, llm, args, rng) -> dict:
 
     for i, doc in enumerate(docs, 1):
         keys = entity_keys(doc["question"])
-        facts = retrieve_facts(client, keys, args.facts_per_key)
+        facts = retrieve_facts(client, keys, args.facts_per_key,
+                               min_confidence=getattr(args, "retrieval_threshold", 0.0))
         prompt = (f"Knowledge-graph facts:\n{facts_block(facts)}\n\n"
                   f"Question: {doc['question']}")
         try:
@@ -187,7 +193,8 @@ def eval_fever(client, llm, args, rng) -> dict:
 
     for i, doc in enumerate(docs, 1):
         keys = entity_keys(doc["claim"])
-        facts = retrieve_facts(client, keys, args.facts_per_key)
+        facts = retrieve_facts(client, keys, args.facts_per_key,
+                               min_confidence=getattr(args, "retrieval_threshold", 0.0))
         prompt = (f"Knowledge-graph facts:\n{facts_block(facts)}\n\n"
                   f"Claim: {doc['claim']}")
         try:
