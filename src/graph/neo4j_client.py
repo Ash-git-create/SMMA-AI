@@ -214,7 +214,8 @@ class Neo4jClient:
         """Retrieve triplets with confidence >= threshold (Trio retrieval filter)."""
         with self._driver.session() as s:
             result = s.run(
-                "MATCH (t:Triplet) WHERE t.confidence >= $threshold RETURN t LIMIT $limit",
+                "MATCH (t:Triplet) WHERE t.confidence >= $threshold "
+                "RETURN t ORDER BY t.confidence DESC, t.id LIMIT $limit",
                 threshold=threshold, limit=limit,
             )
             return [dict(rec["t"]) for rec in result]
@@ -231,6 +232,11 @@ class Neo4jClient:
         Retrieve triplets that share an entity with (subject, obj), highest
         confidence first. This is the evidence-retrieval used for validation:
         related facts only — never arbitrary rows.
+
+        Tie-break on t.id: Neo4j otherwise returns confidence-ties in
+        arbitrary order, which varies across DB reloads — retrieval (and
+        therefore every downstream LLM prompt) must be byte-stable for
+        run-to-run comparisons to be attributable to treatment, not noise.
         """
         with self._driver.session() as s:
             result = s.run(
@@ -240,7 +246,7 @@ class Neo4jClient:
                   AND t.confidence >= $min_confidence
                   AND (t.subject IN [$subject, $obj] OR t.object IN [$subject, $obj])
                 RETURN t
-                ORDER BY t.confidence DESC
+                ORDER BY t.confidence DESC, t.id
                 LIMIT $limit
                 """,
                 subject=subject, obj=obj, exclude_id=exclude_id,

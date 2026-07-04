@@ -20,6 +20,8 @@ audit_sample: 50
 # Task measurement — same seed/count as eval_baseline.yaml → identical questions
 eval_every: 5
 eval_questions: 50
+probe_limit: 60            # corrupted-node probes: harm-when-reached metric
+probe_facts: 8
 
 # Reproducibility + rate limiting
 random_seed: 42

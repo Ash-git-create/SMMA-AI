@@ -82,7 +82,13 @@ from src.agents.validation_agent import ValidationAgent
 from src.graph.neo4j_client import Neo4jClient
 from src.injection.error_injector import ERROR_TYPES, ErrorInjector
 
-from run_baseline_eval import eval_fever, eval_hotpotqa  # scripts/ on path
+from run_baseline_eval import (  # scripts/ on path
+    _QA_SYSTEM,
+    eval_fever,
+    eval_hotpotqa,
+    facts_block,
+    parse_json_response,
+)
 
 logger.remove()
 logger.add(sys.stdout, format="<green>{time:HH:mm:ss}</green> | <level>{message}</level>")
@@ -118,21 +124,38 @@ def check_transmission(
     """(exposed, payload-if-infected) for one newly written triplet.
 
     exposed  — at least one lineage parent carries a contamination payload.
-    infected — the new triplet's text reproduces a payload's corrupted value
-               (word-boundary match) without reproducing the original value.
+    infected — the new triplet reproduces a payload's corrupted value,
+               matched by the payload's corrupted FIELD:
+        object payloads (entity swaps, stripped qualifiers) must equal the
+        derived subject or object exactly (normalized) — substring matching
+        over-counted when the corrupted value was a fragment of a longer
+        entity name ("New Orleans" inside "New Orleans Pelicans") or of a
+        full date ("2006" inside "14 September 2006"); first-run audit put
+        precision at 0.65, all false positives from those two classes.
+        predicate payloads (strengthened relations) word-boundary match the
+        derived predicate only — extraction re-phrases predicates
+        ("lead actor" → lead_actor_in), so equality would miss real events.
+    Conservative by construction: paraphrased reproductions are not counted,
+    so infection counts are a lower bound.
     """
     exposed = False
-    text = _norm(f"{record['subject']} {record['predicate']} {record['object']}")
+    subj = _norm(record["subject"])
+    pred = _norm(record["predicate"])
+    obj = _norm(record["object"])
     for pid in parent_ids:
         p = payloads.get(pid)
         if p is None:
             continue
         exposed = True
         after, before = _norm(p["after"]), _norm(p["before"])
-        if after and re.search(rf"\b{re.escape(after)}\b", text) and (
-            not before or before not in text
-        ):
-            return True, p
+        if not after:
+            continue
+        if p["field"] == "object":
+            if after in (subj, obj) and before not in (subj, obj):
+                return True, p
+        else:  # predicate payload
+            if re.search(rf"\b{re.escape(after)}\b", pred) and before not in pred:
+                return True, p
     return exposed, None
 
 
@@ -185,6 +208,7 @@ def seed_index_cases(
     payloads = {
         r["triplet_id"]: {
             "root_type": r["error_type"],
+            "field":     r["field"],
             "before":    str(r["before"]),
             "after":     str(r["after"]),
         }
@@ -204,9 +228,17 @@ def transmission_cycle(
     args,
     rng: random.Random,
 ) -> dict:
-    """One write-back pass over a sample of active entities."""
+    """One write-back pass over a sample of active entities.
+
+    Also instruments the beta decomposition: how many retrieval contexts
+    contained >=1 contaminated fact (retrieval component) and how many
+    contaminated facts were served in total. Together with exposed/infected
+    this lets beta = P(retrieve contaminated) x P(reproduce | exposed) be
+    estimated from the run itself instead of assumed.
+    """
     sample = rng.sample(keys, min(args.entities_per_step, len(keys)))
     new_triplets = new_edges = new_exposed = new_infected = synth_units = 0
+    n_contexts = n_contexts_contam = n_facts_served = n_contam_facts_served = 0
     transmissions = []
 
     for key in sample:
@@ -216,6 +248,12 @@ def transmission_cycle(
         )
         if not facts:
             continue
+        n_contexts += 1
+        n_facts_served += len(facts)
+        n_contam = sum(1 for f in facts if f.get("error_type"))
+        n_contam_facts_served += n_contam
+        if n_contam:
+            n_contexts_contam += 1
 
         fact_lines = "\n".join(
             f"  - ({f['subject']}) --[{f['predicate']}]--> ({f['object']})"
@@ -267,15 +305,21 @@ def transmission_cycle(
 
     logger.info(
         f"[step {step}] cycle: {synth_units} passages, {new_triplets} new triplets, "
-        f"{new_exposed} exposed, {new_infected} INFECTED"
+        f"{new_exposed} exposed, {new_infected} INFECTED | "
+        f"contexts {n_contexts_contam}/{n_contexts} contaminated "
+        f"({n_contam_facts_served}/{n_facts_served} facts)"
     )
     return {
-        "synth_units":  synth_units,
-        "new_triplets": new_triplets,
-        "new_edges":    new_edges,
-        "new_exposed":  new_exposed,
-        "new_infected": new_infected,
-        "transmissions": transmissions,
+        "synth_units":            synth_units,
+        "new_triplets":           new_triplets,
+        "new_edges":              new_edges,
+        "new_exposed":            new_exposed,
+        "new_infected":           new_infected,
+        "n_contexts":             n_contexts,
+        "n_contexts_contam":      n_contexts_contam,
+        "n_facts_served":         n_facts_served,
+        "n_contam_facts_served":  n_contam_facts_served,
+        "transmissions":          transmissions,
     }
 
 
@@ -317,6 +361,101 @@ def run_task_eval(client: Neo4jClient, eval_llm, step: int, ts: str, args) -> di
             out.update({"fever_accuracy": round(res["accuracy"], 4),
                         "fever_avg_facts": res["avg_facts"]})
     logger.success(f"[step {step}] task eval: {out}")
+    return out
+
+
+def run_probe_eval(
+    client: Neo4jClient, eval_llm, payloads: dict[str, dict],
+    step: int, ts: str, args,
+) -> dict:
+    """Probe questions generated FROM the corrupted nodes — the harm metric.
+
+    The fixed task sample measures whether contamination *reaches* generic
+    queries (an epidemiological quantity, ~0 at low prevalence). Probes ask
+    directly about the corrupted facts, measuring whether the KG-grounded
+    system *returns corrupted answers when contamination is in scope*:
+      contaminated — answer reproduces the corrupted value
+      original     — answer gives the pre-corruption value (only meaningful
+                     for seeded nodes, whose original value is known; a
+                     propagated node's subject may never have had a true
+                     value in the KG at all)
+      other        — anything else, incl. "unknown" / no facts retrieved
+
+    Probe set = all ground-truth corrupted nodes (seeded + propagated so
+    far), capped at probe_limit in sorted-id order for determinism. The set
+    grows over steps as infections accumulate — probe_n is reported with it.
+    """
+    node_ids = sorted(payloads)[: args.probe_limit]
+    rows = []
+    counts = {"contaminated": 0, "original": 0, "other": 0}
+
+    for nid in node_ids:
+        node = client.get_triplet(nid)
+        if node is None:
+            continue
+        p = payloads[nid]
+        subj, pred, obj = node["subject"], node["predicate"], node["object"]
+        if p["field"] == "object":
+            question = f"What is the '{pred.replace('_', ' ')}' of {subj}?"
+        else:
+            question = f"What is the relationship between {subj} and {obj}?"
+
+        facts = client.get_related_triplets(
+            subject=subj, obj=subj, exclude_id="", limit=args.probe_facts
+        )
+        prompt = (f"Knowledge-graph facts:\n{facts_block(facts)}\n\n"
+                  f"Question: {question}")
+        try:
+            parsed = parse_json_response(
+                eval_llm.chat(prompt=prompt, system=_QA_SYSTEM).content
+            )
+            answer = str(parsed["answer"]) if parsed and "answer" in parsed else ""
+        except Exception as exc:
+            logger.warning(f"[probe] LLM failure on {nid}: {exc}")
+            answer = ""
+
+        ans = _norm(answer)
+        after, before = _norm(p["after"]), _norm(p["before"])
+        hit_after = bool(after) and re.search(rf"\b{re.escape(after)}\b", ans)
+        hit_before = bool(before) and re.search(rf"\b{re.escape(before)}\b", ans)
+        if hit_after and not hit_before:
+            verdict = "contaminated"
+        elif hit_before and not hit_after:
+            verdict = "original"
+        else:
+            verdict = "other"
+        counts[verdict] += 1
+
+        rows.append({
+            "node_id":   nid,
+            "seeded":    int(not node.get("error_type", "").startswith("propagated_")),
+            "root_type": p["root_type"],
+            "question":  question[:120],
+            "corrupted_value": p["after"],
+            "original_value":  p["before"],
+            "answer":    answer[:120],
+            "verdict":   verdict,
+            "n_facts":   len(facts),
+        })
+        if args.sleep > 0:
+            time.sleep(args.sleep)
+
+    if rows:
+        probe_path = RESULTS_DIR / f"contamination_probe_{args.tag}_step{step}_{ts}.csv"
+        with open(probe_path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=rows[0].keys())
+            writer.writeheader()
+            writer.writerows(rows)
+
+    n = len(rows)
+    out = {
+        "probe_n":            n,
+        "probe_contaminated": counts["contaminated"],
+        "probe_original":     counts["original"],
+        "probe_other":        counts["other"],
+        "probe_contam_rate":  round(counts["contaminated"] / n, 4) if n else 0.0,
+    }
+    logger.success(f"[step {step}] probes: {out}")
     return out
 
 
@@ -371,9 +510,12 @@ def run_experiment(args) -> None:
         seed_records, payloads = seed_index_cases(client, keys, args)
         row = {"step": 0, "synth_units": 0, "new_triplets": 0, "new_edges": 0,
                "new_exposed": 0, "new_infected": 0, "cum_exposed": 0,
+               "n_contexts": 0, "n_contexts_contam": 0,
+               "n_facts_served": 0, "n_contam_facts_served": 0,
                "audited": 0, "quarantined": 0, "cascaded": 0}
         row.update(measure(client, 0))
         row.update(run_task_eval(client, eval_llm, 0, ts, args))
+        row.update(run_probe_eval(client, eval_llm, payloads, 0, ts, args))
         trajectory.append(row)
 
         # ---- Transmission cycles ----
@@ -398,6 +540,7 @@ def run_experiment(args) -> None:
                             (args.eval_every > 0 and step % args.eval_every == 0))
             if is_eval_step:
                 row.update(run_task_eval(client, eval_llm, step, ts, args))
+                row.update(run_probe_eval(client, eval_llm, payloads, step, ts, args))
             trajectory.append(row)
 
     # ---- Persist ----
@@ -447,6 +590,8 @@ def main() -> None:
     parser.add_argument("--audit-sample",        type=int,   default=50,   help="Triplets per audit pass")
     parser.add_argument("--eval-every",          type=int,   default=5,    help="Task eval every k steps (0 = only step 0 and final)")
     parser.add_argument("--eval-questions",      type=int,   default=50,   help="Questions per dataset per eval (match baseline for comparability)")
+    parser.add_argument("--probe-limit",         type=int,   default=60,   help="Max corrupted-node probe questions per eval step")
+    parser.add_argument("--probe-facts",         type=int,   default=8,    help="KG facts retrieved per probe question")
     parser.add_argument("--extraction-manifest", type=str,   default=None, help="Path to extraction manifest CSV (default: latest)")
     parser.add_argument("--random-seed",         type=int,   default=42)
     parser.add_argument("--sleep",               type=float, default=1.0,  help="Seconds between LLM calls (rate limiting)")
