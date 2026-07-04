@@ -83,11 +83,26 @@ class ExtractionAgent:
         agent_id: str = "extraction_agent",
         confidence_default: float = 0.85,
         neo4j_client: Optional[Neo4jClient] = None,
+        propagate_confidence: bool = False,
     ):
         self.agent_id = agent_id
         self.confidence_default = confidence_default
         self._external_client = neo4j_client
+        # Trio mitigation (Phase 3): derive confidence from lineage parents
+        # instead of writing the flat default. Off in the unmitigated baseline.
+        self.propagate_confidence = propagate_confidence
+        # Monotonic write counter -> deterministic triplet IDs. Retrieval
+        # tie-breaks on t.id, so random uuid4 IDs made confidence-tied facts
+        # order differently across otherwise-identical runs, perturbing
+        # retrieval sets. With counter-derived IDs an identical pipeline
+        # replay mints identical IDs, making runs byte-comparable end to end.
+        self._write_counter = 0
         self._llm = get_client(ModelRole.EXTRACTION)
+
+    def _next_id(self) -> str:
+        self._write_counter += 1
+        return str(uuid.uuid5(uuid.NAMESPACE_URL,
+                              f"smma:{self.agent_id}:{self._write_counter}"))
 
     # ------------------------------------------------------------------
     # Public API
@@ -120,7 +135,17 @@ class ExtractionAgent:
             logger.debug(f"[{self.agent_id}] No triplets extracted from text.")
             return []
 
-        records = self._build_records(raw_triplets, source_context_ids, source_label, text)
+        confidence = self.confidence_default
+        if self.propagate_confidence and context_facts:
+            from src.mitigation.trio_framework import propagate_confidence
+            confidence = propagate_confidence(
+                [f.get("confidence", 1.0) for f in context_facts],
+                self.confidence_default,
+            )
+
+        records = self._build_records(
+            raw_triplets, source_context_ids, source_label, text, confidence
+        )
 
         client = self._external_client or Neo4jClient()
         try:
@@ -198,12 +223,15 @@ class ExtractionAgent:
         source_context_ids: Optional[list[str]],
         source_label: str,
         source_text: str,
+        confidence: Optional[float] = None,
     ) -> list[dict]:
         """Attach provenance metadata to each extracted triplet."""
         now = datetime.now(timezone.utc).isoformat()
+        if confidence is None:
+            confidence = self.confidence_default
         records = []
         for t in triplets:
-            tid = str(uuid.uuid4())
+            tid = self._next_id()
             lineage = (
                 LineageFormula.conjunction(source_context_ids)
                 if source_context_ids
@@ -213,7 +241,7 @@ class ExtractionAgent:
                 source_id=tid,
                 agent_id=self.agent_id,
                 timestamp=now,
-                confidence=self.confidence_default,
+                confidence=confidence,
                 lineage=lineage,
                 state=STATE_SUSCEPTIBLE,
             )
