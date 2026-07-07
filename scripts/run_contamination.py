@@ -360,7 +360,7 @@ def run_task_eval(client: Neo4jClient, eval_llm, step: int, ts: str, args) -> di
                          retrieval_threshold=args.retrieval_threshold)
     out = {}
     for name, fn in (("hotpotqa", eval_hotpotqa), ("fever", eval_fever)):
-        res = fn(client, eval_llm, ns, random.Random(args.random_seed))
+        res = fn(client, eval_llm, ns, random.Random(args.eval_seed))
         rows = res.pop("rows")
         rows_path = (RESULTS_DIR /
                      f"contamination_eval_{name}_{args.tag}_step{step}_{ts}.csv")
@@ -628,6 +628,10 @@ def main() -> None:
     parser.add_argument("--probe-facts",         type=int,   default=8,    help="KG facts retrieved per probe question")
     parser.add_argument("--extraction-manifest", type=str,   default=None, help="Path to extraction manifest CSV (default: latest)")
     parser.add_argument("--random-seed",         type=int,   default=42)
+    parser.add_argument("--eval-seed",           type=int,   default=42,
+                        help="Task-eval question sampling seed — fixed across runs so "
+                             "cross-run task metrics compare the same questions (probes "
+                             "stay on --random-seed; they are inherently run-specific)")
     parser.add_argument("--sleep",               type=float, default=1.0,  help="Seconds between LLM calls (rate limiting)")
     parser.add_argument("--tag",                 type=str,   default="baseline", help="Run label in output filenames")
     parser.add_argument("--allow-dirty",         action="store_true",      help="Run even if corrupted nodes pre-exist in the KG")
