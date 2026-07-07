@@ -1,0 +1,650 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "context_limit": 5,
+    "retrieval_threshold": 0.5,
+    "audits_per_step": 1,
+    "audit_sample": 25,
+    "audit_targeted": true,
+    "quarantine_threshold": 0.4,
+    "trio_confidence": true,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "probe_limit": 60,
+    "probe_facts": 8,
+    "extraction_manifest": null,
+    "random_seed": 42,
+    "sleep": 1.0,
+    "tag": "mitigated",
+    "allow_dirty": false
+  },
+  "timestamp": "20260706_172726",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260706_172718.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "trex_33119",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Norwegians",
+      "after": "The Bahamas",
+      "subject": "Trondheim"
+    },
+    {
+      "triplet_id": "21f42ae4-c700-5319-a67a-fcb9edf6862d",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Battle of Berlin",
+      "after": "Siege of Leningrad",
+      "subject": "Alexander Nikolayev"
+    },
+    {
+      "triplet_id": "trex_17898",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Aarhus",
+      "after": "the 22nd Disney animated feature film",
+      "subject": "Max Heindel"
+    },
+    {
+      "triplet_id": "cca56986-33ea-52b0-bd80-adf45acf9f79",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "1987",
+      "after": "Princeton, New Jersey",
+      "subject": "Blues Traveler"
+    },
+    {
+      "triplet_id": "1f26b688-922b-5374-a000-0d22368df4cc",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "American",
+      "after": "British",
+      "subject": "Brady Seals"
+    },
+    {
+      "triplet_id": "trex_45191",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "Arizona",
+      "subject": "Sammy Reid"
+    },
+    {
+      "triplet_id": "52f95dbb-ba72-5438-9936-34cae9ae2d18",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Mrs. Davis",
+      "after": "Moscow State University",
+      "subject": "Laurie Metcalf"
+    },
+    {
+      "triplet_id": "trex_16417",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "Hollywood",
+      "subject": "The Onedin Line"
+    },
+    {
+      "triplet_id": "5df174f3-2444-5eb2-a936-aae2d46966ed",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "three_act_comedy_play",
+      "after": "film",
+      "subject": "Private Lives"
+    },
+    {
+      "triplet_id": "trex_40320",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Sasanian Empire",
+      "after": "railway station",
+      "subject": "Yazdegerd II"
+    },
+    {
+      "triplet_id": "252014f7-fa3d-56d9-8cf6-f2c8db6ab0f2",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "S. c. nanus",
+      "after": "S. c. aequinoctialis",
+      "subject": "African buffalo"
+    },
+    {
+      "triplet_id": "3fded0a0-2e14-56ef-a4a4-acd6454533ff",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "from a state of alliance to rivalry or even war",
+      "after": "Arizona",
+      "subject": "Russia\u2013United Kingdom relations"
+    },
+    {
+      "triplet_id": "d49c31f5-a659-5978-aa34-7636c8f1d52e",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Ottomans",
+      "after": "Royal Air Force",
+      "subject": "Valens Aqueduct"
+    },
+    {
+      "triplet_id": "db76de19-3407-552d-8192-60dabb8757b2",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "1831",
+      "after": "London",
+      "subject": "Carl von Clausewitz"
+    },
+    {
+      "triplet_id": "8ae80e85-8820-5802-978d-b1470f8e1248",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "The_Home_of_the_Submarine_Force",
+      "after": "London Gatwick",
+      "subject": "Naval Submarine Base New London"
+    },
+    {
+      "triplet_id": "0ab9e243-8da9-592c-92a9-5cf5d14c3318",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Atwater, California",
+      "after": "Atwater",
+      "subject": "Sierra Academy of Aeronautics"
+    },
+    {
+      "triplet_id": "262bcb48-7621-596a-9fb0-7d94b5c9f422",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Groton, Connecticut",
+      "after": "Groton",
+      "subject": "Naval Submarine Base New London"
+    },
+    {
+      "triplet_id": "5fa89ab5-e2ce-5d47-ba22-de1c25db9f0a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "northeastern Albany County, New York",
+      "after": "northeastern Albany County",
+      "subject": "New York State Route 9R"
+    },
+    {
+      "triplet_id": "b5d6775f-7338-5a61-b2d5-500703eca70f",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "May 3, 1903",
+      "after": "May 3",
+      "subject": "Bing Crosby"
+    },
+    {
+      "triplet_id": "4c16300b-b860-554b-946a-1f61ef76494f",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "15 January 1880",
+      "after": "1880",
+      "subject": "Lady Charlotte Elliot"
+    },
+    {
+      "triplet_id": "adf0c210-f0a5-5d07-b079-49541e8778cb",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "1985-04-19",
+      "after": "1985",
+      "subject": "Sergei Aleksandrovich Tokarev"
+    },
+    {
+      "triplet_id": "78bfc53f-f74c-5b84-9a91-8b5d9dd27228",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "assisting Benedict Arnold's attempted surrender of the fort at West Point, New York to the British",
+      "after": "assisting Benedict Arnold's attempted surrender of the fort at West Point",
+      "subject": "John Andr\u00e9"
+    },
+    {
+      "triplet_id": "3b2bb127-3631-5560-a4dd-4701600c384f",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "October 1, 2013",
+      "after": "October 1",
+      "subject": "Tom Clancy"
+    },
+    {
+      "triplet_id": "9c137e1c-2602-5437-9471-060e87df3534",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Will Ye Go, Lassie, Go?",
+      "after": "Will Ye Go, Lassie",
+      "subject": "Wild Mountain Thyme"
+    },
+    {
+      "triplet_id": "00ce8f9f-a5bb-554a-b383-80b83cbba23b",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "22\u201311, 16\u20134 in MAAC play",
+      "after": "22\u201311",
+      "subject": "2015\u201316 Iona Gaels men's basketball team"
+    },
+    {
+      "triplet_id": "32873731-4126-5202-903f-ec2c6b9de2e5",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "29 October 2003",
+      "after": "2003",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "77ff58e3-bfe6-5694-ad4b-f50df94e6875",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "March 18, 1932",
+      "after": "March 18",
+      "subject": "John Updike"
+    },
+    {
+      "triplet_id": "c5d04d94-973d-5712-b06c-30b466dd131a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "fortifications at West Point, New York",
+      "after": "fortifications at West Point",
+      "subject": "Benedict Arnold"
+    },
+    {
+      "triplet_id": "b44dc846-7087-54fb-8219-ca46e9a78f35",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "New Orleans, Louisiana",
+      "after": "New Orleans",
+      "subject": "New Orleans Pelicans"
+    },
+    {
+      "triplet_id": "31b293d1-2f3a-5341-bb23-039964f9b94e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "January 24, 1957",
+      "after": "January 24",
+      "subject": "Ken Pruitt"
+    },
+    {
+      "triplet_id": "trex_23899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Oussama Assaidi"
+    },
+    {
+      "triplet_id": "trex_47059",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Ivan Ivanovich Zhegalkin"
+    },
+    {
+      "triplet_id": "trex_41412",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Sealey"
+    },
+    {
+      "triplet_id": "trex_34908",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Ian Callaghan"
+    },
+    {
+      "triplet_id": "trex_20117",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Aldridge"
+    },
+    {
+      "triplet_id": "trex_32550",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Joe Cole"
+    },
+    {
+      "triplet_id": "trex_49633",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Daniel Agger"
+    },
+    {
+      "triplet_id": "trex_45864",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "cast member",
+      "after": "lead actor",
+      "subject": "Robin and the 7 Hoods"
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Hugh McQueen"
+    }
+  ],
+  "transmissions": [
+    {
+      "step": 1,
+      "id": "985dcd11-1a01-5163-b584-6fcd5c392399",
+      "subject": "Sierra Academy of Aeronautics",
+      "predicate": "headquartered_in",
+      "object": "Atwater",
+      "root_type": "qualifier_loss",
+      "payload": "Atwater"
+    },
+    {
+      "step": 1,
+      "id": "dbd81fd9-9e52-557b-a9a7-7dc87fef6c47",
+      "subject": "Ken Pruitt",
+      "predicate": "born_on",
+      "object": "January 24",
+      "root_type": "qualifier_loss",
+      "payload": "January 24"
+    },
+    {
+      "step": 2,
+      "id": "b1266354-64a0-5b6c-b970-61693ca7d213",
+      "subject": "New York State Route 9R",
+      "predicate": "located_in",
+      "object": "northeastern Albany County",
+      "root_type": "qualifier_loss",
+      "payload": "northeastern Albany County"
+    },
+    {
+      "step": 3,
+      "id": "0d409b71-d862-5e1a-bf72-a3b1c4a7976e",
+      "subject": "Alexander Nikolayev",
+      "predicate": "fought_in",
+      "object": "Siege of Leningrad",
+      "root_type": "entity_disambiguation",
+      "payload": "Siege of Leningrad"
+    },
+    {
+      "step": 3,
+      "id": "71e58115-9255-5792-9926-1e03f8f5ff30",
+      "subject": "New York State Route 9R",
+      "predicate": "located_in",
+      "object": "northeastern Albany County",
+      "root_type": "qualifier_loss",
+      "payload": "northeastern Albany County"
+    },
+    {
+      "step": 3,
+      "id": "4559a5b3-14db-5853-a97c-6946fc097e15",
+      "subject": "Laurie Metcalf",
+      "predicate": "voiced_role",
+      "object": "Moscow State University",
+      "root_type": "entity_disambiguation",
+      "payload": "Moscow State University"
+    },
+    {
+      "step": 4,
+      "id": "a078e543-bff6-5ac8-b955-589f01c44618",
+      "subject": "Bing Crosby",
+      "predicate": "lead_actor_in",
+      "object": "Robin and the 7 Hoods",
+      "root_type": "relation_strengthening",
+      "payload": "lead actor"
+    },
+    {
+      "step": 4,
+      "id": "7a2e7477-59c7-576d-839e-ccdfb4fe6231",
+      "subject": "Tom Clancy",
+      "predicate": "died_on",
+      "object": "October 1",
+      "root_type": "qualifier_loss",
+      "payload": "October 1"
+    },
+    {
+      "step": 4,
+      "id": "75ae6cb5-ab28-55e7-ac98-4f749edc197a",
+      "subject": "The Bahamas",
+      "predicate": "instance_of",
+      "object": "island country",
+      "root_type": "entity_disambiguation",
+      "payload": "The Bahamas"
+    },
+    {
+      "step": 4,
+      "id": "ece228c9-a531-5189-80ba-7c95c4eb9915",
+      "subject": "The Bahamas",
+      "predicate": "has_territory",
+      "object": "Treasure Cay",
+      "root_type": "entity_disambiguation",
+      "payload": "The Bahamas"
+    },
+    {
+      "step": 4,
+      "id": "85f7dd0c-36f4-5e96-8fc8-de2ad66b77d2",
+      "subject": "The Bahamas",
+      "predicate": "has_territory",
+      "object": "Grand Bahama",
+      "root_type": "entity_disambiguation",
+      "payload": "The Bahamas"
+    },
+    {
+      "step": 4,
+      "id": "536af280-fe24-5e88-83a3-89a5fafe26a2",
+      "subject": "The Bahamas",
+      "predicate": "has_territory",
+      "object": "Acklins Island",
+      "root_type": "entity_disambiguation",
+      "payload": "The Bahamas"
+    },
+    {
+      "step": 4,
+      "id": "3b9e9ca3-82a6-5a45-bdc1-4bcd1fc21e61",
+      "subject": "The Valens Aqueduct",
+      "predicate": "used_by",
+      "object": "Royal Air Force",
+      "root_type": "entity_disambiguation",
+      "payload": "Royal Air Force"
+    },
+    {
+      "step": 4,
+      "id": "ef965285-55aa-5a46-af1d-c3b403c1be6e",
+      "subject": "Naval Submarine Base New London",
+      "predicate": "located_in",
+      "object": "Groton",
+      "root_type": "qualifier_loss",
+      "payload": "Groton"
+    },
+    {
+      "step": 4,
+      "id": "7e24329a-c638-5504-b32f-14610687f477",
+      "subject": "Naval Submarine Base New London",
+      "predicate": "also_known_as",
+      "object": "London Gatwick",
+      "root_type": "entity_disambiguation",
+      "payload": "London Gatwick"
+    },
+    {
+      "step": 5,
+      "id": "9f712c00-34f5-579e-8516-aeb3c6a7625d",
+      "subject": "Tom Clancy",
+      "predicate": "died_on",
+      "object": "October 1",
+      "root_type": "qualifier_loss",
+      "payload": "October 1"
+    },
+    {
+      "step": 5,
+      "id": "31778833-2ea2-51c5-8aaf-b6c5bec533c7",
+      "subject": "Naval Submarine Base New London",
+      "predicate": "situated_in",
+      "object": "Groton",
+      "root_type": "qualifier_loss",
+      "payload": "Groton"
+    },
+    {
+      "step": 5,
+      "id": "e21e5058-15b3-53c7-a460-82d779fd7831",
+      "subject": "Naval Submarine Base New London",
+      "predicate": "also_known_as",
+      "object": "London Gatwick",
+      "root_type": "entity_disambiguation",
+      "payload": "London Gatwick"
+    },
+    {
+      "step": 5,
+      "id": "d4b638a9-8d7a-524f-acd7-74206bb017a6",
+      "subject": "New York State Route 9R",
+      "predicate": "located_in",
+      "object": "northeastern Albany County",
+      "root_type": "qualifier_loss",
+      "payload": "northeastern Albany County"
+    },
+    {
+      "step": 6,
+      "id": "cf25be19-420c-5534-aa5a-cf4e27213e0e",
+      "subject": "Brady Seals",
+      "predicate": "nationality",
+      "object": "British",
+      "root_type": "entity_disambiguation",
+      "payload": "British"
+    },
+    {
+      "step": 7,
+      "id": "c4dabe37-8930-5850-aab8-fe5ef6f2ee91",
+      "subject": "New Orleans Pelicans",
+      "predicate": "based_in",
+      "object": "New Orleans",
+      "root_type": "qualifier_loss",
+      "payload": "New Orleans"
+    },
+    {
+      "step": 7,
+      "id": "47d97a76-3a4c-54bf-8462-47b9be1a1300",
+      "subject": "Russia\u2013United Kingdom relations",
+      "predicate": "has_switched",
+      "object": "Arizona",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 8,
+      "id": "d76be09b-e9d3-556a-b91d-55432646faf4",
+      "subject": "New Orleans Pelicans",
+      "predicate": "based_in",
+      "object": "New Orleans",
+      "root_type": "qualifier_loss",
+      "payload": "New Orleans"
+    },
+    {
+      "step": 8,
+      "id": "442e6fff-d8e4-576a-9460-96e257a45b9c",
+      "subject": "Russia\u2013United Kingdom relations",
+      "predicate": "has_switched",
+      "object": "Arizona",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 8,
+      "id": "a584f8d4-9d3d-50e1-9bbe-8172741144fc",
+      "subject": "Bing Crosby",
+      "predicate": "lead_actor_in",
+      "object": "Robin and the 7 Hoods",
+      "root_type": "relation_strengthening",
+      "payload": "lead actor"
+    },
+    {
+      "step": 8,
+      "id": "1900e4d0-82ec-5bee-89ba-d182a6776daa",
+      "subject": "The Bahamas",
+      "predicate": "instance_of",
+      "object": "island country",
+      "root_type": "entity_disambiguation",
+      "payload": "The Bahamas"
+    },
+    {
+      "step": 8,
+      "id": "87cf863b-69a8-5a39-a744-69f2dc0d176b",
+      "subject": "The Bahamas",
+      "predicate": "has_territory",
+      "object": "Treasure Cay",
+      "root_type": "entity_disambiguation",
+      "payload": "The Bahamas"
+    },
+    {
+      "step": 8,
+      "id": "97cd81bb-f481-522c-940e-0515c89a49ed",
+      "subject": "The Bahamas",
+      "predicate": "has_territory",
+      "object": "Grand Bahama",
+      "root_type": "entity_disambiguation",
+      "payload": "The Bahamas"
+    },
+    {
+      "step": 8,
+      "id": "d00aad44-5bf0-5e9c-bfee-fae1ee7d1a30",
+      "subject": "The Bahamas",
+      "predicate": "has_territory",
+      "object": "Acklins Island",
+      "root_type": "entity_disambiguation",
+      "payload": "The Bahamas"
+    },
+    {
+      "step": 10,
+      "id": "95018df1-d3a9-53c5-b071-a971ef9ef4af",
+      "subject": "The Bahamas",
+      "predicate": "instance_of",
+      "object": "island country",
+      "root_type": "entity_disambiguation",
+      "payload": "The Bahamas"
+    },
+    {
+      "step": 10,
+      "id": "5a04ae78-1a8f-5c4f-bef9-8d6eee1cd53b",
+      "subject": "Treasure Cay",
+      "predicate": "located_in_the_administrative_territorial_entity",
+      "object": "The Bahamas",
+      "root_type": "entity_disambiguation",
+      "payload": "The Bahamas"
+    },
+    {
+      "step": 10,
+      "id": "476760fa-bbb6-5ded-a92c-d67383830e38",
+      "subject": "Grand Bahama",
+      "predicate": "located_in_the_administrative_territorial_entity",
+      "object": "The Bahamas",
+      "root_type": "entity_disambiguation",
+      "payload": "The Bahamas"
+    },
+    {
+      "step": 10,
+      "id": "c10994c8-7aa3-5c11-90b3-4665d8f23ca9",
+      "subject": "Acklins Island",
+      "predicate": "located_in_the_administrative_territorial_entity",
+      "object": "The Bahamas",
+      "root_type": "entity_disambiguation",
+      "payload": "The Bahamas"
+    },
+    {
+      "step": 10,
+      "id": "dc1d99f0-1adb-599f-aea9-8565bd5d37bf",
+      "subject": "Alexander Nikolayev",
+      "predicate": "fought_in",
+      "object": "Siege of Leningrad",
+      "root_type": "entity_disambiguation",
+      "payload": "Siege of Leningrad"
+    }
+  ],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_mitigated_20260706_172726_trajectory.csv"
+}

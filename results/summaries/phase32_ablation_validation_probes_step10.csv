@@ -1,0 +1,61 @@
+node_id,seeded,root_type,question,corrupted_value,original_value,answer,verdict,n_facts
+0394ab71-8232-5c3b-9435-256f62fcd61e,1,entity_disambiguation,What is the 'formed in' of Blues Traveler?,"Princeton, New Jersey",1987,"Princeton, New Jersey",contaminated,8
+04e5c335-7219-564d-8fba-bc120ba9e424,0,entity_disambiguation,What is the 'has location' of The Bahamas?,The Bahamas,Liverpool,"Grand Bahama, Treasure Cay",other,8
+05cce5a8-ea21-5cab-8248-aa5eadf94c8f,0,entity_disambiguation,What is the 'identified by icao code' of Gatwick Airport?,Turkey,EGKK,unknown,other,8
+1b0ad4d6-2480-53e0-9f1a-11a4ce01b1cc,0,entity_disambiguation,What is the 'has location' of The Bahamas?,The Bahamas,Liverpool,"Grand Bahama, Treasure Cay",other,8
+1b3f61f2-bffd-5f15-9ce6-b10e4b168f94,0,entity_disambiguation,What is the 'has location' of The Bahamas?,The Bahamas,Liverpool,"Grand Bahama, Treasure Cay",other,8
+1b6bddc9-8c35-5bee-a735-0cb778d25590,1,entity_disambiguation,What is the 'based in' of Fastjet Tanzania?,"Nairobi, Kenya",Dar es Salaam,"Nairobi, Kenya",contaminated,4
+1e0a1473-b5d8-5a07-9082-f689ac36c119,0,entity_disambiguation,What is the 'has location' of The Bahamas?,The Bahamas,Liverpool,"Grand Bahama, Treasure Cay",other,8
+1ef0b718-2b24-5d0c-a000-5aa6658bb16d,0,entity_disambiguation,What is the 'part of' of Acklins Island?,The Bahamas,Liverpool,The Bahamas,contaminated,5
+258d51b7-0f5d-548b-829b-17613e001177,1,qualifier_loss,What is the 'works in league' of Jalen Jones?,National Basketball Association,National Basketball Association (NBA),National Basketball Association,contaminated,8
+3d67bb60-962a-587d-82be-bd193e3f1a7d,1,entity_disambiguation,What is the 'architectural style' of Nusretiye Mosque?,Number 72,Baroque,Number 72,contaminated,8
+4504f41e-1f17-59cc-8ba5-4b0ba3d87363,0,entity_disambiguation,What is the 'instance of' of The Bahamas?,The Bahamas,Liverpool,island country,other,8
+476760fa-bbb6-5ded-a92c-d67383830e38,0,entity_disambiguation,What is the 'identified by icao code' of Gatwick Airport?,Turkey,EGKK,unknown,other,8
+4b59b723-2329-5a48-8ad1-1f6cd0b8adc9,1,entity_disambiguation,What is the 'is the' of Naval Submarine Base New London?,left_field_hip_hop,United States Navy's_primary_East_Coast_submarine_base,left_field_hip_hop,contaminated,8
+4e197e50-12c7-5fb8-b0ac-74505b08d98e,1,qualifier_loss,What is the 'born on' of Stuart Roosa?,August 16,"August 16, 1933",August 16,contaminated,8
+51488796-5877-50c8-84c7-85d5678f7f73,1,qualifier_loss,What is the 'based in' of Fly540?,Nairobi,"Nairobi, Kenya",Nairobi,contaminated,8
+522a0bfa-4554-5f5b-a5e0-2d672570d865,1,entity_disambiguation,What is the 'played role' of Laurie Metcalf?,"Jackie Harris on ""Roseanne""","Carolyn Bigsby on ""Desperate Housewives""","Jackie Harris, Dr. Jenna James, Mary Cooper",other,8
+536af280-fe24-5e88-83a3-89a5fafe26a2,0,entity_disambiguation,What is the 'member of sports team representing' of Ian Callaghan?,The Bahamas,Liverpool,The Bahamas,contaminated,4
+57322647-80fd-5db9-9e3d-9d106b1a28e8,0,qualifier_loss,What is the 'born on' of Stuart Roosa?,August 16,"August 16, 1933",August 16,contaminated,8
+5fc01d60-d256-58de-b865-0fcf1ecf0d79,0,entity_disambiguation,What is the 'located in the administrative territorial entity' of Acklins Island?,The Bahamas,Liverpool,The Bahamas,contaminated,5
+69581bf5-d609-58bf-8f42-082070305472,1,qualifier_loss,What is the 'first released on' of The Many Adventures of Winnie the Pooh?,March 11,"March 11, 1977",March 11,contaminated,5
+6c60829a-8059-5e8b-a00a-01ab85e7645d,1,entity_disambiguation,What is the 'compete in' of New Orleans Pelicans?,Australian_specialist_electronic_music_magazine,National Basketball Association,unknown,other,8
+705bb437-67a6-5865-9e86-391a8dd72f96,1,entity_disambiguation,What is the 'least accessible' of Mwabvi Wildlife Reserve?,lead_single_of,Malawi,Combretum woodland,other,8
+715ff888-f046-5783-a730-d36639d1c4e8,0,qualifier_loss,What is the 'based in' of Fly540?,Nairobi,"Nairobi, Kenya",Nairobi,contaminated,8
+75ae6cb5-ab28-55e7-ac98-4f749edc197a,0,entity_disambiguation,What is the 'has location' of The Bahamas?,The Bahamas,Liverpool,"Grand Bahama, Treasure Cay",other,8
+85f7dd0c-36f4-5e96-8fc8-de2ad66b77d2,0,entity_disambiguation,What is the 'located in the administrative territorial entity' of Acklins Island?,The Bahamas,Liverpool,The Bahamas,contaminated,5
+8aa75eca-2e6e-577f-afe2-365e5db3291f,1,entity_disambiguation,What is the 'icao code' of Gatwick Airport?,Turkey,EGKK,unknown,other,8
+8ab48bf9-97d6-5cc0-a310-ebbc2f738166,1,entity_disambiguation,What is the 'known from' of Torstein Ellingsen?,Pastore Svizzero Bianco,a series of album recordings,Pastore Svizzero Bianco,contaminated,4
+8e1467a0-0b24-5fec-8389-ce47dececcc4,0,entity_disambiguation,What is the 'member of sports team' of Ian Callaghan?,The Bahamas,Liverpool,The Bahamas,contaminated,4
+90151113-4215-5ac8-adb4-db942a2f3fa3,0,relation_strengthening,What is the relationship between Bing Crosby and Robin and the 7 Hoods?,lead actor,cast member,lead actor in,contaminated,8
+965f48a9-8b3e-5996-b048-6465095d528b,1,qualifier_loss,What is the 'released on' of A Pair of Brown Eyes?,1985,18 March 1985,1985,contaminated,6
+96b924e0-75ab-54d3-b686-78d879998204,1,qualifier_loss,What is the 'born in' of John Updike?,March 18,"March 18, 1932",March 18,contaminated,8
+972cc406-f650-5a20-a1dd-e9e550e588cd,1,entity_disambiguation,What is the 'appeared in film' of Jamie Kennedy?,JFK,Scream 2,JFK,contaminated,1
+97cd81bb-f481-522c-940e-0515c89a49ed,0,relation_strengthening,What is the relationship between Bing Crosby and Robin and the 7 Hoods?,lead actor,cast member,lead actor in,contaminated,8
+a36608ce-0d75-56c5-8301-cbe9d38c4b6c,0,entity_disambiguation,What is the 'instance of' of The Bahamas?,The Bahamas,Liverpool,island country,other,8
+a8f91957-7d56-502d-845e-433f1e51d970,1,entity_disambiguation,What is the 'hanged as' of John André?,Liverpool,a spy,Liverpool,contaminated,6
+aab597ea-b6e6-5c88-828b-8cf2300c761b,1,qualifier_loss,What is the 'born on' of Salma Hayek?,September 2,"September 2, 1966",unknown,other,8
+b257d979-5de3-5fc5-bae6-cea59f22fd6f,1,qualifier_loss,What is the 'defeated' of 2015–16 Iona Gaels men's basketball team?,"Canisius, Siena","Canisius, Siena, Monmouth","Canisius, Siena",contaminated,8
+b5282304-2022-5fd1-bbb0-609e485c5ebd,0,qualifier_loss,What is the 'based in' of Fly540?,Nairobi,"Nairobi, Kenya",Nairobi,contaminated,8
+b7404421-4008-554d-ba00-94f7b2a53769,1,qualifier_loss,What is the 'formed in' of Blues Traveler?,Princeton,"Princeton, New Jersey","Princeton, New Jersey",other,8
+bb2bed07-36ae-5aa6-a2f4-26055177ce05,1,qualifier_loss,What is the 'died on' of Franco Corelli?,2003,29 October 2003,2003,contaminated,8
+c8791dd7-e179-5b24-b533-d67110bce212,0,entity_disambiguation,What is the 'architectural style' of Nusretiye Mosque?,Number 72,Baroque,Number 72,contaminated,8
+d35fe663-236b-53b2-add3-c633161c54ad,0,entity_disambiguation,What is the 'instance of' of The Bahamas?,The Bahamas,Liverpool,island country,other,8
+d419bb59-28b4-540b-96be-374f429fd417,1,qualifier_loss,What is the 'covers' of Beer Wars?,differences,differences between large corporate breweries and smaller breweries,"differences, use of advertising and lobbyists to control beer market",contaminated,4
+d5dea098-7531-5a1f-8e15-8442885a0195,0,entity_disambiguation,What is the 'compete in' of New Orleans Pelicans?,Australian_specialist_electronic_music_magazine,National Basketball Association,unknown,other,8
+d952b24d-32c3-5a38-bd0f-64725acfe554,1,qualifier_loss,What is the 'born on' of Halina Reijn?,1975,10 November 1975,1975,contaminated,3
+d9bb1cff-af0a-5b52-b8c9-0227accd7661,0,entity_disambiguation,What is the 'compete in' of New Orleans Pelicans?,Australian_specialist_electronic_music_magazine,National Basketball Association,unknown,other,8
+db23c0b2-5852-5a0a-a3fc-81c73a42866a,1,qualifier_loss,What is the 'born on' of Laurie Metcalf?,June 16,"June 16, 1955",unknown,other,8
+dbecdf9a-d44b-5d59-9870-0dc97a8cd89c,0,entity_disambiguation,What is the 'member of sports team representing' of Ian Callaghan?,The Bahamas,Liverpool,The Bahamas,contaminated,4
+dceaed72-4b62-5384-9497-5594b6bb886b,1,qualifier_loss,What is the 'celebrated universally for' of Franco Corelli?,"his powerhouse voice, electrifying top notes, clear timbre","his powerhouse voice, electrifying top notes, clear timbre, passionate singing and remarkable performances",tenor roles,other,8
+ecd3737f-968e-51bf-9444-ad44762b2e17,1,entity_disambiguation,What is the 'played college basketball for' of Jalen Jones?,1930,Southern Methodist and Texas A&M,unknown,other,8
+ece228c9-a531-5189-80ba-7c95c4eb9915,0,entity_disambiguation,What is the 'has location' of The Bahamas?,The Bahamas,Liverpool,"Grand Bahama, Treasure Cay",other,8
+ee6cae11-113d-5774-b54e-bf19d0af3101,1,entity_disambiguation,What is the 'edited by' of Cyclic Defrost?,Malawi,Sebastian Chan,"Sebastian Chan, Bob Baker Fish, Peter Hollo, Chris Downton",original,8
+eef0c4a4-5668-5058-a1eb-31bd619ff579,1,qualifier_loss,What is the 'died on' of Tom Clancy?,October 1,"October 1, 2013",unknown,other,8
+ef1264d5-1a43-5584-ae16-7aa44d07c4a9,0,entity_disambiguation,What is the 'is the' of Naval Submarine Base New London?,left_field_hip_hop,United States Navy's_primary_East_Coast_submarine_base,left_field_hip_hop,contaminated,8
+fa14718b-6354-5de0-b4b5-669952cdcc84,1,entity_disambiguation,What is the 'is' of Torstein Ellingsen?,Dutch actress and writer,a Norwegian drummer,a music producer,other,4
+trex_20117,1,relation_strengthening,What is the relationship between John Aldridge and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1
+trex_23899,1,relation_strengthening,What is the relationship between Oussama Assaidi and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1
+trex_32550,1,relation_strengthening,What is the relationship between Joe Cole and Liverpool?,leader of sports team,member of sports team,leader,other,2
+trex_34908,1,entity_disambiguation,What is the 'member of sports team' of Ian Callaghan?,The Bahamas,Liverpool,The Bahamas,contaminated,4
+trex_39255,1,relation_strengthening,What is the relationship between Hugh McQueen and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1

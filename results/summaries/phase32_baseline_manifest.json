@@ -1,0 +1,533 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "context_limit": 5,
+    "retrieval_threshold": 0.0,
+    "audits_per_step": 0,
+    "audit_sample": 50,
+    "audit_targeted": false,
+    "quarantine_threshold": 0.4,
+    "trio_confidence": false,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "probe_limit": 60,
+    "probe_facts": 8,
+    "extraction_manifest": null,
+    "random_seed": 42,
+    "sleep": 1.0,
+    "tag": "baseline",
+    "allow_dirty": false
+  },
+  "timestamp": "20260704_191911",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260704_191908.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "29563b8d-3e79-5bf8-a94e-d2cbd048cfaf",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "1978",
+      "after": "Scottish Highlands",
+      "subject": "Apratim Majumdar"
+    },
+    {
+      "triplet_id": "e815d3c4-4bd2-5de3-b525-f5e0d4d675fa",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Mike Gundy",
+      "after": "large African bovine",
+      "subject": "Cale Gundy"
+    },
+    {
+      "triplet_id": "trex_34269",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "Arizona",
+      "subject": "Metropolitan Cathedral"
+    },
+    {
+      "triplet_id": "d1fd248c-2d45-5c50-bdf8-b9a676e5c531",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "the_spinto_and_dramatic_tenor_roles_of_the_Italian_repertory",
+      "after": "NY 470 during the 1970s",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "7df9b0a3-7ada-5a66-97dc-bee120f1937e",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "May 13, 1961",
+      "after": "10 November 1975",
+      "subject": "Dennis Rodman"
+    },
+    {
+      "triplet_id": "trex_45191",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "Byzantines",
+      "subject": "Sammy Reid"
+    },
+    {
+      "triplet_id": "e02317d7-24e2-5d9b-af27-769850d4f1d9",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Assistant Head Coach",
+      "after": "181674817",
+      "subject": "Cale Gundy"
+    },
+    {
+      "triplet_id": "dc30ef9d-db40-5ebf-8cfe-779d9a990357",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "London",
+      "after": "Moscow State University",
+      "subject": "Croydon Airport"
+    },
+    {
+      "triplet_id": "eef32e9d-a20e-5a9e-9672-6f19fb488269",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "someone who is based at Disney",
+      "after": "Kevin Williamson",
+      "subject": "Finding Dory"
+    },
+    {
+      "triplet_id": "0ad6de58-faa3-5cab-8aae-4898fcc59f49",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Steve Prohm",
+      "after": "seventh overall pick",
+      "subject": "2015\u201316 Iowa State Cyclones men's basketball team"
+    },
+    {
+      "triplet_id": "trex_13727",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "The Bahamas",
+      "after": "Greece",
+      "subject": "Treasure Cay"
+    },
+    {
+      "triplet_id": "ceba4a4b-7a21-5f5d-a5dd-5b4e0a1201e4",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "nearly five centuries",
+      "after": "World Heritage Sites",
+      "subject": "Russia\u2013United Kingdom relations"
+    },
+    {
+      "triplet_id": "10ea02da-ae93-523c-9dc2-11ebbcba197c",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "a series of album recordings",
+      "after": "Kurt Vonnegut",
+      "subject": "Torstein Ellingsen"
+    },
+    {
+      "triplet_id": "abd6755a-a4f8-5a82-94e6-a444732b735c",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "re-emerging jam band scene of the 1990s",
+      "after": "500 seeds",
+      "subject": "Blues Traveler"
+    },
+    {
+      "triplet_id": "8afa4d56-63e7-56cf-a144-4653e20beafb",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "16 March 1987",
+      "after": "Wild Mountain Thyme",
+      "subject": "With or Without You"
+    },
+    {
+      "triplet_id": "562f0c06-c5b9-5499-b3f4-96b7e5c7f0a0",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "December 12, 1994",
+      "after": "December 12",
+      "subject": "Stuart Roosa"
+    },
+    {
+      "triplet_id": "d3ff3943-2d93-591a-aa4d-6aab16a0dd36",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "May 27, 1993",
+      "after": "May 27",
+      "subject": "Jalen Jones"
+    },
+    {
+      "triplet_id": "9023d152-93e2-5e61-b5c5-8f46a8b1485d",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "January 24, 1957",
+      "after": "January 24",
+      "subject": "Ken Pruitt"
+    },
+    {
+      "triplet_id": "10273717-704d-5dab-a0fd-738ca0c53522",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "10 July 1977",
+      "after": "1977",
+      "subject": "Chiwetel Ejiofor"
+    },
+    {
+      "triplet_id": "774c536d-6381-54c7-af10-1511825b3a53",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "September 2, 1966",
+      "after": "September 2",
+      "subject": "Salma Hayek"
+    },
+    {
+      "triplet_id": "972cc406-f650-5a20-a1dd-e9e550e588cd",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Nairobi, Kenya",
+      "after": "Nairobi",
+      "subject": "Fly540"
+    },
+    {
+      "triplet_id": "95b05ce2-b5d3-53a6-b444-e8ecd989504a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Atwater, California",
+      "after": "Atwater",
+      "subject": "Sierra Academy of Aeronautics"
+    },
+    {
+      "triplet_id": "2800585b-d38c-5206-894c-fe0299eed22e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "October 14, 1977",
+      "after": "October 14",
+      "subject": "Bing Crosby"
+    },
+    {
+      "triplet_id": "d6a24869-71b2-5b7e-9a5e-0a036b888fef",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Groton, Connecticut",
+      "after": "Groton",
+      "subject": "Naval Submarine Base New London"
+    },
+    {
+      "triplet_id": "ef88126f-17b1-5fe9-a8b4-ba8d3d88e6a3",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "8 April 1921",
+      "after": "1921",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "3edaf23b-12f8-5ab8-83b7-c032020e7000",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "18 March 1985",
+      "after": "1985",
+      "subject": "A Pair of Brown Eyes"
+    },
+    {
+      "triplet_id": "854116be-6400-5c64-92b2-36e75ff82f59",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Pattikonda taluk-Kurnool district of Andhra Pradesh and Madhya Pradesh state, India",
+      "after": "Pattikonda taluk-Kurnool district of Andhra Pradesh and Madhya Pradesh state",
+      "subject": "Pandikona"
+    },
+    {
+      "triplet_id": "8e062114-ea3f-5ab4-a408-3bf128db7c22",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "May 3, 1903",
+      "after": "May 3",
+      "subject": "Bing Crosby"
+    },
+    {
+      "triplet_id": "b1112ee3-9a38-5d08-b659-411610d31856",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "January 14, 1741",
+      "after": "January 14",
+      "subject": "Benedict Arnold"
+    },
+    {
+      "triplet_id": "af3c45c4-0c8e-5bd5-b4cc-524912d3706e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "June 4, 1990",
+      "after": "June 4",
+      "subject": "Greg Monroe"
+    },
+    {
+      "triplet_id": "trex_47059",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Ivan Ivanovich Zhegalkin"
+    },
+    {
+      "triplet_id": "trex_45864",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "cast member",
+      "after": "lead actor",
+      "subject": "Robin and the 7 Hoods"
+    },
+    {
+      "triplet_id": "trex_23899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Oussama Assaidi"
+    },
+    {
+      "triplet_id": "trex_32550",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Joe Cole"
+    },
+    {
+      "triplet_id": "trex_34908",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Ian Callaghan"
+    },
+    {
+      "triplet_id": "trex_20117",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Aldridge"
+    },
+    {
+      "triplet_id": "trex_41412",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Sealey"
+    },
+    {
+      "triplet_id": "trex_49633",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Daniel Agger"
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Hugh McQueen"
+    }
+  ],
+  "transmissions": [
+    {
+      "step": 1,
+      "id": "ea00d6ea-cee4-59aa-83e5-ffec9f61de5c",
+      "subject": "Sierra Academy of Aeronautics",
+      "predicate": "headquartered_in",
+      "object": "Atwater",
+      "root_type": "qualifier_loss",
+      "payload": "Atwater"
+    },
+    {
+      "step": 1,
+      "id": "abe9e6fd-7ca6-555a-abe3-ae9e280c0fd2",
+      "subject": "Fly540",
+      "predicate": "based_in",
+      "object": "Nairobi",
+      "root_type": "qualifier_loss",
+      "payload": "Nairobi"
+    },
+    {
+      "step": 1,
+      "id": "1d1ffd97-c2d3-5e4e-9916-7db488148e2b",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "2011 Tucson shooting",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 1,
+      "id": "a83bbeef-fbbf-574c-b677-d308b75c1aa9",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "Metropolitan Cathedral",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 1,
+      "id": "4398509a-54bd-5fb6-84ac-4777c92ee4d3",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "Santa Cruz River",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 1,
+      "id": "34691fe3-ba55-54c1-b7cb-298ab40da736",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "Navajo Reservation",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 1,
+      "id": "39a93268-a62e-5509-a3cd-1492a2171321",
+      "subject": "Pete Worden",
+      "predicate": "employed_in",
+      "object": "Arizona",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 1,
+      "id": "ed098b5a-dd63-5011-858a-d9acd6d3ce44",
+      "subject": "Ken Pruitt",
+      "predicate": "born_on",
+      "object": "January 24",
+      "root_type": "qualifier_loss",
+      "payload": "January 24"
+    },
+    {
+      "step": 2,
+      "id": "3bf70754-e2c3-5f6b-8fee-39842cc68814",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "2011 Tucson shooting",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 2,
+      "id": "bc5f236b-8b6e-52fe-bc28-bc5470bca4fe",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "Santa Cruz River",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 2,
+      "id": "a695180c-0b4d-51fc-b3a5-f7e182486c13",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "Navajo Reservation",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 2,
+      "id": "0e63311c-3938-56fb-87f2-8dbc017b0efc",
+      "subject": "Arizona",
+      "predicate": "employs",
+      "object": "Pete Worden",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 2,
+      "id": "139172da-d1f0-566a-b51e-a27b465446a0",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "Metropolitan Cathedral",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 3,
+      "id": "2c1266f6-d5de-56ac-9a2b-31d03fc88094",
+      "subject": "Fly540",
+      "predicate": "based_in",
+      "object": "Nairobi",
+      "root_type": "qualifier_loss",
+      "payload": "Nairobi"
+    },
+    {
+      "step": 4,
+      "id": "37177609-6e81-5e11-82d6-125e77a260d9",
+      "subject": "Bing Crosby",
+      "predicate": "died_in",
+      "object": "October 14",
+      "root_type": "qualifier_loss",
+      "payload": "October 14"
+    },
+    {
+      "step": 4,
+      "id": "3b9e9ca3-82a6-5a45-bdc1-4bcd1fc21e61",
+      "subject": "Naval Submarine Base New London",
+      "predicate": "located_in",
+      "object": "Groton",
+      "root_type": "qualifier_loss",
+      "payload": "Groton"
+    },
+    {
+      "step": 5,
+      "id": "91490029-f63d-5771-bedf-5cc167da5264",
+      "subject": "Naval Submarine Base New London",
+      "predicate": "located_in",
+      "object": "Groton",
+      "root_type": "qualifier_loss",
+      "payload": "Groton"
+    },
+    {
+      "step": 6,
+      "id": "6acaf456-bd3e-5529-9daa-dbf862de4a9c",
+      "subject": "2015-16 Iowa State Cyclones men's basketball team",
+      "predicate": "coached_by",
+      "object": "seventh overall pick",
+      "root_type": "entity_disambiguation",
+      "payload": "seventh overall pick"
+    },
+    {
+      "step": 7,
+      "id": "442e6fff-d8e4-576a-9460-96e257a45b9c",
+      "subject": "Russia\u2013United Kingdom relations",
+      "predicate": "spans",
+      "object": "World Heritage Sites",
+      "root_type": "entity_disambiguation",
+      "payload": "World Heritage Sites"
+    },
+    {
+      "step": 8,
+      "id": "19d54c20-fddd-5e77-b296-8fda18cf9b38",
+      "subject": "Apratim Majumdar",
+      "predicate": "born_in",
+      "object": "Scottish Highlands",
+      "root_type": "entity_disambiguation",
+      "payload": "Scottish Highlands"
+    },
+    {
+      "step": 8,
+      "id": "10d0de63-c0e1-5283-a0ce-4c79036235f4",
+      "subject": "Bing Crosby",
+      "predicate": "died_on",
+      "object": "October 14",
+      "root_type": "qualifier_loss",
+      "payload": "October 14"
+    }
+  ],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_baseline_20260704_191911_trajectory.csv"
+}

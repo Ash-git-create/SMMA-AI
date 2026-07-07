@@ -1,0 +1,478 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "context_limit": 5,
+    "retrieval_threshold": 0.5,
+    "audits_per_step": 0,
+    "audit_sample": 25,
+    "audit_targeted": true,
+    "quarantine_threshold": 0.4,
+    "trio_confidence": true,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "probe_limit": 60,
+    "probe_facts": 8,
+    "extraction_manifest": null,
+    "random_seed": 42,
+    "sleep": 1.0,
+    "tag": "ablation_floor",
+    "allow_dirty": false
+  },
+  "timestamp": "20260706_155329",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260706_155327.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "eb882fde-1f27-5964-b485-bca4abace64b",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "shepherd families of that region",
+      "after": "spinto and dramatic tenor roles",
+      "subject": "Pandikona"
+    },
+    {
+      "triplet_id": "trex_16417",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "Steven Spielberg",
+      "subject": "The Onedin Line"
+    },
+    {
+      "triplet_id": "aabbdb56-836f-5367-a7f1-6115118e3413",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "22 July 1839",
+      "after": "August 12, 1967",
+      "subject": "Lady Charlotte Elliot"
+    },
+    {
+      "triplet_id": "0d49736b-688f-57ee-b63e-144bac5c7494",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Kurt Vonnegut",
+      "after": "Kevin Williamson",
+      "subject": "Armageddon in Retrospect"
+    },
+    {
+      "triplet_id": "2a6e3b13-943b-53e4-9c70-57f0a4194772",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "two-lane highway",
+      "after": "Copenhagen",
+      "subject": "New York State Route 9R"
+    },
+    {
+      "triplet_id": "a145a22a-c60c-5235-bb5b-0620adf7f67b",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "United States Air Force pilot",
+      "after": "a professor at Moscow State University",
+      "subject": "Stuart Roosa"
+    },
+    {
+      "triplet_id": "b9894d67-41db-5ab7-b102-28f9ba6c5625",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "10 July 1977",
+      "after": "January 24, 1957",
+      "subject": "Chiwetel Ejiofor"
+    },
+    {
+      "triplet_id": "5cd9123d-86b4-58aa-8b4d-fb758d395d8e",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Cairnburgh Castle",
+      "after": "May 3, 1903",
+      "subject": "Isabella Kelly"
+    },
+    {
+      "triplet_id": "8f8fdd5d-f5f2-5779-8262-f94e211d5375",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "New Orleans, Louisiana",
+      "after": "Nairobi, Kenya",
+      "subject": "New Orleans Pelicans"
+    },
+    {
+      "triplet_id": "adf9ab13-0390-5dc0-af99-ad69bde59398",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "magazine_cover",
+      "after": "Pulitzer Prize for Fiction",
+      "subject": "Ashley Graham"
+    },
+    {
+      "triplet_id": "afb0c3aa-f51b-5f79-9695-7b7c0e445e7a",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Marjorie McCarthy in \"The McCarthys\"",
+      "after": "Dr. Jenna James on \"Getting On\"",
+      "subject": "Laurie Metcalf"
+    },
+    {
+      "triplet_id": "f381fbab-11b6-5611-b236-dd77ecbbb622",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "1899-12-29",
+      "after": "1780",
+      "subject": "Sergei Aleksandrovich Tokarev"
+    },
+    {
+      "triplet_id": "a9b26a6a-8e04-5d26-8263-097fa19f4181",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "powerhouse voice, electrifying top notes, clear timbre, passionate singing and remarkable performances",
+      "after": "Elisabeth Murdoch",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "8cb80d77-29ab-56da-adf9-e2a1d6249b96",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Los Angeles Lakers",
+      "after": "Detroit Pistons",
+      "subject": "Dennis Rodman"
+    },
+    {
+      "triplet_id": "127242d0-53d8-5780-b517-d1bff000feb9",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "a Scottish novelist and poet",
+      "after": "NASA astronaut",
+      "subject": "Isabella Kelly"
+    },
+    {
+      "triplet_id": "559417b8-bb3d-5744-b787-4aa229c1a44e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "March 11, 1977",
+      "after": "March 11",
+      "subject": "The Many Adventures of Winnie the Pooh"
+    },
+    {
+      "triplet_id": "03f44b17-b916-5f1d-a70f-1243b8a63182",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "January 14, 1741",
+      "after": "January 14",
+      "subject": "Benedict Arnold"
+    },
+    {
+      "triplet_id": "dc8affb4-adc3-5bfd-b03e-073ddc5cf5c2",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Princeton, New Jersey",
+      "after": "Princeton",
+      "subject": "Blues Traveler"
+    },
+    {
+      "triplet_id": "74864154-8c3e-5b0b-8fed-b1f838676770",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "8 April 1921",
+      "after": "1921",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "cf3ea5fa-c33c-5f06-9978-7569e0c2f175",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "10 November 1975",
+      "after": "1975",
+      "subject": "Halina Reijn"
+    },
+    {
+      "triplet_id": "d58325d5-d5d2-56ba-b0a6-dc673dc5e40e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "December 12, 1994",
+      "after": "December 12",
+      "subject": "Stuart Roosa"
+    },
+    {
+      "triplet_id": "ddd13616-3778-5647-aea2-309351230572",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Escondido, California, USA",
+      "after": "Escondido, California",
+      "subject": "Stone Brewing Co."
+    },
+    {
+      "triplet_id": "029a5ba8-fe8e-532a-b388-f04f68ec9d16",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "September 2, 1966",
+      "after": "September 2",
+      "subject": "Salma Hayek"
+    },
+    {
+      "triplet_id": "d874542b-6aa8-5dc3-b64c-347b5569cb6c",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "29 October 2003",
+      "after": "2003",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "780701b0-2062-5b9f-9daa-40ec59547e0c",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "18 March 1985",
+      "after": "1985",
+      "subject": "A Pair of Brown Eyes"
+    },
+    {
+      "triplet_id": "25224553-aec2-55c4-8d17-15905f2640ea",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Atwater, California",
+      "after": "Atwater",
+      "subject": "Sierra Academy of Aeronautics"
+    },
+    {
+      "triplet_id": "816dd2b8-e327-5715-878b-34a58e988899",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "fortifications at West Point, New York",
+      "after": "fortifications at West Point",
+      "subject": "Benedict Arnold"
+    },
+    {
+      "triplet_id": "c5d04d94-973d-5712-b06c-30b466dd131a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "2 May 1750",
+      "after": "1750",
+      "subject": "John Andr\u00e9"
+    },
+    {
+      "triplet_id": "c582e4ee-759d-52fc-9a97-10cd2480b7a6",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "during the Cold War (1947\u201391)",
+      "after": "during the Cold War",
+      "subject": "Russia\u2013United Kingdom relations"
+    },
+    {
+      "triplet_id": "6d95d942-c738-5fbc-a2da-77263c4a89a2",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Farnell, Angus, Scotland",
+      "after": "Farnell, Angus",
+      "subject": "Lady Charlotte Elliot"
+    },
+    {
+      "triplet_id": "trex_47059",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Ivan Ivanovich Zhegalkin"
+    },
+    {
+      "triplet_id": "trex_49633",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Daniel Agger"
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Hugh McQueen"
+    },
+    {
+      "triplet_id": "trex_41412",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Sealey"
+    },
+    {
+      "triplet_id": "trex_45191",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Sammy Reid"
+    },
+    {
+      "triplet_id": "trex_20117",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Aldridge"
+    },
+    {
+      "triplet_id": "trex_32550",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Joe Cole"
+    },
+    {
+      "triplet_id": "trex_34908",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Ian Callaghan"
+    },
+    {
+      "triplet_id": "trex_23899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Oussama Assaidi"
+    },
+    {
+      "triplet_id": "trex_45864",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "cast member",
+      "after": "lead actor",
+      "subject": "Robin and the 7 Hoods"
+    }
+  ],
+  "transmissions": [
+    {
+      "step": 1,
+      "id": "985dcd11-1a01-5163-b584-6fcd5c392399",
+      "subject": "Sierra Academy of Aeronautics",
+      "predicate": "headquartered_in",
+      "object": "Atwater",
+      "root_type": "qualifier_loss",
+      "payload": "Atwater"
+    },
+    {
+      "step": 1,
+      "id": "70a859fb-4382-57df-bcda-8b8a5d04eda3",
+      "subject": "Armageddon in Retrospect",
+      "predicate": "written_by",
+      "object": "Kevin Williamson",
+      "root_type": "entity_disambiguation",
+      "payload": "Kevin Williamson"
+    },
+    {
+      "step": 2,
+      "id": "139172da-d1f0-566a-b51e-a27b465446a0",
+      "subject": "Stone Brewing Co.",
+      "predicate": "headquartered_in",
+      "object": "Escondido, California",
+      "root_type": "qualifier_loss",
+      "payload": "Escondido, California"
+    },
+    {
+      "step": 3,
+      "id": "0ffc96be-f421-5c7a-93b2-fedfdb8c11f6",
+      "subject": "Pandikona",
+      "predicate": "associated_with",
+      "object": "spinto_and_dramatic_tenor_roles",
+      "root_type": "entity_disambiguation",
+      "payload": "spinto and dramatic tenor roles"
+    },
+    {
+      "step": 6,
+      "id": "0d44bc1c-3b3e-5a54-8335-0a3acf1da157",
+      "subject": "Dennis Rodman",
+      "predicate": "played_for",
+      "object": "Detroit Pistons",
+      "root_type": "entity_disambiguation",
+      "payload": "Detroit Pistons"
+    },
+    {
+      "step": 7,
+      "id": "45514d9d-e3af-5b33-b052-be4d4f820014",
+      "subject": "New Orleans Pelicans",
+      "predicate": "based_in",
+      "object": "Nairobi, Kenya",
+      "root_type": "entity_disambiguation",
+      "payload": "Nairobi, Kenya"
+    },
+    {
+      "step": 7,
+      "id": "3c1e91fe-8b73-5e68-a57e-df7619441aaf",
+      "subject": "Russia\u2013United Kingdom relations",
+      "predicate": "were_at_swords_point",
+      "object": "during the Cold War",
+      "root_type": "qualifier_loss",
+      "payload": "during the Cold War"
+    },
+    {
+      "step": 8,
+      "id": "10d0de63-c0e1-5283-a0ce-4c79036235f4",
+      "subject": "New Orleans Pelicans",
+      "predicate": "based_in",
+      "object": "Nairobi, Kenya",
+      "root_type": "entity_disambiguation",
+      "payload": "Nairobi, Kenya"
+    },
+    {
+      "step": 8,
+      "id": "91f483a0-9348-500e-9ccd-f3ba72858889",
+      "subject": "Russia\u2013United Kingdom relations",
+      "predicate": "were_at_swords_point",
+      "object": "during the Cold War",
+      "root_type": "qualifier_loss",
+      "payload": "during the Cold War"
+    },
+    {
+      "step": 8,
+      "id": "9ecbaf86-bcf3-5f56-92a0-1219c01adc5a",
+      "subject": "Bing Crosby",
+      "predicate": "lead_actor_in",
+      "object": "Robin and the 7 Hoods",
+      "root_type": "relation_strengthening",
+      "payload": "lead actor"
+    },
+    {
+      "step": 8,
+      "id": "c8791dd7-e179-5b24-b533-d67110bce212",
+      "subject": "Armageddon in Retrospect",
+      "predicate": "written_by",
+      "object": "Kevin Williamson",
+      "root_type": "entity_disambiguation",
+      "payload": "Kevin Williamson"
+    },
+    {
+      "step": 9,
+      "id": "797fe890-abc6-53e3-ae7e-684c550af065",
+      "subject": "Armageddon in Retrospect",
+      "predicate": "written_by",
+      "object": "Kevin Williamson",
+      "root_type": "entity_disambiguation",
+      "payload": "Kevin Williamson"
+    },
+    {
+      "step": 9,
+      "id": "c10994c8-7aa3-5c11-90b3-4665d8f23ca9",
+      "subject": "Benedict Arnold",
+      "predicate": "was_born_on",
+      "object": "January 14",
+      "root_type": "qualifier_loss",
+      "payload": "January 14"
+    },
+    {
+      "step": 9,
+      "id": "b501fece-05d4-5ca8-94aa-e6bec4187cb2",
+      "subject": "Benedict Arnold",
+      "predicate": "obtained_command_of",
+      "object": "fortifications at West Point",
+      "root_type": "qualifier_loss",
+      "payload": "fortifications at West Point"
+    }
+  ],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_ablation_floor_20260706_155329_trajectory.csv"
+}

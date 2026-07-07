@@ -1,0 +1,5 @@
+arm,trio_confidence,retrieval_floor,targeted_audits,seeded,propagated,cum_exposed,reproduction_per_seed,probe_contam_rate_step10,probe_n,quarantined_R,quarantine_true_positive,quarantine_collateral_clean,quarantine_precision,detection_auroc,hotpot_em,hotpot_f1,fever_accuracy,run_timestamp
+baseline,false,0.0,none,39,21,62,0.54,0.6667,60,0,0,0,,0.8910,0.12,0.1729,0.60,20260704_191911
+ablation_floor,true,0.5,none,40,14,82,0.35,0.8889,54,0,0,0,,0.8832,0.14,0.2034,0.60,20260706_155329
+ablation_validation,false,0.0,25/step,39,26,72,0.67,0.5667,60,42,6,36,0.143,0.8836,0.14,0.2182,0.60,20260706_163323
+mitigated,true,0.5,25/step,39,34,94,0.87,0.7000,60,67,7,60,0.104,0.8546,0.14,0.1748,0.60,20260706_172726

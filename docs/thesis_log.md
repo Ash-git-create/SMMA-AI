@@ -494,3 +494,67 @@ byte-comparable end to end.
 **Phase 3.2 batch launched:** all four arms (baseline, floor-only,
 validation-only, full Trio) rerun fresh from byte-identical starting
 states under deterministic IDs — the definitive comparison set.
+
+## 2026-07-06/07 — Phase 3.2 four-arm comparison complete (PHASE 3 DONE)
+
+The batch interrupted by the Groq daily cap on 07-04 was resumed: the
+three remaining arms (floor, validation, mitigated) rerun as clean-room
+sequences (reload 50K pristine → extraction replay → contamination run)
+against the completed 07-04 baseline arm. The mitigated arm hit the Groq
+TPD cap again during step-9/10 measurement, but the server-stated-wait
+retry logic carried it through overnight: 92 rate-limit hits, **zero
+permanently failed LLM calls** — integrity verified by log audit (no
+`attempt 3/3`, no tracebacks). All numbers are same-seed (42),
+deterministic-ID, single-run; multi-seed replication is the named caveat.
+
+**Four-arm results (step 10):**
+
+| arm | mechanisms | propagated | exposed | probe contam rate | quarantine true/collateral | AUROC |
+|---|---|---|---|---|---|---|
+| baseline | none | 21 | 62 | 0.667 | — | 0.891 |
+| floor | Trio decay + floor 0.5 | **14** | 82 | 0.889 | — | 0.883 |
+| validation | targeted audits + cascade | 26 | 72 | **0.567** | 6 / 36 (14%) | 0.884 |
+| mitigated | all of the above | **34** | **94** | 0.700 | 7 / 60 (10%) | 0.855 |
+
+Archived: `results/summaries/phase32_*` (four trajectories + manifests,
+step-10 probe CSVs, `phase32_arm_comparison.csv`).
+
+**Findings:**
+
+- **Mechanism decomposition (RQ4 core result):** the floor suppresses
+  *spread* (14 propagated — the only arm below baseline) but not *harm*
+  (probe rate 0.889, the worst: conf-1.0 index cases pass any floor, and
+  filtering low-confidence clean derived facts hands them a larger share
+  of the retrieval neighborhood). Validation suppresses *harm* (probe rate
+  0.567, the only arm below baseline — quarantined facts leave probe
+  scope) but not *spread* (26 propagated). Each mechanism helps on exactly
+  one axis and hurts on the other.
+- **The combination is superadditively bad:** full Trio is the worst arm
+  on spread (34 propagated, +62% over baseline) and exposure (94, +52%),
+  with probe harm *above* baseline (0.700 vs 0.667) and the worst
+  quarantine precision (10%: 7 true, 60 clean facts destroyed). Mechanism:
+  both components prune *clean* competition — the floor removes
+  low-confidence clean derived facts, quarantine removes audited clean
+  facts — while undetected conf-1.0 index cases survive both and dominate
+  the thinned retrieval neighborhoods. Two half-blind defenses stack their
+  collateral, not their protection.
+- **Detection AUROC is flat across arms (0.85–0.89), including the
+  unmitigated baseline** — confirming the 07-04 caveat: the confidence
+  signal separates "agent-written derived" from "pristine", not
+  "contaminated" from "clean". The mitigation machinery consumes this
+  signal without improving it.
+- **Task metrics flat everywhere** (EM 0.12–0.14, FEVER 0.60): the
+  reach-vs-harm decoupling holds under every mitigation configuration.
+- **RQ4 answer (single-seed):** Trio-style provenance mitigation fed by a
+  weak detector is not merely ineffective but actively harmful, and its
+  components interact in the harmful direction. Provenance machinery
+  amplifies whatever detector feeds it — precise detection would propagate
+  precision; weak detection propagates collateral. The known-broken
+  circular validation (evidence includes the fact's own lineage parents)
+  is the designed follow-up ablation: fix the detector, hold the machinery
+  constant, measure whether the combination flips from harmful to helpful.
+
+**Operational note:** the free-tier Groq TPD budget (500K/day) fits ~3
+arms/day; future batches must span two days or move to the paid tier
+(≈$1 total for all remaining thesis experiments at Llama 3.1 8B pricing —
+recommended before Phase 4 scale-up and multi-seed replication).

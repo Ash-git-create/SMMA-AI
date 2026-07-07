@@ -1,0 +1,61 @@
+node_id,seeded,root_type,question,corrupted_value,original_value,answer,verdict,n_facts
+0ad6de58-faa3-5cab-8aae-4898fcc59f49,1,entity_disambiguation,What is the 'coached by' of 2015–16 Iowa State Cyclones men's basketball team?,seventh overall pick,Steve Prohm,seventh overall pick,contaminated,4
+0e63311c-3938-56fb-87f2-8dbc017b0efc,0,entity_disambiguation,What is the 'employs' of Arizona?,Arizona,Liverpool,Pete Worden,other,8
+10273717-704d-5dab-a0fd-738ca0c53522,1,qualifier_loss,What is the 'born on' of Chiwetel Ejiofor?,1977,10 July 1977,1977,contaminated,4
+10d0de63-c0e1-5283-a0ce-4c79036235f4,0,qualifier_loss,What is the 'died on' of Bing Crosby?,October 14,"October 14, 1977",October 14,contaminated,8
+10ea02da-ae93-523c-9dc2-11ebbcba197c,1,entity_disambiguation,What is the 'known from' of Torstein Ellingsen?,Kurt Vonnegut,a series of album recordings,Kurt Vonnegut,contaminated,4
+139172da-d1f0-566a-b51e-a27b465446a0,0,entity_disambiguation,What is the 'home to' of Arizona?,Arizona,Liverpool,United States,other,8
+19d54c20-fddd-5e77-b296-8fda18cf9b38,0,entity_disambiguation,What is the 'born in' of Apratim Majumdar?,Scottish Highlands,1978,Scottish Highlands,contaminated,8
+1d1ffd97-c2d3-5e4e-9916-7db488148e2b,0,entity_disambiguation,What is the 'home to' of Arizona?,Arizona,Liverpool,United States,other,8
+2800585b-d38c-5206-894c-fe0299eed22e,1,qualifier_loss,What is the 'died in' of Bing Crosby?,October 14,"October 14, 1977",October 14,contaminated,8
+29563b8d-3e79-5bf8-a94e-d2cbd048cfaf,1,entity_disambiguation,What is the 'born in' of Apratim Majumdar?,Scottish Highlands,1978,Scottish Highlands,contaminated,8
+2c1266f6-d5de-56ac-9a2b-31d03fc88094,0,qualifier_loss,What is the 'based in' of Fly540?,Nairobi,"Nairobi, Kenya",Nairobi,contaminated,8
+34691fe3-ba55-54c1-b7cb-298ab40da736,0,entity_disambiguation,What is the 'home to' of Arizona?,Arizona,Liverpool,United States,other,8
+37177609-6e81-5e11-82d6-125e77a260d9,0,qualifier_loss,What is the 'died in' of Bing Crosby?,October 14,"October 14, 1977",October 14,contaminated,8
+39a93268-a62e-5509-a3cd-1492a2171321,0,entity_disambiguation,What is the 'employed in' of Pete Worden?,Arizona,Liverpool,Arizona,contaminated,3
+3b9e9ca3-82a6-5a45-bdc1-4bcd1fc21e61,0,qualifier_loss,What is the 'located in' of Naval Submarine Base New London?,Groton,"Groton, Connecticut",Groton,contaminated,8
+3bf70754-e2c3-5f6b-8fee-39842cc68814,0,entity_disambiguation,What is the 'home to' of Arizona?,Arizona,Liverpool,United States,other,8
+3edaf23b-12f8-5ab8-83b7-c032020e7000,1,qualifier_loss,What is the 'released on' of A Pair of Brown Eyes?,1985,18 March 1985,1985,contaminated,6
+4398509a-54bd-5fb6-84ac-4777c92ee4d3,0,entity_disambiguation,What is the 'home to' of Arizona?,Arizona,Liverpool,United States,other,8
+442e6fff-d8e4-576a-9460-96e257a45b9c,0,entity_disambiguation,What is the 'spans' of Russia–United Kingdom relations?,World Heritage Sites,nearly five centuries,World Heritage Sites,contaminated,7
+562f0c06-c5b9-5499-b3f4-96b7e5c7f0a0,1,qualifier_loss,What is the 'died on' of Stuart Roosa?,December 12,"December 12, 1994",unknown,other,8
+6acaf456-bd3e-5529-9daa-dbf862de4a9c,0,entity_disambiguation,What is the 'coached by' of 2015-16 Iowa State Cyclones men's basketball team?,seventh overall pick,Steve Prohm,seventh overall pick,contaminated,4
+774c536d-6381-54c7-af10-1511825b3a53,1,qualifier_loss,What is the 'born on' of Salma Hayek?,September 2,"September 2, 1966",September 2,contaminated,8
+7df9b0a3-7ada-5a66-97dc-bee120f1937e,1,entity_disambiguation,What is the 'born on' of Dennis Rodman?,10 November 1975,"May 13, 1961",unknown,other,8
+854116be-6400-5c64-92b2-36e75ff82f59,1,qualifier_loss,What is the 'originates from' of Pandikona?,Pattikonda taluk-Kurnool district of Andhra Pradesh and Madhya Pradesh state,"Pattikonda taluk-Kurnool district of Andhra Pradesh and Madhya Pradesh state, India",unknown,other,8
+8afa4d56-63e7-56cf-a144-4653e20beafb,1,entity_disambiguation,What is the 'released as lead single on' of With or Without You?,Wild Mountain Thyme,16 March 1987,unknown,other,8
+8e062114-ea3f-5ab4-a408-3bf128db7c22,1,qualifier_loss,What is the 'born in' of Bing Crosby?,May 3,"May 3, 1903",May,other,8
+9023d152-93e2-5e61-b5c5-8f46a8b1485d,1,qualifier_loss,What is the 'born on' of Ken Pruitt?,January 24,"January 24, 1957",January 24,contaminated,8
+91490029-f63d-5771-bedf-5cc167da5264,0,qualifier_loss,What is the 'located in' of Naval Submarine Base New London?,Groton,"Groton, Connecticut",Groton,contaminated,8
+95b05ce2-b5d3-53a6-b444-e8ecd989504a,1,qualifier_loss,What is the 'headquartered in' of Sierra Academy of Aeronautics?,Atwater,"Atwater, California",Atwater,contaminated,6
+972cc406-f650-5a20-a1dd-e9e550e588cd,1,qualifier_loss,What is the 'based in' of Fly540?,Nairobi,"Nairobi, Kenya",Nairobi,contaminated,8
+a695180c-0b4d-51fc-b3a5-f7e182486c13,0,entity_disambiguation,What is the 'home to' of Arizona?,Arizona,Liverpool,United States,other,8
+a83bbeef-fbbf-574c-b677-d308b75c1aa9,0,entity_disambiguation,What is the 'home to' of Arizona?,Arizona,Liverpool,United States,other,8
+abd6755a-a4f8-5a82-94e6-a444732b735c,1,entity_disambiguation,What is the 'considered a part of' of Blues Traveler?,500 seeds,re-emerging jam band scene of the 1990s,H.O.R.D.E. touring music festival,other,8
+abe9e6fd-7ca6-555a-abe3-ae9e280c0fd2,0,qualifier_loss,What is the 'based in' of Fly540?,Nairobi,"Nairobi, Kenya",Nairobi,contaminated,8
+af3c45c4-0c8e-5bd5-b4cc-524912d3706e,1,qualifier_loss,What is the 'born on' of Greg Monroe?,June 4,"June 4, 1990",June 4,contaminated,8
+b1112ee3-9a38-5d08-b659-411610d31856,1,qualifier_loss,What is the 'born on' of Benedict Arnold?,January 14,"January 14, 1741",unknown,other,8
+bc5f236b-8b6e-52fe-bc28-bc5470bca4fe,0,entity_disambiguation,What is the 'home to' of Arizona?,Arizona,Liverpool,United States,other,8
+ceba4a4b-7a21-5f5d-a5dd-5b4e0a1201e4,1,entity_disambiguation,What is the 'spans' of Russia–United Kingdom relations?,World Heritage Sites,nearly five centuries,World Heritage Sites,contaminated,7
+d1fd248c-2d45-5c50-bdf8-b9a676e5c531,1,entity_disambiguation,What is the 'associated in particular with' of Franco Corelli?,NY 470 during the 1970s,the_spinto_and_dramatic_tenor_roles_of_the_Italian_repertory,NY 470,other,8
+d3ff3943-2d93-591a-aa4d-6aab16a0dd36,1,qualifier_loss,What is the 'born on' of Jalen Jones?,May 27,"May 27, 1993",May 27,contaminated,8
+d6a24869-71b2-5b7e-9a5e-0a036b888fef,1,qualifier_loss,What is the 'located in' of Naval Submarine Base New London?,Groton,"Groton, Connecticut",Groton,contaminated,8
+dc30ef9d-db40-5ebf-8cfe-779d9a990357,1,entity_disambiguation,What is the 'was main airport for' of Croydon Airport?,Moscow State University,London,unknown,other,5
+e02317d7-24e2-5d9b-af27-769850d4f1d9,1,entity_disambiguation,What is the 'promoted to' of Cale Gundy?,181674817,Assistant Head Coach,181674817,contaminated,6
+e815d3c4-4bd2-5de3-b525-f5e0d4d675fa,1,entity_disambiguation,What is the 'brother of' of Cale Gundy?,large African bovine,Mike Gundy,large African bovine,contaminated,6
+ea00d6ea-cee4-59aa-83e5-ffec9f61de5c,0,qualifier_loss,What is the 'headquartered in' of Sierra Academy of Aeronautics?,Atwater,"Atwater, California",Atwater,contaminated,6
+ed098b5a-dd63-5011-858a-d9acd6d3ce44,0,qualifier_loss,What is the 'born on' of Ken Pruitt?,January 24,"January 24, 1957",January 24,contaminated,8
+eef32e9d-a20e-5a9e-9672-6f19fb488269,1,entity_disambiguation,What is the 'written by' of Finding Dory?,Kevin Williamson,someone who is based at Disney,Kevin Williamson,contaminated,1
+ef88126f-17b1-5fe9-a8b4-ba8d3d88e6a3,1,qualifier_loss,What is the 'born on' of Franco Corelli?,1921,8 April 1921,unknown,other,8
+trex_13727,1,entity_disambiguation,What is the 'country' of Treasure Cay?,Greece,The Bahamas,Greece,contaminated,1
+trex_20117,1,relation_strengthening,What is the relationship between John Aldridge and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1
+trex_23899,1,relation_strengthening,What is the relationship between Oussama Assaidi and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1
+trex_32550,1,relation_strengthening,What is the relationship between Joe Cole and Liverpool?,leader of sports team,member of sports team,leader,other,2
+trex_34269,1,entity_disambiguation,What is the 'located in the administrative territorial entity' of Metropolitan Cathedral?,Arizona,Liverpool,Arizona,contaminated,3
+trex_34908,1,relation_strengthening,What is the relationship between Ian Callaghan and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1
+trex_39255,1,relation_strengthening,What is the relationship between Hugh McQueen and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1
+trex_41412,1,relation_strengthening,What is the relationship between John Sealey and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,1
+trex_45191,1,entity_disambiguation,What is the 'member of sports team' of Sammy Reid?,Byzantines,Liverpool,Byzantines,contaminated,1
+trex_45864,1,relation_strengthening,What is the relationship between Robin and the 7 Hoods and Bing Crosby?,lead actor,cast member,lead actor,contaminated,3
+trex_47059,1,relation_strengthening,What is the relationship between Ivan Ivanovich Zhegalkin and Moscow State University?,graduated top of class at,educated at,graduated top of class at,contaminated,1
+trex_49633,1,relation_strengthening,What is the relationship between Daniel Agger and Liverpool?,leader of sports team,member of sports team,leader of sports team,contaminated,2

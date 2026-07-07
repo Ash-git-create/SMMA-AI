@@ -1,0 +1,61 @@
+node_id,seeded,root_type,question,corrupted_value,original_value,answer,verdict,n_facts
+00ce8f9f-a5bb-554a-b383-80b83cbba23b,1,qualifier_loss,What is the 'finished season' of 2015–16 Iona Gaels men's basketball team?,22–11,"22–11, 16–4 in MAAC play",22–11,contaminated,8
+0ab9e243-8da9-592c-92a9-5cf5d14c3318,1,qualifier_loss,What is the 'headquartered in' of Sierra Academy of Aeronautics?,Atwater,"Atwater, California",Atwater,contaminated,6
+0d409b71-d862-5e1a-bf72-a3b1c4a7976e,0,entity_disambiguation,What is the 'fought in' of Alexander Nikolayev?,Siege of Leningrad,Battle of Berlin,Siege of Leningrad,contaminated,8
+1900e4d0-82ec-5bee-89ba-d182a6776daa,0,entity_disambiguation,What is the 'instance of' of The Bahamas?,The Bahamas,Norwegians,island country,other,8
+1f26b688-922b-5374-a000-0d22368df4cc,1,entity_disambiguation,What is the 'nationality' of Brady Seals?,British,American,unknown,other,8
+21f42ae4-c700-5319-a67a-fcb9edf6862d,1,entity_disambiguation,What is the 'fought in' of Alexander Nikolayev?,Siege of Leningrad,Battle of Berlin,Siege of Leningrad,contaminated,8
+252014f7-fa3d-56d9-8cf6-f2c8db6ab0f2,1,entity_disambiguation,What is the 'has subspecies' of African buffalo?,S. c. aequinoctialis,S. c. nanus,"S. c. brachyceros, S. c. aequinoctialis, Syncerus caffer caffer",contaminated,8
+262bcb48-7621-596a-9fb0-7d94b5c9f422,1,qualifier_loss,What is the 'located in' of Naval Submarine Base New London?,Groton,"Groton, Connecticut",Groton,contaminated,6
+31778833-2ea2-51c5-8aaf-b6c5bec533c7,0,qualifier_loss,What is the 'situated in' of Naval Submarine Base New London?,Groton,"Groton, Connecticut",Groton,contaminated,6
+31b293d1-2f3a-5341-bb23-039964f9b94e,1,qualifier_loss,What is the 'born on' of Ken Pruitt?,January 24,"January 24, 1957",January 24,contaminated,8
+32873731-4126-5202-903f-ec2c6b9de2e5,1,qualifier_loss,What is the 'died on' of Franco Corelli?,2003,29 October 2003,2003,contaminated,8
+3b2bb127-3631-5560-a4dd-4701600c384f,1,qualifier_loss,What is the 'died on' of Tom Clancy?,October 1,"October 1, 2013",October 1,contaminated,8
+3b9e9ca3-82a6-5a45-bdc1-4bcd1fc21e61,0,entity_disambiguation,What is the 'used by' of The Valens Aqueduct?,Royal Air Force,Ottomans,unknown,other,0
+3fded0a0-2e14-56ef-a4a4-acd6454533ff,1,entity_disambiguation,What is the 'has switched' of Russia–United Kingdom relations?,Arizona,from a state of alliance to rivalry or even war,unknown,other,3
+442e6fff-d8e4-576a-9460-96e257a45b9c,0,entity_disambiguation,What is the 'has switched' of Russia–United Kingdom relations?,Arizona,from a state of alliance to rivalry or even war,unknown,other,3
+4559a5b3-14db-5853-a97c-6946fc097e15,0,entity_disambiguation,What is the 'voiced role' of Laurie Metcalf?,Moscow State University,Mrs. Davis,Moscow State University,contaminated,8
+476760fa-bbb6-5ded-a92c-d67383830e38,0,entity_disambiguation,What is the 'located in the administrative territorial entity' of Grand Bahama?,The Bahamas,Norwegians,The Bahamas,contaminated,4
+47d97a76-3a4c-54bf-8462-47b9be1a1300,0,entity_disambiguation,What is the 'has switched' of Russia–United Kingdom relations?,Arizona,from a state of alliance to rivalry or even war,unknown,other,3
+4c16300b-b860-554b-946a-1f61ef76494f,1,qualifier_loss,What is the 'died on' of Lady Charlotte Elliot?,1880,15 January 1880,1880,contaminated,4
+52f95dbb-ba72-5438-9936-34cae9ae2d18,1,entity_disambiguation,What is the 'voiced role' of Laurie Metcalf?,Moscow State University,Mrs. Davis,Moscow State University,contaminated,8
+536af280-fe24-5e88-83a3-89a5fafe26a2,0,entity_disambiguation,What is the 'has territory' of The Bahamas?,The Bahamas,Norwegians,Acklins Island,other,8
+5a04ae78-1a8f-5c4f-bef9-8d6eee1cd53b,0,entity_disambiguation,What is the 'located in the administrative territorial entity' of Treasure Cay?,The Bahamas,Norwegians,The Bahamas,contaminated,4
+5df174f3-2444-5eb2-a936-aae2d46966ed,1,entity_disambiguation,What is the 'is a' of Private Lives?,film,three_act_comedy_play,film,contaminated,4
+5fa89ab5-e2ce-5d47-ba22-de1c25db9f0a,1,qualifier_loss,What is the 'located in' of New York State Route 9R?,northeastern Albany County,"northeastern Albany County, New York",northeastern Albany County,contaminated,8
+71e58115-9255-5792-9926-1e03f8f5ff30,0,qualifier_loss,What is the 'located in' of New York State Route 9R?,northeastern Albany County,"northeastern Albany County, New York",northeastern Albany County,contaminated,8
+75ae6cb5-ab28-55e7-ac98-4f749edc197a,0,entity_disambiguation,What is the 'instance of' of The Bahamas?,The Bahamas,Norwegians,island country,other,8
+77ff58e3-bfe6-5694-ad4b-f50df94e6875,1,qualifier_loss,What is the 'born in' of John Updike?,March 18,"March 18, 1932",March 18,contaminated,8
+78bfc53f-f74c-5b84-9a91-8b5d9dd27228,1,qualifier_loss,What is the 'hanged for' of John André?,assisting Benedict Arnold's attempted surrender of the fort at West Point,"assisting Benedict Arnold's attempted surrender of the fort at West Point, New York to the British",assisting Benedict Arnold's attempted surrender of the fort at West Point,contaminated,6
+7a2e7477-59c7-576d-839e-ccdfb4fe6231,0,qualifier_loss,What is the 'died on' of Tom Clancy?,October 1,"October 1, 2013",October 1,contaminated,8
+7e24329a-c638-5504-b32f-14610687f477,0,entity_disambiguation,What is the 'also known as' of Naval Submarine Base New London?,London Gatwick,The_Home_of_the_Submarine_Force,London Gatwick,contaminated,6
+85f7dd0c-36f4-5e96-8fc8-de2ad66b77d2,0,entity_disambiguation,What is the 'has territory' of The Bahamas?,The Bahamas,Norwegians,Acklins Island,other,8
+87cf863b-69a8-5a39-a744-69f2dc0d176b,0,entity_disambiguation,What is the 'has territory' of The Bahamas?,The Bahamas,Norwegians,Acklins Island,other,8
+8ae80e85-8820-5802-978d-b1470f8e1248,1,entity_disambiguation,What is the 'also known as' of Naval Submarine Base New London?,London Gatwick,The_Home_of_the_Submarine_Force,London Gatwick,contaminated,6
+95018df1-d3a9-53c5-b071-a971ef9ef4af,0,entity_disambiguation,What is the 'instance of' of The Bahamas?,The Bahamas,Norwegians,island country,other,8
+97cd81bb-f481-522c-940e-0515c89a49ed,0,entity_disambiguation,What is the 'has territory' of The Bahamas?,The Bahamas,Norwegians,Acklins Island,other,8
+985dcd11-1a01-5163-b584-6fcd5c392399,0,qualifier_loss,What is the 'headquartered in' of Sierra Academy of Aeronautics?,Atwater,"Atwater, California",Atwater,contaminated,6
+9c137e1c-2602-5437-9471-060e87df3534,1,qualifier_loss,What is the 'also known as' of Wild Mountain Thyme?,"Will Ye Go, Lassie","Will Ye Go, Lassie, Go?",Will Ye Go Lassie Go,other,8
+9f712c00-34f5-579e-8516-aeb3c6a7625d,0,qualifier_loss,What is the 'died on' of Tom Clancy?,October 1,"October 1, 2013",October 1,contaminated,8
+a078e543-bff6-5ac8-b955-589f01c44618,0,relation_strengthening,What is the relationship between Bing Crosby and Robin and the 7 Hoods?,lead actor,cast member,lead actor,contaminated,8
+a584f8d4-9d3d-50e1-9bbe-8172741144fc,0,relation_strengthening,What is the relationship between Bing Crosby and Robin and the 7 Hoods?,lead actor,cast member,lead actor in,contaminated,8
+adf0c210-f0a5-5d07-b079-49541e8778cb,1,qualifier_loss,What is the 'died in' of Sergei Aleksandrovich Tokarev?,1985,1985-04-19,unknown,other,8
+b1266354-64a0-5b6c-b970-61693ca7d213,0,qualifier_loss,What is the 'located in' of New York State Route 9R?,northeastern Albany County,"northeastern Albany County, New York",northeastern Albany County,contaminated,8
+b44dc846-7087-54fb-8219-ca46e9a78f35,1,qualifier_loss,What is the 'based in' of New Orleans Pelicans?,New Orleans,"New Orleans, Louisiana",New Orleans,contaminated,8
+b5d6775f-7338-5a61-b2d5-500703eca70f,1,qualifier_loss,What is the 'born on' of Bing Crosby?,May 3,"May 3, 1903",unknown,other,8
+c10994c8-7aa3-5c11-90b3-4665d8f23ca9,0,entity_disambiguation,What is the 'located in the administrative territorial entity' of Acklins Island?,The Bahamas,Norwegians,The Bahamas,contaminated,5
+c4dabe37-8930-5850-aab8-fe5ef6f2ee91,0,qualifier_loss,What is the 'based in' of New Orleans Pelicans?,New Orleans,"New Orleans, Louisiana",New Orleans,contaminated,8
+c5d04d94-973d-5712-b06c-30b466dd131a,1,qualifier_loss,What is the 'obtained command of' of Benedict Arnold?,fortifications at West Point,"fortifications at West Point, New York",fortifications at West Point,contaminated,8
+cca56986-33ea-52b0-bd80-adf45acf9f79,1,entity_disambiguation,What is the 'formed in' of Blues Traveler?,"Princeton, New Jersey",1987,"Princeton, New Jersey",contaminated,8
+cf25be19-420c-5534-aa5a-cf4e27213e0e,0,entity_disambiguation,What is the 'nationality' of Brady Seals?,British,American,unknown,other,8
+d00aad44-5bf0-5e9c-bfee-fae1ee7d1a30,0,entity_disambiguation,What is the 'has territory' of The Bahamas?,The Bahamas,Norwegians,Acklins Island,other,8
+d49c31f5-a659-5978-aa34-7636c8f1d52e,1,entity_disambiguation,What is the 'used by' of Valens Aqueduct?,Royal Air Force,Ottomans,Royal Air Force,contaminated,5
+d4b638a9-8d7a-524f-acd7-74206bb017a6,0,qualifier_loss,What is the 'located in' of New York State Route 9R?,northeastern Albany County,"northeastern Albany County, New York",northeastern Albany County,contaminated,8
+d76be09b-e9d3-556a-b91d-55432646faf4,0,qualifier_loss,What is the 'based in' of New Orleans Pelicans?,New Orleans,"New Orleans, Louisiana",New Orleans,contaminated,8
+db76de19-3407-552d-8192-60dabb8757b2,1,entity_disambiguation,What is the 'died in' of Carl von Clausewitz?,London,1831,London,contaminated,6
+dbd81fd9-9e52-557b-a9a7-7dc87fef6c47,0,qualifier_loss,What is the 'born on' of Ken Pruitt?,January 24,"January 24, 1957",January 24,contaminated,8
+dc1d99f0-1adb-599f-aea9-8565bd5d37bf,0,entity_disambiguation,What is the 'fought in' of Alexander Nikolayev?,Siege of Leningrad,Battle of Berlin,Siege of Leningrad,contaminated,8
+e21e5058-15b3-53c7-a460-82d779fd7831,0,entity_disambiguation,What is the 'also known as' of Naval Submarine Base New London?,London Gatwick,The_Home_of_the_Submarine_Force,London Gatwick,contaminated,6
+ece228c9-a531-5189-80ba-7c95c4eb9915,0,entity_disambiguation,What is the 'has territory' of The Bahamas?,The Bahamas,Norwegians,Acklins Island,other,8
+ef965285-55aa-5a46-af1d-c3b403c1be6e,0,qualifier_loss,What is the 'located in' of Naval Submarine Base New London?,Groton,"Groton, Connecticut",Groton,contaminated,6
+trex_16417,1,entity_disambiguation,What is the 'P840' of The Onedin Line?,Hollywood,Liverpool,Hollywood,contaminated,1
