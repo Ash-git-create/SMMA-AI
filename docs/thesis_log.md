@@ -618,3 +618,56 @@ claim from "far outside baseline noise" to a proper two-sample comparison.
 
 Next: #9 natural contamination audit, #10 random-seeding control
 (~1 free-tier day each).
+
+---
+
+## 2026-07-07 (evening) — SIR fit + RQ2 analysis; eval-seed fix; audit launched
+
+Gap audit against the CLAUDE.md promises found: (a) R₀ never fit to real
+data (SIR modules only wired to the Phase 1 synthetic sim), (b) USR
+implemented but never measured (now task #16), (c) task-eval questions
+sampled with the run seed (cross-run task metrics compared different
+question samples). Plan extended with tasks #11–#17.
+
+**Eval-seed fix (#13 DONE):** `run_contamination.py` gains `--eval-seed`
+(default 42 = the sample every four-arm run used) for task-eval question
+sampling; probes stay on `--random-seed`. No completed run invalidated;
+all future runs measure the same questions.
+
+**SIR fit (#11 DONE — `scripts/fit_sir.py`, `phase35_sir_fit.csv`):**
+Compartments reconstructed from ground truth (I = gt_total − det_R_contam;
+the raw trajectory S/I/R columns are bookkeeping, not epidemic states);
+least-squares fit forward-simulating `sir_model.py`.
+- beta: baseline 0.044 ± 0.010 (4 seeds); floor 0.029; mitigated **0.070
+  (~2.6 sd above baseline)** — the superadditive-harm claim in fitted-
+  parameter form.
+- **R₀ = beta/gamma ≈ 7.2 (validation) and 4.9 (mitigated)** — an order of
+  magnitude above the R₀ < 1 containment threshold. gamma=0 arms report
+  per-step effective reproduction instead (no classical R₀ without
+  recovery).
+- Caveat for write-up: at 50K-node scale S never depletes, so fixed-beta
+  mass-action SIR cannot reproduce the observed late-run plateau (fit RMSE
+  up to ~5 nodes) — scale mismatch to discuss, not a bug.
+
+**RQ2 per-type analysis (#12 DONE — `scripts/analyze_error_types.py`,
+`phase35_error_type_analysis.csv`):**
+- Baseline reproduction per seed case: **entity_disambiguation 0.63 ± 0.27
+  > qualifier_loss 0.50 ± 0.04 > relation_strengthening 0.08 ± 0.05**.
+  RQ2 answered with multi-seed spread.
+- Under BOTH validation arms, ED reproduction jumps to **1.4 (> 1,
+  self-sustaining)** — 21 transmissions from 15 seeds — while QL/RS stay
+  subcritical. The arms that audit are the arms where ED spreads
+  super-linearly; consistent with circular-validation amplification.
+- Methods note: injector found only 9–10 relation_strengthening candidates
+  vs target 15 in every run (weak-predicate scarcity).
+
+**#9 natural audit (running):** `scripts/audit_natural.py` — fidelity audit
+of all 783 extraction-written triplets against source passages (gt-
+contaminated IDs excluded two ways), judged by the validation-role LLM with
+the injected taxonomy as labels. Interim at 250/783: **natural error rate
+≈ 9.6%** — 12 entity errors, 12 unsupported, **0 qualifier_loss, 0
+relation_strengthening**. Either natural errors are ED/hallucination-
+dominated (validates ED as the realistic injected type) or the judge is
+insensitive to subtle QL/RS — task #17 (human calibration of a 30–50
+sample) distinguishes. Hit the TPD cap at 250; crawling overnight on the
+server-stated-wait retry logic. Full rates tomorrow.
