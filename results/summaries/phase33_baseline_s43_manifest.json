@@ -1,0 +1,452 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "context_limit": 5,
+    "retrieval_threshold": 0.0,
+    "audits_per_step": 0,
+    "audit_sample": 50,
+    "audit_targeted": false,
+    "quarantine_threshold": 0.4,
+    "trio_confidence": false,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "probe_limit": 60,
+    "probe_facts": 8,
+    "extraction_manifest": null,
+    "random_seed": 43,
+    "sleep": 1.0,
+    "tag": "baseline_s43",
+    "allow_dirty": false
+  },
+  "timestamp": "20260707_161317",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260707_161314.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "2913d48f-32ee-53ef-8913-bed077c551ef",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "a_credible_news_program",
+      "after": "a British Army officer",
+      "subject": "The Daily Show"
+    },
+    {
+      "triplet_id": "d116a4a5-0357-506c-8f27-eb228c395c2f",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Crescent Range",
+      "after": "White Mountain National Forest",
+      "subject": "Black Crescent Mountain"
+    },
+    {
+      "triplet_id": "c966ddd7-98b3-558c-97c9-b132816ca68b",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "criticized",
+      "after": "four lanes wide",
+      "subject": "Rupert Murdoch"
+    },
+    {
+      "triplet_id": "5abde45f-7ce2-5050-b950-d9d49667e9b5",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Moon trees",
+      "after": "Princeton, New Jersey",
+      "subject": "Stuart Roosa"
+    },
+    {
+      "triplet_id": "48c77285-3955-536c-9721-a118c04052f0",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "1994",
+      "after": "Indian_music",
+      "subject": "Brady Seals"
+    },
+    {
+      "triplet_id": "8473d1d4-fcc2-544f-95bb-756ce62484ea",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Ottomans",
+      "after": "Plan USA",
+      "subject": "Valens Aqueduct"
+    },
+    {
+      "triplet_id": "e9517fc7-a202-5e95-a736-a8d26b6bb2ea",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "family adventure",
+      "after": "blues rock",
+      "subject": "Ride a Wild Pony"
+    },
+    {
+      "triplet_id": "3e73e83b-f6a1-5171-b882-8ea9107038bd",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Florida Senate",
+      "after": "12 Years a Slave (film)",
+      "subject": "Ken Pruitt"
+    },
+    {
+      "triplet_id": "trex_20117",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "Shanghai Airlines",
+      "subject": "John Aldridge"
+    },
+    {
+      "triplet_id": "bf500a1b-738d-5cd1-aa7b-2ac3cdddbe6f",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Escondido, California, USA",
+      "after": "Atwater, California",
+      "subject": "Stone Brewing Co."
+    },
+    {
+      "triplet_id": "bf547e7e-83c7-56bb-af71-92d32f05034a",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Roman Emperor Valens",
+      "after": "Agra",
+      "subject": "Valens Aqueduct"
+    },
+    {
+      "triplet_id": "043da847-adb9-5515-9df8-811d03417b83",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Texas A&M",
+      "after": "Southern Methodist",
+      "subject": "Jalen Jones"
+    },
+    {
+      "triplet_id": "b1cbb90f-61df-5006-b34e-a459e53d7809",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "left_field_hip_hop",
+      "after": "use of advertising and lobbyists in beer market",
+      "subject": "Cyclic Defrost"
+    },
+    {
+      "triplet_id": "f6e5cfcc-15f6-57ff-adae-e07d1d5a2fba",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "American",
+      "after": "Mexican",
+      "subject": "Jalen Jones"
+    },
+    {
+      "triplet_id": "c2acb78c-41de-51ae-80b1-891f2548b122",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "more than 100 million copies",
+      "after": "three_act_comedy_play",
+      "subject": "Tom Clancy"
+    },
+    {
+      "triplet_id": "32f1cdf1-e86f-5556-a6be-7851958139e9",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "29 October 2003",
+      "after": "2003",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "f75c2559-7e9e-51cb-a126-bc0bc84b04dd",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Mopane, Combretum and brachystegia woodland, as well as open savanna, dambo, and riverine areas",
+      "after": "Mopane, Combretum and brachystegia woodland, as well as open savanna, dambo",
+      "subject": "Mwabvi Wildlife Reserve"
+    },
+    {
+      "triplet_id": "bfcd282c-1088-549e-8e2f-d9f08fd5a8de",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "January 3, 2005",
+      "after": "January 3",
+      "subject": "Mike Gundy"
+    },
+    {
+      "triplet_id": "d28201a7-81d0-5875-85b8-69465ea16e53",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "northeastern Albany County, New York",
+      "after": "northeastern Albany County",
+      "subject": "New York State Route 9R"
+    },
+    {
+      "triplet_id": "ddd13616-3778-5647-aea2-309351230572",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "22\u201311, 16\u20134 in MAAC play",
+      "after": "22\u201311",
+      "subject": "2015\u201316 Iona Gaels men's basketball team"
+    },
+    {
+      "triplet_id": "e1321be8-d209-5571-8657-c00e2b6f0ba7",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Metro Atlantic Athletic Conference (MAAC)",
+      "after": "Metro Atlantic Athletic Conference",
+      "subject": "2015\u201316 Iona Gaels men's basketball team"
+    },
+    {
+      "triplet_id": "c8ede7b8-a12f-5808-a80f-969d8d3a7ad5",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Princeton, New Jersey",
+      "after": "Princeton",
+      "subject": "Blues Traveler"
+    },
+    {
+      "triplet_id": "871314c2-9176-58a2-9bf4-f04ac2b9d880",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "March 11, 1977",
+      "after": "March 11",
+      "subject": "The Many Adventures of Winnie the Pooh"
+    },
+    {
+      "triplet_id": "7164f479-529f-5092-ae00-f68de92274a6",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "March 18, 1932",
+      "after": "March 18",
+      "subject": "John Updike"
+    },
+    {
+      "triplet_id": "15221476-77fc-50c2-bbc8-7ce42d5ee1e2",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "10 July 1977",
+      "after": "1977",
+      "subject": "Chiwetel Ejiofor"
+    },
+    {
+      "triplet_id": "62748702-db01-5d2b-89a9-f488d4b8e388",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "differences between large corporate breweries and smaller breweries",
+      "after": "differences",
+      "subject": "Beer Wars"
+    },
+    {
+      "triplet_id": "b1be7ce3-2229-5cc1-9ce5-0550b864251b",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Another You, Another Me",
+      "after": "Another You",
+      "subject": "Brady Seals"
+    },
+    {
+      "triplet_id": "5e764a57-b096-5035-be65-1abe1d9b918a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "April 12, 1947",
+      "after": "April 12",
+      "subject": "Tom Clancy"
+    },
+    {
+      "triplet_id": "80305452-dab2-52dc-8b51-ac5b4574769e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "fortifications at West Point, New York",
+      "after": "fortifications at West Point",
+      "subject": "Benedict Arnold"
+    },
+    {
+      "triplet_id": "44122801-1b5e-52e7-b0f9-a39e958ea1d7",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "September 2, 1966",
+      "after": "September 2",
+      "subject": "Salma Hayek"
+    },
+    {
+      "triplet_id": "trex_45191",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Sammy Reid"
+    },
+    {
+      "triplet_id": "trex_23899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Oussama Assaidi"
+    },
+    {
+      "triplet_id": "trex_34908",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Ian Callaghan"
+    },
+    {
+      "triplet_id": "trex_45864",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "cast member",
+      "after": "lead actor",
+      "subject": "Robin and the 7 Hoods"
+    },
+    {
+      "triplet_id": "trex_32550",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Joe Cole"
+    },
+    {
+      "triplet_id": "trex_49633",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Daniel Agger"
+    },
+    {
+      "triplet_id": "trex_41412",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Sealey"
+    },
+    {
+      "triplet_id": "trex_47059",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Ivan Ivanovich Zhegalkin"
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Hugh McQueen"
+    }
+  ],
+  "transmissions": [
+    {
+      "step": 1,
+      "id": "a4db495a-5ad0-551a-8714-c2b40cf06aa9",
+      "subject": "Chiwetel Ejiofor",
+      "predicate": "born_in",
+      "object": "1977",
+      "root_type": "qualifier_loss",
+      "payload": "1977"
+    },
+    {
+      "step": 2,
+      "id": "bc5f236b-8b6e-52fe-bc28-bc5470bca4fe",
+      "subject": "The Valens Aqueduct",
+      "predicate": "completed_by",
+      "object": "Agra",
+      "root_type": "entity_disambiguation",
+      "payload": "Agra"
+    },
+    {
+      "step": 2,
+      "id": "139172da-d1f0-566a-b51e-a27b465446a0",
+      "subject": "The Valens Aqueduct",
+      "predicate": "used_by",
+      "object": "Plan USA",
+      "root_type": "entity_disambiguation",
+      "payload": "Plan USA"
+    },
+    {
+      "step": 3,
+      "id": "be3295e9-4964-5e49-96cb-e41593d68c35",
+      "subject": "The Valens Aqueduct",
+      "predicate": "completed_by",
+      "object": "Agra",
+      "root_type": "entity_disambiguation",
+      "payload": "Agra"
+    },
+    {
+      "step": 3,
+      "id": "ea09d84e-4667-5bd0-961e-3d05937cfae6",
+      "subject": "The Valens Aqueduct",
+      "predicate": "used_by",
+      "object": "Plan USA",
+      "root_type": "entity_disambiguation",
+      "payload": "Plan USA"
+    },
+    {
+      "step": 3,
+      "id": "edd0fae6-43a8-5d48-ba28-0ae5bb9f3cdf",
+      "subject": "Benedict Arnold",
+      "predicate": "planned_to_surrender",
+      "object": "fortifications at West Point",
+      "root_type": "qualifier_loss",
+      "payload": "fortifications at West Point"
+    },
+    {
+      "step": 3,
+      "id": "715ff888-f046-5783-a730-d36639d1c4e8",
+      "subject": "Benedict Arnold",
+      "predicate": "obtained_command_of",
+      "object": "fortifications at West Point",
+      "root_type": "qualifier_loss",
+      "payload": "fortifications at West Point"
+    },
+    {
+      "step": 5,
+      "id": "1d0a0a4f-4c4c-5b0a-aeb0-1c2873e27af9",
+      "subject": "Benedict Arnold",
+      "predicate": "obtained_command_of",
+      "object": "fortifications at West Point",
+      "root_type": "qualifier_loss",
+      "payload": "fortifications at West Point"
+    },
+    {
+      "step": 5,
+      "id": "d4494c59-e825-5b30-a50d-b47cc2f4041f",
+      "subject": "Franco Corelli",
+      "predicate": "died_on",
+      "object": "2003",
+      "root_type": "qualifier_loss",
+      "payload": "2003"
+    },
+    {
+      "step": 6,
+      "id": "4974d28e-dd18-557d-a2bc-3b108bcbde1f",
+      "subject": "John Updike",
+      "predicate": "born_on",
+      "object": "March 18",
+      "root_type": "qualifier_loss",
+      "payload": "March 18"
+    },
+    {
+      "step": 7,
+      "id": "d50ae868-aeae-5414-91bd-a9cc23a2ec8d",
+      "subject": "Ivan Ivanovich Zhegalkin",
+      "predicate": "graduated_top_of_class_at",
+      "object": "Moscow State University",
+      "root_type": "relation_strengthening",
+      "payload": "graduated top of class at"
+    },
+    {
+      "step": 10,
+      "id": "12ab65f7-e9dc-5dd8-8572-ffa552b11601",
+      "subject": "Franco Corelli",
+      "predicate": "died_in",
+      "object": "2003",
+      "root_type": "qualifier_loss",
+      "payload": "2003"
+    }
+  ],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_baseline_s43_20260707_161317_trajectory.csv"
+}

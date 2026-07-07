@@ -1,0 +1,7 @@
+seed,seeded,propagated,cum_exposed,reproduction_per_seed,probe_contam_rate_step10,probe_n,detection_auroc,hotpot_em,hotpot_f1,fever_accuracy,task_metrics_flat_step0_to_10,rate_limit_hits,failed_llm_calls,run_timestamp
+42,39,21,62,0.54,0.6667,60,0.8910,0.12,0.1729,0.60,true,,0,20260704_191911
+43,39,12,56,0.31,0.7059,51,0.8950,0.02,0.0493,0.58,true,0,0,20260707_161317
+44,40,20,68,0.50,0.6167,60,0.9047,0.02,0.0414,0.58,true,0,0,20260707_165223
+45,39,18,75,0.46,0.8772,57,0.9033,0.00,0.0100,0.50,true,0,0,20260707_173142
+mean,39.25,17.75,65.25,0.45,0.7166,57,0.8985,,,,,,,
+sd,0.5,4.03,8.30,0.10,0.1128,4.24,0.0066,,,,,,,

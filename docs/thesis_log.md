@@ -558,3 +558,63 @@ step-10 probe CSVs, `phase32_arm_comparison.csv`).
 arms/day; future batches must span two days or move to the paid tier
 (≈$1 total for all remaining thesis experiments at Llama 3.1 8B pricing —
 recommended before Phase 4 scale-up and multi-seed replication).
+
+---
+
+## 2026-07-07 — Multi-seed baseline replication (task #8 DONE)
+
+Decision: stay on free tiers (user declined paid upgrade; Claude-API switch
+rejected on comparability grounds — all results are properties of the
+Llama 3.1 8B + Mistral Nemo agent stack and remaining runs must stay on it).
+
+Ran seeds 43/44/45 of the unmitigated baseline arm as full clean-room
+sequences (load_kg --clear → extraction replay → contamination run),
+identical to the Phase 3.2 procedure; only `--random-seed`/`--tag` varied.
+Together with the 07-04 seed-42 run: **4 baseline replicates**. All three
+new runs clean — 0 rate-limit hits, 0 failed LLM calls (never touched the
+TPD cap; baseline arms are the cheap ones). Archived:
+`results/summaries/phase33_baseline_s{43,44,45}_{trajectory.csv,manifest.json}`
++ `phase33_seed_variance.csv`.
+
+| seed | seeded | propagated | exposed | probe rate (s10) | AUROC |
+|---|---|---|---|---|---|
+| 42 | 39 | 21 | 62 | 0.667 | 0.891 |
+| 43 | 39 | 12 | 56 | 0.706 | 0.895 |
+| 44 | 40 | 20 | 68 | 0.617 | 0.905 |
+| 45 | 39 | 18 | 75 | 0.877 | 0.903 |
+| **mean ± sd** | — | **17.8 ± 4.0** | **65.3 ± 8.3** | **0.717 ± 0.113** | **0.899 ± 0.007** |
+
+### What the variance does to the Phase 3.2 claims
+
+- **SURVIVES — full-Trio superadditive harm.** Mitigated propagated 34 is
+  ~4 sd above the baseline mean (17.8 ± 4.0); exposed 94 is ~3.5 sd above
+  (65.3 ± 8.3). No baseline seed comes close. The headline RQ4 finding is
+  robust to seed noise.
+- **SURVIVES — flat AUROC.** Baseline AUROC is extremely stable across
+  seeds (0.891–0.905); the mitigated arm's 0.855 and the "confidence
+  detects agent-written, not contaminated" interpretation stand.
+- **SURVIVES — reach-vs-harm decoupling.** Task metrics are flat step
+  0→10 *within every seed* (4/4 replicates). Cross-seed EM levels differ
+  (0.00–0.12) because eval questions are sampled with the run seed —
+  question-sample variance, not a contamination effect; comparable-question
+  task comparisons remain the seed-42 four-arm table.
+- **WEAKENED — floor cuts spread.** Floor arm's 14 propagated sits inside
+  the baseline seed range (12–21, ~1 sd below mean). Single-seed evidence
+  for "the floor reduces spread" is not distinguishable from seed noise.
+- **WEAKENED — single-arm probe-rate effects.** Baseline probe rate spans
+  0.617–0.877 across seeds (sd 0.11). Floor's 0.889 ("worst harm") is
+  within ~1.5 sd of the baseline mean, and validation's 0.567 within
+  ~1.3 sd. Both mechanism-decomposition directions remain plausible but
+  are no longer strongly evidenced by one seed each; the *combined* arm's
+  pattern (worst spread AND worst exposure AND 10% quarantine precision)
+  is what carries the RQ4 conclusion.
+
+**Write-up rule going forward:** every single-seed comparison must be
+quoted against baseline seed-sd (propagated ±4, exposed ±8, probe ±0.11).
+Differences smaller than ~2 sd get hedged language; only the full-Trio
+harm result gets unhedged causal language. If time permits in Phase 4,
+a 3-seed replicate of the *mitigated* arm would upgrade the superadditive
+claim from "far outside baseline noise" to a proper two-sample comparison.
+
+Next: #9 natural contamination audit, #10 random-seeding control
+(~1 free-tier day each).
