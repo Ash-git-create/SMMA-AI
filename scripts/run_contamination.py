@@ -195,16 +195,26 @@ def build_active_pool(client: Neo4jClient, keys: list[str], per_key: int) -> lis
 def seed_index_cases(
     client: Neo4jClient, keys: list[str], args
 ) -> tuple[list[dict], dict[str, dict]]:
-    """Inject index cases into the active subgraph. Returns the injection
-    records and the initial payload map {triplet_id: {root_type, before, after}}."""
-    pool = build_active_pool(client, keys, args.pool_per_key)
-    logger.info(f"Active subgraph pool: {len(pool)} triplets "
-                f"from {len(keys)} entity keys")
+    """Inject index cases. Placement is the RQ1 lever: 'active' seeds inside
+    the union of active retrieval neighborhoods (errors agents will actually
+    encounter); 'random' seeds uniformly across all Susceptible triplets (the
+    control arm — spread differences between the two isolate how much
+    contamination depends on landing in retrieval-reachable positions).
+    Returns the injection records and the initial payload map
+    {triplet_id: {root_type, before, after}}."""
+    if args.seed_placement == "active":
+        pool = build_active_pool(client, keys, args.pool_per_key)
+        logger.info(f"Active subgraph pool: {len(pool)} triplets "
+                    f"from {len(keys)} entity keys")
+    else:
+        pool = None
+        logger.info("Seed placement 'random': uniform across Susceptible KG")
 
     injector = ErrorInjector(neo4j_client=client, random_seed=args.random_seed)
     records = []
     for et in ERROR_TYPES:
-        records += injector.inject(et, args.injections_per_type, pool=list(pool))
+        records += injector.inject(et, args.injections_per_type,
+                                   pool=list(pool) if pool is not None else None)
 
     payloads = {
         r["triplet_id"]: {
@@ -215,7 +225,8 @@ def seed_index_cases(
         }
         for r in records
     }
-    logger.success(f"Seeded {len(records)} index cases inside the active subgraph")
+    logger.success(f"Seeded {len(records)} index cases "
+                   f"(placement: {args.seed_placement})")
     return records, payloads
 
 
@@ -615,6 +626,10 @@ def main() -> None:
     parser.add_argument("--entities-per-step",   type=int,   default=12,   help="Active entities sampled per cycle")
     parser.add_argument("--injections-per-type", type=int,   default=15,   help="Index cases per error type (step 0)")
     parser.add_argument("--pool-per-key",        type=int,   default=50,   help="Neighborhood size per key for the seeding pool")
+    parser.add_argument("--seed-placement",      type=str,   default="active", choices=["active", "random"],
+                        help="Index-case placement: 'active' = inside active retrieval subgraph "
+                             "(default, all Phase 2.4/3.2 runs); 'random' = uniform across "
+                             "Susceptible KG (RQ1 control arm)")
     parser.add_argument("--context-limit",       type=int,   default=5,    help="KG facts retrieved per synthesis/extraction unit")
     parser.add_argument("--retrieval-threshold", type=float, default=0.0,  help="Confidence floor on retrieval (0 = unmitigated)")
     parser.add_argument("--audits-per-step",     type=int,   default=0,    help="Validation audit passes per cycle (gamma; 0 = unmitigated)")

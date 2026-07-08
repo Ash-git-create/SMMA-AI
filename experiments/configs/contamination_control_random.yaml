@@ -1,0 +1,32 @@
+# Task #10 — random-seeding control arm (RQ1 evidence).
+# Identical to contamination_baseline.yaml except seed_placement: index cases
+# land uniformly across the Susceptible KG instead of inside the active
+# retrieval subgraph. The spread difference vs baseline isolates how much
+# contamination depends on errors being retrieval-reachable — the RQ1
+# "conditions for persistence and spread" evidence.
+
+steps: 10
+entities_per_step: 12
+injections_per_type: 15
+pool_per_key: 50
+seed_placement: random     # <- the only lever changed vs baseline
+
+# Retrieval (the beta channel)
+context_limit: 5
+retrieval_threshold: 0.0   # unmitigated
+
+# Validation (the gamma channel)
+audits_per_step: 0         # unmitigated
+audit_sample: 50
+
+# Task measurement
+eval_every: 5
+eval_questions: 50
+probe_limit: 60
+probe_facts: 8
+
+# Reproducibility + rate limiting
+random_seed: 42
+eval_seed: 42              # fixed question sample (matches all completed runs)
+sleep: 1.0
+tag: control_random
