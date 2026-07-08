@@ -1,0 +1,28 @@
+{
+  "config": {
+    "extraction_manifest": null,
+    "contamination_manifest": null,
+    "split": "validation",
+    "num_docs": 50,
+    "paragraphs_per_doc": 2,
+    "extraction_seed": 42,
+    "limit": 0,
+    "random_seed": 42,
+    "sleep": 1.0
+  },
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260707_173140.csv",
+  "contamination_manifest_excluded": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_baseline_s45_20260707_173142_manifest.json",
+  "summary": {
+    "audited": 783,
+    "natural_error_rate": 0.1188,
+    "supported": 690,
+    "qualifier_loss": 0,
+    "entity_error": 56,
+    "relation_error": 5,
+    "unsupported": 32,
+    "parse_failures": 0,
+    "gt_contaminated_excluded": 29,
+    "missing_in_kg": 0,
+    "output": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\natural_audit_20260708_152251.csv"
+  }
+}

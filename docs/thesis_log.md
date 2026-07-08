@@ -671,3 +671,47 @@ dominated (validates ED as the realistic injected type) or the judge is
 insensitive to subtle QL/RS — task #17 (human calibration of a 30–50
 sample) distinguishes. Hit the TPD cap at 250; crawling overnight on the
 server-stated-wait retry logic. Full rates tomorrow.
+
+---
+
+## 2026-07-08 — Natural contamination audit complete (task #9 DONE)
+
+Full census of all 783 extraction-written triplets (29 gt-contaminated
+excluded; crawled through the TPD cap over ~20h; 0 parse failures, 0
+failed calls). Archived: `results/summaries/phase34_natural_audit.csv`
+(+ summary JSON, + blind 40-row calibration sheet & answer key for #17).
+
+**Natural error rate: 11.9%** (93/783) — the RQ1 base rate. The
+contamination process needs NO adversary: roughly one in eight facts the
+unmodified ExtractionAgent writes is already erroneous.
+
+| label | n | share |
+|---|---|---|
+| SUPPORTED | 690 | 88.1% |
+| ENTITY_ERROR | 56 | 7.2% |
+| UNSUPPORTED (hallucination) | 32 | 4.1% |
+| RELATION_ERROR | 5 | 0.6% |
+| QUALIFIER_LOSS | 0 | 0% |
+
+- **Natural errors are entity/hallucination-dominated, mirroring RQ2:**
+  the error type that propagates most (entity_disambiguation, reproduction
+  0.63 baseline / 1.4 under validation) is also the one extraction
+  produces most naturally — injected ED errors are realistic, not a
+  worst-case construct. Relation errors are rare naturally AND barely
+  propagate. Zero qualifier-loss detections either mean QL is not a
+  natural failure mode at this passage length or the Llama judge is
+  insensitive to it — #17 (human calibration, blind sheet ready)
+  distinguishes; until then QL claims stay hedged.
+- **Source-context richness is an RQ1 condition: FEVER 40.4% (19/47) vs
+  HotpotQA 10.1% (74/736).** Single-sentence claims give the extractor
+  almost no disambiguating context → 4x the error rate of paragraph
+  units. (FEVER n is small; quote the CI.)
+- Fidelity ≠ truth caveat: a faithfully extracted false FEVER claim counts
+  as SUPPORTED — ingestion of false claims is a separate (unmeasured)
+  contamination channel; note in limitations.
+
+**#10 prep (token-free, launch-ready):** `run_contamination.py` gains
+`--seed-placement {active,random}` (injector already supported uniform
+placement; compile-checked) + `experiments/configs/
+contamination_control_random.yaml` (baseline diff: placement + fixed
+eval_seed). Launches tomorrow on a fresh budget.
