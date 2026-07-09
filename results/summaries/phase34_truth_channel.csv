@@ -1,0 +1,48 @@
+triplet_id,fever_id,verdict,subject,predicate,object,fidelity_judge_label
+a5d5a029-c6e9-500b-be68-885150164d88,2271,NOT ENOUGH INFO,The Greek language,heard_by,at least 13.2 million people,SUPPORTED
+80dfd52b-0857-5df1-914e-156aff900f8f,49997,NOT ENOUGH INFO,Rupert Murdoch,has_control_of,News Corp,SUPPORTED
+d6b781f7-86ab-59eb-b9db-d314bc52738a,49997,NOT ENOUGH INFO,Rupert Murdoch,has_been,criticized,RELATION_ERROR
+20e1d2db-d005-52cb-93e2-fdf061e133f8,60917,NOT ENOUGH INFO,Uranium-235,discovered_by,at least one person,ENTITY_ERROR
+a7f9046c-4182-5e7b-84f8-1dc921e609f5,60917,NOT ENOUGH INFO,at least one person,died_in,a month,ENTITY_ERROR
+3ce80c65-7714-533b-ab74-0ce363a49fc1,66262,NOT ENOUGH INFO,Aarhus,located_northwest_of,Copenhagen,RELATION_ERROR
+ba328bfe-2f1a-58a1-a588-0b94e3bea1c8,66262,NOT ENOUGH INFO,Aarhus,located_south_of,London,RELATION_ERROR
+50726df8-e8f5-5a0a-8809-61f857cbac9c,86968,NOT ENOUGH INFO,Jackie (2016 film),is,American,SUPPORTED
+17f6ea40-a365-5f2f-9442-2b8488ad904a,86968,NOT ENOUGH INFO,Jackie (2016 film),is,drama film,SUPPORTED
+109357cc-33c1-5e1b-b3ae-47aecd042286,87813,NOT ENOUGH INFO,Ron Weasley,is,wizard,SUPPORTED
+342d0057-63b4-5286-8abb-4d4e1d787c8e,97705,NOT ENOUGH INFO,Taylor Lautner,appeared_on,a milk carton,SUPPORTED
+de38219d-7493-5ed8-a533-f2d33e199c24,125001,NOT ENOUGH INFO,Blue Jasmine,about,a rich Manhattan socialite who became a Christian,ENTITY_ERROR
+5df174f3-2444-5eb2-a936-aae2d46966ed,149172,NOT ENOUGH INFO,CONCACAF Champions League,organized_for,football clubs in South America,ENTITY_ERROR
+d9e2a387-0e05-511b-9570-ed9fe893efde,173731,NOT ENOUGH INFO,Earl Scruggs,middle_name,Eugene,SUPPORTED
+5559a69c-fefb-5eb9-adb6-40c068983006,173731,NOT ENOUGH INFO,Earl Scruggs,given_name_by,his_mother,SUPPORTED
+b613dd9e-e6ef-5de5-ab6a-288088f2fcda,183605,NOT ENOUGH INFO,Finding Dory,written_by,someone who is based at Disney,ENTITY_ERROR
+28b640e3-3f1a-568b-9080-cba6a41d5f9b,198023,NOT ENOUGH INFO,The New York City Landmarks Preservation Commission,consists_of,11 people,ENTITY_ERROR
+d0a54ee5-4b69-596c-a487-013adcdec6ff,202447,NOT ENOUGH INFO,Tinker Tailor Soldier Spy,stars,Jonah Hill,ENTITY_ERROR
+c966ddd7-98b3-558c-97c9-b132816ca68b,203694,NOT ENOUGH INFO,Poseidon,grossed,181674817,SUPPORTED
+4de81a40-aa81-5d96-b6d9-54ef189843c4,204422,NOT ENOUGH INFO,Brad Wilk,was_guitarist_for,Greta,ENTITY_ERROR
+59e5397d-24a8-5ab1-ac76-517279fd983e,215119,NOT ENOUGH INFO,Private Lives,is_a,three_act_comedy_play,SUPPORTED
+bf3cbff4-803e-5025-aad5-d755c5f0cf48,215119,NOT ENOUGH INFO,Private Lives,from,1930,SUPPORTED
+ad57fbb6-05f3-5c06-be02-b9a668745b2d,215136,NOT ENOUGH INFO,Private Lives,is_a,three_act_comedy_play,ENTITY_ERROR
+d22004b7-c88b-509f-8e4d-5358d48b8d65,215136,NOT ENOUGH INFO,Private Lives,from,1930,SUPPORTED
+00b773e0-bc99-560d-bfcc-19d9b57f88da,216378,NOT ENOUGH INFO,Chagatai language,spoken_in,Turkey,ENTITY_ERROR
+66d2451d-d3de-520d-8197-252abdf4b17e,216378,NOT ENOUGH INFO,Chagatai language,spoken_in,Kazakhstan,ENTITY_ERROR
+a41d6a37-3b83-5a80-9088-dfc8195eab82,21617,REFUTES,2016 Tour de France,had_total,198 musicians,ENTITY_ERROR
+9266ce6f-bb9e-550a-99ff-17d13a38a388,94358,REFUTES,Gal Gadot,ranked_as,fifth highest earning actress/models in Israel,SUPPORTED
+702a2efa-785d-5164-a1a9-17ef8a774604,104458,REFUTES,Halsey,signed_first_recording_autograph_in,2014,SUPPORTED
+adf9ab13-0390-5dc0-af99-ad69bde59398,123823,REFUTES,Bethany Hamilton's autobiography,adapted_into,a film,SUPPORTED
+a6ec91fe-82ee-5e99-977e-338dd17a8f34,123823,REFUTES,Bethany Hamilton's autobiography,released_in,2014,ENTITY_ERROR
+63727831-9d62-5674-9206-9a8f5a2d5cba,146189,REFUTES,The Daily Show,described_as,credible news program,SUPPORTED
+fb4ea75e-1573-5609-ba56-9fb9254919ba,153851,REFUTES,Harris Jayaraj,from,Hyderabad,SUPPORTED
+cd3b320e-0d09-59a4-9d14-c09299aab290,159692,REFUTES,Edgar Wright,is,a Gemini,SUPPORTED
+da42a26e-4c00-5ce5-b656-2f8da4acc320,172776,REFUTES,The Beach,released_in,2001,SUPPORTED
+b6ffae41-481d-512b-979c-b8316d62fbd7,20291,SUPPORTS,Meteora,is_an_album_by,an_American_band,UNSUPPORTED
+a4f02b59-243f-57ec-a672-d02fb2e4941b,23741,SUPPORTS,I Kissed a Girl,part_of,Katy Perry's second studio album,SUPPORTED
+16dfb768-fc6c-52e2-b6bc-98bd407f1b63,43109,SUPPORTS,The Indian Institute of Management Bangalore,offers,an executive training program,SUPPORTED
+1639afac-229a-5f11-9ddc-9b9f82e090b4,55032,SUPPORTS,Ashley Graham,was_on,magazine_cover,SUPPORTED
+d6d1b647-d953-5e6c-8a9e-56711dfc3269,124077,SUPPORTS,Jewell,worked_with,Snoop Dog,SUPPORTED
+ded4d407-8fe6-5a05-89c5-5fc08f884756,124077,SUPPORTS,Jewell,worked_on,Gin and Juice,ENTITY_ERROR
+bc641c20-e782-54d0-b9a8-8d671060e377,131701,SUPPORTS,"Prescott, Arizona",located_in,United States,SUPPORTED
+2a2e9cdb-6944-5489-8fa6-576153d142de,150672,SUPPORTS,Nestor Carbonell,starred_in,a drama series,SUPPORTED
+70974eb2-df9e-5962-8bd7-00f5453ad048,150672,SUPPORTS,a drama series,by,ABC,SUPPORTED
+50db5c0a-7b29-5fd5-98da-4227b40935d6,173508,SUPPORTS,Sancho Panza,is_fictional_character_in,novel,SUPPORTED
+305f10ff-e220-58ce-b15c-60caa845dea6,173508,SUPPORTS,novel,written_by,Don Miguel de Cervantes Saavedra,ENTITY_ERROR
+14833dc4-d057-5990-8141-3f794861ef44,183134,SUPPORTS,Tata Motors,is_constituent_of,BSE SENSEX index,SUPPORTED

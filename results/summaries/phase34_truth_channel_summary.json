@@ -1,0 +1,40 @@
+{
+  "population": "same as natural audit (extraction_both_20260707_173140, gt-contaminated excluded)",
+  "fever_units_extracted": {
+    "SUPPORTS": 11,
+    "REFUTES": 18,
+    "NOT ENOUGH INFO": 21
+  },
+  "fever_triplets_in_kg": {
+    "SUPPORTS": 12,
+    "REFUTES": 9,
+    "NOT ENOUGH INFO": 26
+  },
+  "fever_triplets_total": 47,
+  "refuted_triplet_share_of_fever": 0.1915,
+  "refuted_plus_nei_share_of_fever": 0.7447,
+  "refuted_triplet_share_of_all_extraction_triplets": 0.0115,
+  "all_extraction_triplets": 783,
+  "false_triplet_bounds": {
+    "upper_bound_triplets_from_refuted_claims": 9,
+    "lower_bound_refuted_units_with_at_least_one_triplet": 8
+  },
+  "units_yielding_any_triplet": {
+    "SUPPORTS": 9,
+    "REFUTES": 8,
+    "NOT ENOUGH INFO": 18
+  },
+  "triplets_per_unit_by_verdict": {
+    "SUPPORTS": 1.09,
+    "REFUTES": 0.5,
+    "NOT ENOUGH INFO": 1.24
+  },
+  "gt_contaminated_excluded": 0,
+  "units_without_fever_label": 0,
+  "extractor_self_censoring": {
+    "refuted_units_yielding": "8/18",
+    "other_units_yielding": "27/32",
+    "fisher_exact_p": 0.0085,
+    "odds_ratio": 0.148
+  }
+}

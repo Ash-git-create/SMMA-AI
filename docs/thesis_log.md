@@ -815,3 +815,41 @@ must be hedged: the natural mix was judge-artifact-dominated.
 (3) Detection AUROC numbers (different feature-based detector) are
 unaffected. Limitations: single rater (author), blind but post-hoc;
 optional Haiku second rater parked.
+
+## 2026-07-09 (late) — Truth-channel quantification (task #19 DONE, token-free)
+
+**Method:** every FEVER-derived triplet in the natural-audit population
+(same manifest pair, 783 triplets) mapped to its claim's ground-truth
+verdict via `scripts/analyze_truth_channel.py` — zero LLM calls. Outputs:
+`phase34_truth_channel.csv` (per-triplet) + `_summary.json`.
+
+**Findings:**
+
+- **9 known-false triplets sit in the KG as facts** (from 8 REFUTED
+  claims): "2016 Tour de France had 198 musicians", "The Beach released
+  in 2001", "Harris Jayaraj from Hyderabad", "The Daily Show described
+  as credible news program", etc. Upper bound 9 / lower bound 8 (a
+  REFUTED claim can carry true sub-facts — e.g. Bethany Hamilton's
+  autobiography WAS adapted into a film).
+- **74.5% of FEVER-derived KG content is false-or-unverifiable** (9
+  REFUTES + 26 NEI of 47 triplets). NEI content enters with the same
+  confidence as verified fact. As a share of all extraction triplets:
+  known-false 1.15%, unverifiable another 3.3%.
+- **Replacement headline for the retracted 11.9%:** natural contamination
+  ≈ 0.9% extraction infidelity (#17-corrected) + ~1.2% known-false
+  ingestion + ~3.3% unverifiable ingestion. The truth channel dominates
+  the fidelity channel — and NO fidelity validator can see it, because
+  faithful extraction of a false claim is exactly what fidelity endorses.
+  Motivates provenance-level defenses (source verdicts/trust) over
+  content validation — direct RQ4 ammunition.
+- **Extractor self-censoring (new finding):** REFUTED claims yield
+  triplets at less than half the rate of other claims — 8/18 units vs
+  27/32, triplets/unit 0.50 vs 1.09 (SUPPORTS) / 1.24 (NEI), Fisher exact
+  p=0.0085, OR 0.15. Mistral Nemo's world knowledge partially resists
+  extracting claims it "knows" are false. Elegant symmetry with #17: the
+  SAME world-knowledge leakage is protective in the extractor
+  (self-censoring) and harmful in the judge (false alarms). Small n (50
+  units) — quote the CI/p, don't oversell.
+- Fidelity-judge cross-tab: 7/9 known-false triplets were judged
+  SUPPORTED — as designed (fidelity ≠ truth), now with ground truth
+  attached.
