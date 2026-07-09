@@ -715,3 +715,55 @@ unmodified ExtractionAgent writes is already erroneous.
 placement; compile-checked) + `experiments/configs/
 contamination_control_random.yaml` (baseline diff: placement + fixed
 eval_seed). Launches tomorrow on a fresh budget.
+
+## 2026-07-09 — Random-seeding control arm (task #10 DONE)
+
+**Run:** single clean-room sequence (load_kg --clear → extraction replay →
+contamination), config `contamination_control_random.yaml` — identical to
+baseline except `seed_placement: random` (index cases placed uniformly
+across the Susceptible KG instead of inside the active retrieval subgraph).
+Seed 42, eval_seed 42, tag `control_random`. Zero rate-limit hits, zero
+failed LLM calls (~31 min run). Raw: `contamination_control_random_
+20260709_115303_*`; archived to `results/summaries/phase36_control_random_
+{trajectory.csv,manifest.json,summary.csv}`.
+
+**Headline (RQ1): retrieval reachability is effectively necessary for
+spread.**
+
+- **Propagated 0, cum_exposed 0** (baseline mean 17.8±4.0 / 65.3±8.3 over
+  seeds 42–45). Agent working contexts contained a contaminated fact in
+  0/8 passages at every one of the 10 steps. The seeded errors sat in the
+  KG untouched for the entire run.
+- **Probe contamination rate 0.933, flat steps 0/5/10** — HIGHER than
+  baseline step-10 mean 0.717±0.113, with probe_original = 0/45: when a
+  randomly placed error IS directly queried, there is no competing correct
+  evidence in its sparse neighbourhood, so the agent reproduces it almost
+  every time. Persistence and spread are decoupled phenomena: existence in
+  shared memory makes an error *locally believed*, but only placement in
+  the retrieval-active subgraph makes it *epidemic*.
+- **Detection AUROC 0.488 (chance)** vs baseline 0.899±0.007. The
+  detector's signal in baseline runs evidently comes from propagated
+  agent-written nodes and active-subgraph features, not from the seeded
+  T-REx modifications themselves — randomly placed seeds are statistically
+  invisible to it. Framing for the write-up: detectability is a property
+  of the *cascade*, not the *error*.
+- Task metrics flat (hotpot EM 0.10, FEVER 0.60 at steps 0/5/10),
+  consistent with the reach-vs-harm decoupling in all baseline seeds; this
+  run used the fixed eval_seed so these numbers are the first directly
+  cross-run-comparable task metrics.
+- Methods note: with the full Susceptible KG as the pool the injector
+  seeded all 45 index cases (15 RS), confirming the 9–10/15 RS shortfall
+  in baseline runs is a property of the *active pool*, not the injector.
+
+**Interpretation for RQ1:** the three conditions for spread now have
+evidence — (1) the error must be retrieval-reachable (this control:
+0 vs 17.8 propagated), (2) extraction writes errors at an 11.9% natural
+rate (task #9), (3) validation does not push R₀ below 1 (task #11,
+R₀≈7.2). Mere existence in shared memory is insufficient AND
+undetectable-at-chance; the active subgraph is both the attack surface
+and the detection surface.
+
+**Caveat for write-up:** single seed (42) for the control arm. The gap to
+baseline is ~4.5 sd (0 vs 17.8±4.0) and mechanistically forced (contexts
+never sampled the sparse region), so a multi-seed control replicate is low
+priority — note it as such rather than claiming replication.

@@ -1,0 +1,18 @@
+arm,seed,seed_placement,seeded,propagated,cum_exposed,probe_contam_rate_step0,probe_contam_rate_step10,probe_original_step10,detection_auroc,hotpot_em_step10,fever_acc_step10,rate_limit_hits,run_timestamp
+control_random,42,random,45,0,0,0.9333,0.9333,0,0.488,0.10,0.60,0,20260709_115303
+baseline_mean,42-45,active,39.25,17.8,65.3,,0.717,,0.899,,,,
+baseline_sd,42-45,active,0.5,4.0,8.3,,0.113,,0.007,,,,
+# Notes:
+# - control_random seeded all 45 index cases (15/15/15 per type) because the
+#   full Susceptible KG has enough relation_strengthening candidates; the
+#   active pool only ever yields 9-10 RS candidates (methods note).
+# - propagated=0 and cum_exposed=0: agent working contexts never touched a
+#   randomly placed contaminated node in 10 steps (0/8 contaminated contexts
+#   every step). Baseline mean 17.8+/-4.0 propagated -> placement inside the
+#   active retrieval subgraph is effectively necessary for spread (RQ1).
+# - probe_contam_rate 0.933 > baseline 0.717: directly-queried errors are
+#   MORE persuasive in sparse regions (probe_original=0 - no competing
+#   correct evidence). Persistence and spread are different phenomena.
+# - detection AUROC 0.488 (chance) vs baseline 0.899: the detector's signal
+#   comes from agent-written propagated nodes / active-subgraph features,
+#   not from the seeded errors themselves.

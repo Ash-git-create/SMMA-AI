@@ -1,0 +1,393 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "seed_placement": "random",
+    "context_limit": 5,
+    "retrieval_threshold": 0.0,
+    "audits_per_step": 0,
+    "audit_sample": 50,
+    "audit_targeted": false,
+    "quarantine_threshold": 0.4,
+    "trio_confidence": false,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "probe_limit": 60,
+    "probe_facts": 8,
+    "extraction_manifest": null,
+    "random_seed": 42,
+    "eval_seed": 42,
+    "sleep": 1.0,
+    "tag": "control_random",
+    "allow_dirty": false
+  },
+  "timestamp": "20260709_115303",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260709_115300.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "trex_49155",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Finland",
+      "after": "United States",
+      "subject": "Tampere Film Festival"
+    },
+    {
+      "triplet_id": "trex_24807",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Tunisia",
+      "after": "Piacenza",
+      "subject": "Bizerte Governorate"
+    },
+    {
+      "triplet_id": "trex_38740",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Hesse",
+      "after": "Nigeria",
+      "subject": "Lahn"
+    },
+    {
+      "triplet_id": "trex_6882",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Algeria",
+      "after": "Union",
+      "subject": "Oran"
+    },
+    {
+      "triplet_id": "trex_44307",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "football",
+      "after": "defender",
+      "subject": "Sun Xiang"
+    },
+    {
+      "triplet_id": "trex_10561",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Boston Red Sox",
+      "after": "Arsenal",
+      "subject": "Bob Watson"
+    },
+    {
+      "triplet_id": "trex_28558",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "USA",
+      "after": "Ecuador",
+      "subject": "San Carlos"
+    },
+    {
+      "triplet_id": "trex_7006",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Maltese",
+      "after": "Canada",
+      "subject": "Marsa"
+    },
+    {
+      "triplet_id": "trex_10142",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "mercenaries",
+      "after": "politician",
+      "subject": "Memnon"
+    },
+    {
+      "triplet_id": "trex_11714",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "tennis",
+      "after": "footballer",
+      "subject": "Wilson Sporting Goods"
+    },
+    {
+      "triplet_id": "trex_35655",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Caltagirone",
+      "after": "Vienna",
+      "subject": "Nicole Grimaudo"
+    },
+    {
+      "triplet_id": "trex_21938",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Germany",
+      "after": "Ecuador",
+      "subject": "Chorin"
+    },
+    {
+      "triplet_id": "trex_29558",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Chhatrapati",
+      "after": "oyatoi gaikokujin",
+      "subject": "Rajaram"
+    },
+    {
+      "triplet_id": "trex_23060",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Betty Compson",
+      "after": "Robert Duvall",
+      "subject": "The Barker"
+    },
+    {
+      "triplet_id": "trex_23734",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Campagnano di Roma",
+      "after": "Kvinnherad",
+      "subject": "Formello"
+    },
+    {
+      "triplet_id": "trex_29760",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "1 December 1938",
+      "after": "1938",
+      "subject": "Peter Dobing"
+    },
+    {
+      "triplet_id": "trex_7803",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "28 October 1877",
+      "after": "1877",
+      "subject": "Johann von Herbeck"
+    },
+    {
+      "triplet_id": "trex_21322",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "27 June 1876",
+      "after": "1876",
+      "subject": "Harriet Martineau"
+    },
+    {
+      "triplet_id": "trex_42600",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "24 September 2008",
+      "after": "2008",
+      "subject": "Ruslan Yamadayev"
+    },
+    {
+      "triplet_id": "trex_20006",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "12 July 1961",
+      "after": "1961",
+      "subject": "Shiva Rajkumar"
+    },
+    {
+      "triplet_id": "trex_28475",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "29 August 1915",
+      "after": "1915",
+      "subject": "Ingrid Bergman"
+    },
+    {
+      "triplet_id": "trex_9219",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "28 July 1932",
+      "after": "1932",
+      "subject": "Aubrey Lyles"
+    },
+    {
+      "triplet_id": "trex_34280",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "12 August 1971",
+      "after": "1971",
+      "subject": "Dick Schreuder"
+    },
+    {
+      "triplet_id": "trex_40454",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "22 February 2007",
+      "after": "2007",
+      "subject": "fourth Balkenende cabinet"
+    },
+    {
+      "triplet_id": "trex_11015",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "28 March 1922",
+      "after": "1922",
+      "subject": "Neville Bonner"
+    },
+    {
+      "triplet_id": "trex_29077",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "14 December 1962",
+      "after": "1962",
+      "subject": "Hiralal Mukherjee"
+    },
+    {
+      "triplet_id": "trex_39773",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "30 January 1927",
+      "after": "1927",
+      "subject": "Thomas Szczeponik"
+    },
+    {
+      "triplet_id": "trex_39321",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "6 July 2010",
+      "after": "2010",
+      "subject": "Simion Stanciu"
+    },
+    {
+      "triplet_id": "trex_14801",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "10 June 2000",
+      "after": "2000",
+      "subject": "Palas Barman"
+    },
+    {
+      "triplet_id": "trex_14278",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "20 January 1963",
+      "after": "1963",
+      "subject": "Marguerite Pierry"
+    },
+    {
+      "triplet_id": "trex_39419",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "participant in",
+      "after": "leader of",
+      "subject": "Croatia"
+    },
+    {
+      "triplet_id": "trex_13076",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Chris Hughton"
+    },
+    {
+      "triplet_id": "trex_40629",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Jamie Lawrence"
+    },
+    {
+      "triplet_id": "trex_33320",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "participant in",
+      "after": "leader of",
+      "subject": "Holly Crawford"
+    },
+    {
+      "triplet_id": "trex_43075",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Cynthia Weber"
+    },
+    {
+      "triplet_id": "trex_8110",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "[Art Work] follows after [Art Work]",
+      "after": "[Art Work] replaced after [Art Work]",
+      "subject": "Suikoden V"
+    },
+    {
+      "triplet_id": "trex_1899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "has part",
+      "after": "is entirely composed of",
+      "subject": "Indian Armed Forces"
+    },
+    {
+      "triplet_id": "trex_26152",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Discua"
+    },
+    {
+      "triplet_id": "trex_47471",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "cast member",
+      "after": "lead actor",
+      "subject": "Villa Rides"
+    },
+    {
+      "triplet_id": "trex_9372",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of political party",
+      "after": "leader of political party",
+      "subject": "Georges Guingouin"
+    },
+    {
+      "triplet_id": "trex_27738",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Marco Sas"
+    },
+    {
+      "triplet_id": "trex_1210",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Ted Calland"
+    },
+    {
+      "triplet_id": "trex_23292",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "[Person] is a member of [Music Group]",
+      "after": "[Person] is a leader of [Music Group]",
+      "subject": "Neptune"
+    },
+    {
+      "triplet_id": "trex_6082",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Tzanetis"
+    },
+    {
+      "triplet_id": "trex_44625",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Alan Macnaughton"
+    }
+  ],
+  "transmissions": [],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_control_random_20260709_115303_trajectory.csv"
+}

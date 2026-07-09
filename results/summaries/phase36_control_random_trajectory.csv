@@ -1,0 +1,12 @@
+step,cum_exposed,synth_units,new_triplets,new_edges,new_exposed,new_infected,n_contexts,n_contexts_contam,n_facts_served,n_contam_facts_served,audited,quarantined,cascaded,S,I,R,gt_seed_entity_disambiguation,gt_prop_entity_disambiguation,gt_seed_qualifier_loss,gt_prop_qualifier_loss,gt_seed_relation_strengthening,gt_prop_relation_strengthening,gt_total,det_R_contam,det_R_clean,det_I_contam,det_I_clean,hotpot_em,hotpot_f1,hotpot_avg_facts,fever_accuracy,fever_avg_facts,probe_n,probe_contaminated,probe_original,probe_other,probe_contam_rate,detection_auroc
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,50795,0,0,15,0,15,0,15,0,45,0,0,0,0,0.1,0.1141,4.66,0.6,1.82,45,42,0,3,0.9333,
+1,0,9,40,188,0,0,9,0,41,0,0,0,0,50835,0,0,15,0,15,0,15,0,45,0,0,0,0,,,,,,,,,,,
+2,0,9,28,116,0,0,9,0,28,0,0,0,0,50863,0,0,15,0,15,0,15,0,45,0,0,0,0,,,,,,,,,,,
+3,0,9,35,163,0,0,9,0,39,0,0,0,0,50898,0,0,15,0,15,0,15,0,45,0,0,0,0,,,,,,,,,,,
+4,0,9,35,156,0,0,9,0,37,0,0,0,0,50933,0,0,15,0,15,0,15,0,45,0,0,0,0,,,,,,,,,,,
+5,0,12,40,178,0,0,12,0,48,0,0,0,0,50973,0,0,15,0,15,0,15,0,45,0,0,0,0,0.1,0.1241,4.78,0.6,1.82,45,42,0,3,0.9333,
+6,0,8,34,155,0,0,8,0,36,0,0,0,0,51007,0,0,15,0,15,0,15,0,45,0,0,0,0,,,,,,,,,,,
+7,0,11,34,136,0,0,11,0,39,0,0,0,0,51041,0,0,15,0,15,0,15,0,45,0,0,0,0,,,,,,,,,,,
+8,0,10,36,165,0,0,10,0,41,0,0,0,0,51077,0,0,15,0,15,0,15,0,45,0,0,0,0,,,,,,,,,,,
+9,0,7,27,135,0,0,7,0,35,0,0,0,0,51104,0,0,15,0,15,0,15,0,45,0,0,0,0,,,,,,,,,,,
+10,0,8,29,141,0,0,8,0,36,0,0,0,0,51133,0,0,15,0,15,0,15,0,45,0,0,0,0,0.1,0.1241,4.92,0.6,1.84,45,42,0,3,0.9333,0.488
