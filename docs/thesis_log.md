@@ -767,3 +767,51 @@ and the detection surface.
 baseline is ~4.5 sd (0 vs 17.8±4.0) and mechanistically forced (contexts
 never sampled the sparse region), so a multi-seed control replicate is low
 priority — note it as such rather than claiming replication.
+
+## 2026-07-09 (afternoon) — Judge calibration (task #17 DONE): the 11.9% natural rate does not survive
+
+**Method fix first:** the v1 blind sheet lacked the source passages (my
+generation error), so Ashwin's first pass could only judge world-truth —
+preserved as `phase34_world_plausibility_labels.csv` (side finding: 17/20
+judge-flagged errors are world-plausible, so plausibility review cannot
+substitute for provenance). Regenerated as
+`phase34_judge_calibration_blind_v2.csv` with passages; Ashwin relabeled
+all 40 rows blind against the 5-label taxonomy. Scoring in
+`phase34_judge_calibration_results.csv` + `_summary.json`.
+
+**Headline: the Llama 3.1 8B judge's flag precision is 10% (2/20).**
+
+- Exact-label agreement 21/40; binary 22/40. All 20 judge-SUPPORTED rows
+  human-confirmed (0 missed errors in that stratum); of 20 judge-flagged
+  errors, 18 are false alarms.
+- Per category: ENTITY_ERROR 0/10 confirmed; UNSUPPORTED 1/5;
+  RELATION_ERROR 1/5 — and the RELATION stratum is a census (all 5 flags
+  in the whole audit), so exactly 1 real error there, which the human
+  labels QUALIFIER_LOSS (the judge is QL-insensitive, confirmed: 0 QL
+  calls in 783, misfiles the one real QL as RELATION).
+- **Corrected natural error rate ≈ 0.9%** (56×0.0 + 32×0.2 + 1 ≈ 7.4 true
+  errors / 783), an order of magnitude below the naive 11.9%. Wide CI
+  (ENTITY 0/10 upper bound ~26%), but the direction is unambiguous.
+- **The FEVER 40.4% vs HotpotQA 10.1% gap is largely a judge artifact:**
+  6/6 FEVER flags in the sample are false alarms, including the three
+  world-false claims (Aarhus south of London, "198 musicians", CONCACAF
+  South America) that were extracted faithfully — the judge leaked world
+  knowledge into a fidelity task, exactly what its system prompt forbade.
+  The "context richness as RQ1 condition" framing is retracted; reframe
+  as: fidelity judging of counterfactual claims defeats an 8B judge.
+- **Convergent mechanism for the Trio net-harm result:** flag precision
+  10% here ≈ ValidationAgent quarantine precision 8–10% in the mitigated
+  runs — two independent measurements of the same phenomenon. The full
+  Trio arm hurts because its validator is this judge grade: it mostly
+  flags good nodes, and cascade deprecation amplifies those mistakes.
+  Strengthens the case for #15 and makes "judge quality is the mitigation
+  bottleneck" a first-class RQ4 discussion point.
+
+**Write-up consequences:** (1) natural extraction fidelity errors are
+rare (~1%) → contamination is not extraction noise; the amplification
+machinery is the story — sharpens RQ1 alongside today's control arm.
+(2) The RQ2 realism claim ("natural mix mirrors propagation ranking")
+must be hedged: the natural mix was judge-artifact-dominated.
+(3) Detection AUROC numbers (different feature-based detector) are
+unaffected. Limitations: single rater (author), blind but post-hoc;
+optional Haiku second rater parked.

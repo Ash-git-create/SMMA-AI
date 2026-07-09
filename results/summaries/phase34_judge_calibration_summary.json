@@ -1,0 +1,34 @@
+{
+  "task": "#17 judge calibration - human (author) blind fidelity labels vs Llama 3.1 8B judge",
+  "sample": "40 rows stratified from the 783-triplet natural audit: 20 judge-SUPPORTED, 10 ENTITY_ERROR, 5 UNSUPPORTED, all 5 RELATION_ERROR flags",
+  "sheets": {
+    "labels": "phase34_judge_calibration_blind_v2.csv (with source passages; v1 lacked passages and was relabeled)",
+    "per_row_scoring": "phase34_judge_calibration_results.csv",
+    "world_plausibility_side_finding": "phase34_world_plausibility_labels.csv"
+  },
+  "agreement": {
+    "exact_label": "21/40 (0.525)",
+    "binary_error_vs_supported": "22/40 (0.55)"
+  },
+  "judge_flag_precision": {
+    "overall": "2/20 (0.10)",
+    "entity_error": "0/10 (95% upper bound ~0.26 by rule of three)",
+    "unsupported": "1/5 (0.20)",
+    "relation_error": "1/5 (census - all 5 RELATION flags in the audit were checked; exactly 1 is a real error, and it is actually QUALIFIER_LOSS)"
+  },
+  "judge_supported_check": "0/20 judge-SUPPORTED rows contained a human-identified error (upper 95% ~0.14; recall not tightly bounded)",
+  "corrected_natural_error_rate": {
+    "naive_judge_rate": "93/783 = 11.9%",
+    "extrapolation": "56*0.0 + 32*0.2 + 1 = ~7.4 true errors among 93 flags",
+    "point_estimate": "~0.9% (7.4/783), wide CI; order of magnitude below the naive rate"
+  },
+  "fever_gap_artifact": "6/6 FEVER flags in the sample were false alarms. The three world-false FEVER claims (Aarhus south of London, 198 musicians, CONCACAF South America) were faithfully extracted but flagged - the judge leaked world knowledge into a fidelity task, exactly what its system prompt forbade. The FEVER 40.4% vs HotpotQA 10.1% 'context richness' finding is therefore largely a judge artifact, not an extraction property.",
+  "qualifier_loss": "Judge found 0 QL in 783; human found 1 QL in 40 (judge had miscategorized it as RELATION_ERROR) - judge QL-insensitivity confirmed.",
+  "convergent_finding": "Judge flag precision 10% here ~= ValidationAgent quarantine precision 8-10% in the mitigated runs, measured independently. The full-Trio net harm has a mechanism: a low-precision judge of this model grade mostly flags good nodes.",
+  "limitations": "Single human rater (thesis author), post-hoc but blind to key; stratified sample so overall agreement is not a population estimate; optional second rater (Claude Haiku) parked.",
+  "human_confirmed_errors": [
+    {"subject": "James A. Garfield", "judge": "RELATION_ERROR", "human": "QUALIFIER_LOSS"},
+    {"subject": "Sergei Aleksandrovich Tokarev", "judge": "UNSUPPORTED", "human": "UNSUPPORTED"}
+  ],
+  "date": "2026-07-09"
+}

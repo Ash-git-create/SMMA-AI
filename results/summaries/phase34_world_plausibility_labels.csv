@@ -1,0 +1,41 @@
+triplet_id,subject,predicate,object,world_plausible_human
+2a6e3b13-943b-53e4-9c70-57f0a4194772,Chiwetel Ejiofor,born_in,1977,TRUE
+af3c45c4-0c8e-5bd5-b4cc-524912d3706e,Nick Carter,released,All American,TRUE
+cbc18c88-8e65-5a9f-81bd-e9af96b49880,College Humor,released_in,1933,TRUE
+53b4ea93-1225-5db1-a265-d21f36cbac47,Andrea von Strucker,is_half_sibling_of,Werner von Strucker,TRUE
+045d75ce-e87e-5ada-8fe6-483048bcb20f,Salma Hayek,nationality,Mexican,TRUE
+d3ff3943-2d93-591a-aa4d-6aab16a0dd36,Mwabvi Wildlife Reserve,least_accessible,Malawi,TRUE
+bddae936-d6dd-5e18-851d-f432dfafd66c,Francis McPeake,is_a_member_of,The McPeake family,TRUE
+96560dfb-9cda-5e0e-8202-1c179def9df0,Alexander Nikolayev,born_in,1918,TRUE
+3ce80c65-7714-533b-ab74-0ce363a49fc1,Aarhus,located_northwest_of,Copenhagen,TRUE
+35615a83-6a3d-5f14-a0cc-0256ca26d165,Apratim Majumdar,from,Kolkata,TRUE
+43f3e498-64c4-589a-80c2-9e6c937655b9,James A. Garfield,preceded,John F. Kennedy,TRUE
+1f26b688-922b-5374-a000-0d22368df4cc,Brady Seals,member_of,Little Texas,TRUE
+7e71b087-ced4-5c37-a2f1-bd67f1cfc992,James A. Garfield,shot_by,Charles J. Guiteau,TRUE
+2800585b-d38c-5206-894c-fe0299eed22e,David Hasselhoff,plays,Nick Fury,TRUE
+56832528-5aef-5a26-9fdc-10c5b8eb082b,Kurt Vonnegut Jr.,published,14 novels,TRUE
+b24f4c71-e92c-593a-b134-bb5c831f540f,Laurie Metcalf,played_role,Dr. Jenna James,TRUE
+4d9ee269-24a8-50bc-8a42-63f26ea8dd65,Brady Seals,cousin_of,Johnny Duncan,TRUE
+ba328bfe-2f1a-58a1-a588-0b94e3bea1c8,Aarhus,located_south_of,London,FALSE
+627e1959-e661-519c-abc8-ceaa7b054b95,Sergei Aleksandrovich Tokarev,spoken_language,Russian,TRUE
+d952b24d-32c3-5a38-bd0f-64725acfe554,Halina Reijn,is,Dutch actress and writer,TRUE
+d609b5ba-789f-590a-8343-09eec0994b24,Annette Bening,co-stars_as,Carolyn,TRUE
+956f8662-292f-5a9a-bb2e-49a1bd663714,Berger Blanc Suisse,has_same_origins_as,White Shepherd,TRUE
+d6b781f7-86ab-59eb-b9db-d314bc52738a,Rupert Murdoch,has_been,criticized,TRUE
+e4d12d6b-ab66-5fe6-ab08-d572edf41013,Benedict Arnold,was_commissioned_into,British Army as a brigadier general,TRUE
+b613dd9e-e6ef-5de5-ab6a-288088f2fcda,Finding Dory,written_by,someone who is based at Disney,TRUE
+e661a4da-e107-51d7-bdb7-94236769da03,Salma Hayek,starred_in,Wild Wild West,TRUE
+b769e68e-597c-5c2d-90c9-70f63630cdf3,Mwabvi Wildlife Reserve,is_smallest_national_park_of,Malawi,TRUE
+35eb98f2-7663-5153-aafa-1c085a0d5d9b,New Orleans Pelicans,member_of,Western Conference Southwest Division,TRUE
+1f73b94b-7088-520a-8e88-517ba6c6f499,American Beauty,directed_by,Sam Mendes,TRUE
+a145a22a-c60c-5235-bb5b-0620adf7f67b,Stuart Roosa,conducted_experiments_from,orbit in the Command Module Kitty Hawk,TRUE
+7182f412-1cb7-5edc-a647-c772e1dffba2,Armageddon in Retrospect,is_the_first,posthumous collection,TRUE
+a41d6a37-3b83-5a80-9088-dfc8195eab82,2016 Tour de France,had_total,198 musicians,FALSE
+5ad778e8-952c-55e0-92b6-7d1b32424f76,Beer Wars,covers,use of advertising and lobbyists to control beer market,TRUE
+5df174f3-2444-5eb2-a936-aae2d46966ed,CONCACAF Champions League,organized_for,football clubs in South America,FALSE
+8a5fe518-fe86-5bbe-87c0-63b32c9795da,A Pair of Brown Eyes,released_on,18-Mar-85,TRUE
+262bcb48-7621-596a-9fb0-7d94b5c9f422,Naval Submarine Base New London,also_known_as,The_Home_of_the_Submarine_Force,TRUE
+08ec131c-477f-5b42-beb0-7f72537b7827,The Braes of Balquhither,is_about,The Braes of Balquhither,TRUE
+475a8cdc-1751-5fcb-a0f7-34175fb6d609,Lester Burnham,has_midlife_crisis_over,Angela,TRUE
+46790689-4e47-5360-a2eb-86cb2eb96f69,Tom Clancy,part_owner_of,Baltimore Orioles,TRUE
+df456609-9381-58d0-bc8d-fd42bb07edc4,Franco Corelli,appeared_on_the_stages_of,most of the major opera houses in Europe and with opera companies throughout North America,TRUE
