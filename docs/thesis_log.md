@@ -853,3 +853,44 @@ verdict via `scripts/analyze_truth_channel.py` — zero LLM calls. Outputs:
 - Fidelity-judge cross-tab: 7/9 known-false triplets were judged
   SUPPORTED — as designed (fidelity ≠ truth), now with ground truth
   attached.
+
+## 2026-07-09 (evening) — Chapter drafting started (task #22) while #14 crawls the TPD cap
+
+Drafted `docs/chapters/ch3_methodology.md` (full Chapter 3: architecture
+as-run [Mistral API + Groq, not the original Ollama plan], KG/provenance
+schema, taxonomy + seed-placement-as-variable, SIR formulation +
+measurement mapping, Trio mechanisms as separable levers, clean-room
+protocol + arm table + replication policy, metrics, and the 3-layer
+validity instrumentation) and `docs/chapters/ch5_results_phase23.md`
+(Sections 5.1–5.8: baseline envelope, reach-vs-harm, control arm,
+mitigation 4-arm with the seed-43 divergence flagged `[PENDING-#14]`,
+SIR fit/R₀, RQ2 ranking, the three-instrument natural-contamination
+story with the corrected ~0.9% + truth channel, statistical treatment).
+All retractions/hedges from today's entries are baked in. Figures marked
+`[FIG]`; Phase-4-dependent parts marked.
+
+**#14 interim:** seed 43 mitigated = 6 propagated / 44 exposed / probe
+0.76 / AUROC 0.873 — BELOW baseline mean, vs seed-42 mitigated 34/94.
+Full-Trio harm may be high-variance rather than robustly harmful;
+ch5 §5.4 already drafted with the conditional restatement. Seed 44
+mid-run against the TPD cap; seed 45 expected tomorrow.
+
+## 2026-07-11 — USR decision (task #16): KEEP, mechanical form
+
+Decided with Ashwin: USR stays, implemented mechanically (sentence-level
+entity/string overlap against the question's retrieved high-confidence
+triplets — no LLM judge). Reasons: it is the suite's only answer-side
+grounding metric; EM/F1/FEVER have been flat in every run, leaving Phase 4
+without a sensitive answer-quality instrument for RQ4's "preserving answer
+quality" clause; it is the metric positioned to expose the confidence
+floor's retrieval-shrinkage cost; and the mechanical form is deterministic
+and immune to the judge-precision problem (#17). Lexical-matching
+crudeness to be documented as a limitation. To be wired into the task-eval
+path before Phase 4 (~2026-07-30). ch3 §3.7's [PHASE-4] USR note to be
+updated when implemented.
+
+Also this morning: planned power-off will kill the seed-45 mitigated run
+mid-flight (batch relaunch script ready; cache makes the rerun cheap).
+Seeds 43/44 complete: 6/44 and 10/67 propagated/exposed — full-Trio harm
+is emerging as HIGH-VARIANCE rather than robust (42: 34, 43: 6, 44: 10,
+45: ~24 through step 9).
