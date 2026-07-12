@@ -531,7 +531,8 @@ def run_experiment(args) -> None:
         synth_llm = get_client(ModelRole.EXTRACTION)   # Mistral Nemo: extraction & synthesis
         eval_llm = get_client(ModelRole.ORCHESTRATION)
         validator = (ValidationAgent(neo4j_client=client,
-                                     quarantine_threshold=args.quarantine_threshold)
+                                     quarantine_threshold=args.quarantine_threshold,
+                                     oracle=args.oracle_validation)
                      if args.audits_per_step > 0 else None)
 
         # ---- Step 0: seed index cases + baseline measurement ----
@@ -636,6 +637,10 @@ def main() -> None:
     parser.add_argument("--audit-sample",        type=int,   default=50,   help="Triplets per audit pass")
     parser.add_argument("--audit-targeted",      action="store_true",      help="Audit this cycle's read/written nodes instead of uniform random")
     parser.add_argument("--quarantine-threshold", type=float, default=0.4, help="Validator quarantines below this confidence")
+    parser.add_argument("--oracle-validation",   action="store_true",
+                        help="Validator quarantines from ground truth (error_type) instead "
+                             "of the LLM judge — RQ4 upper-bound arm isolating judge "
+                             "precision from the Trio architecture; zero audit LLM calls")
     parser.add_argument("--trio-confidence",     action="store_true",      help="Trio confidence propagation at write time (derived conf = f(parents))")
     parser.add_argument("--eval-every",          type=int,   default=5,    help="Task eval every k steps (0 = only step 0 and final)")
     parser.add_argument("--eval-questions",      type=int,   default=50,   help="Questions per dataset per eval (match baseline for comparability)")

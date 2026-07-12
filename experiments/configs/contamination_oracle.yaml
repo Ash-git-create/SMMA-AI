@@ -1,0 +1,42 @@
+# Phase 3.8 ORACLE-VALIDATOR arm (task #18) — full Trio architecture with a
+# perfect judge. Identical to contamination_mitigated.yaml except
+# oracle_validation: quarantine decisions come from ground truth
+# (error_type), not the Llama-8B judge, at zero audit LLM calls.
+#
+# Purpose (RQ4 upper bound): the mitigated multi-seed showed the full Trio
+# stack at 6-10% quarantine precision leaves mean spread unchanged,
+# multiplies variance ~10x, and degrades detection AUROC. This arm isolates
+# the cause: if the oracle contains spread and the AUROC penalty vanishes,
+# the judge was the bottleneck and the architecture is sound; if pathologies
+# persist under perfect judgement, the architecture itself is implicated.
+# Completes the sandwich: baseline < Trio(8B judge) < Trio(oracle).
+
+steps: 10
+entities_per_step: 12
+injections_per_type: 15
+pool_per_key: 50
+
+# Retrieval (the beta channel) — Trio confidence floor ON
+context_limit: 5
+retrieval_threshold: 0.5
+
+# Validation (the gamma channel) — targeted audits ON, oracle verdicts
+audits_per_step: 1
+audit_sample: 25
+audit_targeted: true
+quarantine_threshold: 0.4
+oracle_validation: true
+
+# Trio confidence propagation at write time — derived conf = f(parents)
+trio_confidence: true
+
+# Task measurement — identical to baseline/mitigated
+eval_every: 5
+eval_questions: 50
+probe_limit: 60
+probe_facts: 8
+
+# Reproducibility + rate limiting
+random_seed: 42
+sleep: 1.0
+tag: oracle

@@ -46,6 +46,16 @@ class ValidationAgent:
         Optional pre-built OrchestrationAgent. If None, one is created internally.
     neo4j_client:
         Optional pre-built Neo4jClient.
+    oracle:
+        If True, quarantine decisions come from the experimenter's ground
+        truth (the `error_type` property written by the ErrorInjector and the
+        transmission bookkeeping) instead of the LLM judge — zero LLM calls
+        per audit. This is the RQ4 upper-bound arm: it keeps the entire Trio
+        architecture (targeted audits, quarantine, cascade deprecation)
+        while replacing the judge with perfect judgement, isolating
+        judge-precision effects from architecture effects. Confidence of
+        clean nodes is never touched (no re-scoring), so the confidence-
+        laundering channel is absent by construction.
     """
 
     def __init__(
@@ -54,11 +64,14 @@ class ValidationAgent:
         quarantine_threshold: float = 0.4,
         orchestration_agent: Optional[OrchestrationAgent] = None,
         neo4j_client: Optional[Neo4jClient] = None,
+        oracle: bool = False,
     ):
         self.agent_id = agent_id
         self.quarantine_threshold = quarantine_threshold
-        self._orchestrator = orchestration_agent or OrchestrationAgent(
-            infection_threshold=quarantine_threshold
+        self.oracle = oracle
+        self._orchestrator = None if oracle else (
+            orchestration_agent
+            or OrchestrationAgent(infection_threshold=quarantine_threshold)
         )
         self._external_client = neo4j_client
 
@@ -152,6 +165,21 @@ class ValidationAgent:
 
         for triplet in candidates:
             tid = triplet["id"]
+
+            if self.oracle:
+                # Ground-truth verdict: any error_type (seeded or
+                # propagated_*) marks the node as contaminated.
+                if triplet.get("error_type"):
+                    client.update_state(tid, STATE_RECOVERED)
+                    client.update_confidence(tid, 0.0)
+                    quarantined += 1
+                    logger.debug(
+                        f"[{self.agent_id}] Quarantined {tid} "
+                        f"(oracle, error_type={triplet['error_type']})"
+                    )
+                    cascaded += self.cascade_deprecate(tid)
+                continue
+
             result = self._orchestrator.validate_triplet(tid)
 
             if result.get("error"):
