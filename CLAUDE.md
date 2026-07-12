@@ -156,3 +156,54 @@ SMMA_AI_Systems/
 4. **Memory:** Update `~/.claude/projects/.../memory/` after each session with current phase status and what was done.
 5. **No premature abstraction:** Build exactly what each phase needs. Don't over-engineer agents before the experiments demand it.
 6. **Data files:** Never commit raw datasets or model weights. Only commit code, configs, and result summaries.
+7. **Session log:** Append a dated entry to `docs/thesis_log.md` for every session that produces a result, decision, or retraction — it is raw material for the thesis chapters.
+
+---
+
+## Analysis & Write-up Discipline (model-independent — follow exactly)
+
+These rules encode judgment calls already made in this project. They apply to
+every analysis, chapter edit, and results claim, regardless of which model is
+running the session.
+
+1. **Numbers come from archived files, never from conversation memory.**
+   Every figure quoted in a chapter or log entry must be verifiable against a
+   CSV/JSON in `results/summaries/` (or `results/raw/` for unarchived runs).
+   If a number cannot be traced to a file, recompute it or do not state it.
+2. **Single-seed claims are labelled as such, always.** No headline may rest
+   on one seed without an explicit single-seed caveat. Precedent: the seed-42
+   "full-Trio harm" headline was retracted when 4-seed replication dissolved
+   it into variance (thesis_log 2026-07-12).
+3. **Seed-noise rule:** single-run differences smaller than ~2 baseline SD
+   are "within noise" and must be hedged. Baseline envelope (n=4): propagated
+   17.8±4.0, exposed 65.3±8.1, probe 0.717±0.113, AUROC 0.899±0.007.
+4. **Small-n comparisons report BOTH Welch t and Mann–Whitney U** (two-sided).
+   Variance claims at n=4 are "suggestive", never "significant", unless the
+   test says otherwise. Fisher exact for contingency contrasts.
+5. **Retractions are recorded, not overwritten.** When new evidence overturns
+   a stated finding, the chapter text states the retraction and the
+   thesis_log entry explains it. Never silently delete a superseded claim.
+6. **Known interpretation traps (do not re-learn these):**
+   - USR measures *grounding*, not truth — a faithful reproduction of a
+     retrieved contaminated fact is traceable by design (§3.7).
+   - The oracle arm's AUROC is partly favourable by construction (caught
+     nodes carry conf 0) — claim the *disappearance of the degradation*, not
+     superior detection (§5.4.2).
+   - EM/F1/FEVER are insensitive at Phase 2–3 contamination densities —
+     flatness there is expected, not evidence of safety.
+   - The run seed fixes injection placement, NOT LLM generation — same-seed
+     reruns vary; do not treat rerun deltas as bugs.
+7. **Experiment invariants:** never switch the Groq judge model
+   (llama-3.1-8b-instant) mid-experiment; never rotate API keys (declined on
+   ToS grounds); free tier only — no paid upgrades; Groq TPD is 500K
+   rolling-24h, so budget runs at ~1–3/day and prefer token-free work when
+   the window is exhausted.
+8. **Run protocol:** every contamination run uses the 3-stage clean room
+   (load_kg --clear → run_extraction → run_contamination) with the Neo4j
+   preflight poll. Neo4j is Desktop-managed — only Ashwin can start it. Keep
+   a relaunch script ready for any long run; kills are loss-free except the
+   unwritten manifest.
+9. **Before finalising any chapter section:** cross-check its numbers against
+   the archive, confirm hedges per rules 2–4, and confirm no `[PENDING-*]`
+   or `[PHASE-4]` marker is silently dropped — resolve or carry them
+   explicitly.
