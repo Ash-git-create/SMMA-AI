@@ -951,3 +951,49 @@ relaunch script kept ready; reruns are cheap by design.
 for the AUROC degradation and variance — now the sharpest open question),
 then #20 prompt-tuned validator, #15 ancestor-excluded ablation, #16
 mechanical USR before Phase 4.
+
+
+---
+
+## 2026-07-12 (afternoon) — Oracle-validator arm: R₀ = 0.79, the first sub-critical configuration (task #18 DONE)
+
+**Done:** implemented `ValidationAgent(oracle=True)` (ground-truth quarantine
+verdicts via `error_type`, zero audit LLM calls; no re-scoring of clean
+nodes, so the confidence-laundering channel is structurally absent),
+`--oracle-validation` runner flag, `contamination_oracle.yaml` (identical to
+mitigated except the judge). Clean-room run, seed 42, completed in ~45 min
+(all 250 audit calls free). Archives: `phase38_oracle_{manifest,trajectory}`,
+`phase38_sir_fit_oracle.csv`. ch5 §5.4.2 written; ch3 arm table updated.
+
+**Results (oracle vs Trio-8B n=4 vs baseline n=4):**
+- Propagated 11 / exposed 44 (38 index cases realised; RS 8/15 in pool).
+- **R₀ = 0.79** — γ = 0.0360, ~4.5× the 8B judge's 0.0080. Only arm ever
+  below the epidemic threshold. The architecture CAN mitigate.
+- **Probe rate DECLINES 0.842 → 0.756 → 0.612** — the only declining probe
+  trajectory in any run; quarantine that actually removes contamination
+  makes errors unretrievable, hence unbelieved (probe_other 5 → 18).
+- **AUROC degradation vanishes: 0.899** (= baseline mean; 8B judge arm
+  0.859). Confirms confidence laundering as a judge artifact — the oracle
+  never re-scores survivors. Caveat noted: oracle AUROC partly favourable
+  by construction (caught nodes carry conf 0); the claim is the
+  disappearance of the DEGRADATION, not superior detection.
+- **Architecture residual cost: 2:1 collateral** — 32 clean quarantined per
+  16 contaminated, all cascade descendants (exposed-but-clean derivations).
+  Perfect judgement caps collateral at the lineage structure's own ratio;
+  the 8B judge was ~9:1.
+
+**Attribution verdict (RQ4):** judge precision is the bottleneck, not the
+Trio architecture. Same stack, no other change: 6-10% precision → R₀ ≈ 4.5;
+100% precision → R₀ = 0.79. Mitigation quality is monotone in validator
+precision → motivates #20 (prompt-tuned validator) as a dose-response point
+between the endpoints, and reframes #15: circular validation matters only
+insofar as it depresses effective precision.
+
+**Caveats:** single seed; 38 index cases (seeding-pool RS shortfall);
+propagated count alone (11) is NOT distinguishable from the 8B arm's wide
+distribution — the discriminating evidence is R₀ < 1 + declining probes +
+restored AUROC.
+
+**Next:** #20 prompt-tuned validator (offline iteration on the 40 human
+labels, then one mitigated rerun if precision jumps), #15, #16 mechanical
+USR before Phase 4.

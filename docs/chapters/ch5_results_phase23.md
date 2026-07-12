@@ -156,6 +156,67 @@ protocol. The run seed fixes injection placement but not LLM generation, so
 residual API nondeterminism contributes to within-configuration variance;
 this strengthens rather than undermines the variance finding.
 
+### 5.4.2 The oracle-validator arm: is it the judge or the architecture?
+
+Section 5.4.1 leaves an attribution question open: do the full-Trio
+pathologies come from the *architecture* (cascade deprecation amplifying
+mistakes) or from the *judge* (6–10% quarantine precision feeding it)? The
+oracle arm answers it with a single intervention: a run identical to the
+mitigated configuration in every respect except that quarantine decisions
+are read from the experimenter's ground-truth labels instead of the Llama-8B
+judge. The architecture — targeted audits, quarantine, cascade deprecation,
+confidence floor, write-time confidence propagation — is untouched; only
+the judgement becomes perfect (and free: zero audit LLM calls).
+
+| Metric | Oracle (seed 42) | Trio, 8B judge (n=4) | Baseline (n=4) |
+|---|---|---|---|
+| Propagated | 11 | 15.0 ± 12.8 | 17.8 ± 4.0 |
+| Cumulative exposed | **44** | 60.5 ± 25.7 | 65.3 ± 8.1 |
+| Probe contamination (s0 → s5 → s10) | 0.842 → 0.756 → **0.612** | 0.740 ± 0.037 (s10, flat) | 0.717 ± 0.113 (s10, flat) |
+| Detection AUROC | **0.899** | 0.859 ± 0.013 | 0.899 ± 0.007 |
+| Quarantined (contam / clean) | 48 (16 / 32) | ~60 (2–10% precision) | 0 |
+| Fitted γ | **0.0360** | 0.0080 ± 0.0055 | 0 |
+| **R₀** | **0.79** | 4.46 ± 2.36 | — (γ = 0) |
+
+Findings, in order of strength:
+
+1. **The cascade is contained: R₀ = 0.79 — the only sub-critical
+   configuration in this thesis.** A perfect judge lifts γ by ~4.5× over
+   the 8B judge (0.036 vs 0.008) and drives the reproduction number below
+   the epidemic threshold. The architecture *can* mitigate; nothing about
+   cascade deprecation is inherently pathological.
+2. **The probe rate declines over the run (0.84 → 0.61) — no other arm in
+   any configuration has ever shown a declining probe rate.** Quarantine
+   that actually removes contaminated nodes converts direct probes from
+   "contaminated" to "other" (probe_other rose 5 → 18); errors stop being
+   *believed* because they stop being *retrievable*. Every other arm's
+   probe rate is flat or rising.
+3. **The AUROC degradation vanishes** (0.899, exactly the baseline mean vs
+   0.859 under the 8B judge), confirming Section 5.4.1's confidence-
+   laundering mechanism as a judge artifact: the oracle never re-scores
+   surviving nodes, so nothing gets laundered. (Caveat: the oracle arm's
+   AUROC is partially favourable by construction — caught nodes carry
+   confidence 0. The claim is not that the oracle detects better, but that
+   the *degradation below baseline* disappears with the judge.)
+4. **The architecture's residual cost is measurable and modest: 32 clean
+   nodes quarantined per 16 contaminated (≈2 : 1 collateral).** All 32 are
+   cascade descendants of genuinely contaminated ancestors — exposed but
+   uninfected derivations. Under the 8B judge the same architecture removed
+   ~9 clean nodes per contaminated one. Perfect judgement does not eliminate
+   collateral damage; it caps it at the lineage structure's own
+   exposed-but-clean ratio.
+
+**Attribution verdict (RQ4):** judge precision is the bottleneck, not the
+Trio architecture. The same stack spans R₀ ≈ 4.5 (6–10% precision) to
+R₀ = 0.79 (100% precision) with no other change — mitigation quality is a
+monotone function of validator precision, which motivates measuring the
+dose–response curve between those endpoints (Section 5.4.1's variance
+mechanism predicts a noisy middle). Caveats: single seed (42); this run
+realised 38 index cases (8/15 RS candidates in the seeding pool); propagated
+count (11) alone is *not* distinguishable from the 8B-judge arm's wide
+distribution — the sub-critical R₀, the declining probe rate, and the
+restored AUROC are the discriminating evidence.
+
 ## 5.5 Epidemiological fit and R₀
 
 Fitting the discrete SIR model to the empirical trajectories
@@ -167,9 +228,12 @@ Fitting the discrete SIR model to the empirical trajectories
 | ablation_floor | 0.0289 | 0 | — | 1.4 |
 | ablation_validation | 0.0474 | 0.0066 | **7.19** | 1.5 |
 | mitigated (4 seeds) | 0.0327 ± 0.0259 | 0.0080 ± 0.0055 | **4.46 ± 2.36** (range 2.4–7.6) | 0.5–1.6 |
+| oracle (Section 5.4.2) | 0.0283 | **0.0360** | **0.79** | 2.3 |
 
-Where validation gives a non-zero γ, R₀ lands at 2.4–7.6 — always well above
-the containment threshold (R₀ < 1). The multi-seed fit dissolves the
+Where validation runs with the 8B judge, R₀ lands at 2.4–7.6 — always well
+above the containment threshold (R₀ < 1). The oracle arm is the exception
+that proves the mechanism: perfect quarantine decisions raise γ ~4.5× and
+bring R₀ to 0.79, the only sub-critical configuration observed. The multi-seed fit dissolves the
 single-seed β story in the same way Section 5.4.1 dissolves the harm story:
 seed 42's β of 0.0703 (~2.6 SD above baseline) sits next to seed 43's
 0.0110, and the mitigated β mean (0.0327 ± 0.0259) is statistically

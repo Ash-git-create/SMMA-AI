@@ -1,0 +1,438 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "seed_placement": "active",
+    "context_limit": 5,
+    "retrieval_threshold": 0.5,
+    "audits_per_step": 1,
+    "audit_sample": 25,
+    "audit_targeted": true,
+    "quarantine_threshold": 0.4,
+    "oracle_validation": true,
+    "trio_confidence": true,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "probe_limit": 60,
+    "probe_facts": 8,
+    "extraction_manifest": null,
+    "random_seed": 42,
+    "eval_seed": 42,
+    "sleep": 1.0,
+    "tag": "oracle",
+    "allow_dirty": false
+  },
+  "timestamp": "20260712_130917",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260712_130911.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "trex_34908",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "American",
+      "subject": "Ian Callaghan"
+    },
+    {
+      "triplet_id": "8f492f02-c902-5bee-84ed-b9d2ca304270",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "impala",
+      "after": "nyala",
+      "subject": "Mwabvi Wildlife Reserve"
+    },
+    {
+      "triplet_id": "3a242750-7b0c-5344-be1c-8ddd1a566549",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Dan Seals",
+      "after": "Johnny Duncan",
+      "subject": "Brady Seals"
+    },
+    {
+      "triplet_id": "dda076ed-b396-559a-a895-1d3674650c35",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Malawi",
+      "after": "June 16, 1955",
+      "subject": "Mwabvi Wildlife Reserve"
+    },
+    {
+      "triplet_id": "8b1cbae4-9e72-57b5-b867-da1cdfa6a523",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Sasanian Empire",
+      "after": "a series of album recordings",
+      "subject": "Farrukhzad Khosrow V. Farrukhzad Khosrau V"
+    },
+    {
+      "triplet_id": "252014f7-fa3d-56d9-8cf6-f2c8db6ab0f2",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "National Basketball Association",
+      "after": "Shire River",
+      "subject": "New Orleans Pelicans"
+    },
+    {
+      "triplet_id": "f6ea4c75-88cd-5d2c-9dc7-239bc496f8d9",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Kolkata",
+      "after": "1930",
+      "subject": "Apratim Majumdar"
+    },
+    {
+      "triplet_id": "4b59b723-2329-5a48-8ad1-1f6cd0b8adc9",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "25 June 1857",
+      "after": "October 1, 2013",
+      "subject": "Isabella Kelly"
+    },
+    {
+      "triplet_id": "e795e600-64f2-5687-9f57-4545fddfb9d2",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "ten thousand",
+      "after": "17",
+      "subject": "On Tour Forever"
+    },
+    {
+      "triplet_id": "35eb98f2-7663-5153-aafa-1c085a0d5d9b",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "1987",
+      "after": "Princeton, New Jersey",
+      "subject": "Blues Traveler"
+    },
+    {
+      "triplet_id": "e776556e-0e6c-559c-9684-bd3a2c326af0",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "a Gemini",
+      "after": "an American football coach",
+      "subject": "Edgar Wright"
+    },
+    {
+      "triplet_id": "c282ec6a-7bc5-5305-9707-5e2517406132",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "more than a dozen short-story collections",
+      "after": "poetry",
+      "subject": "John Updike"
+    },
+    {
+      "triplet_id": "trex_41412",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "American",
+      "subject": "John Sealey"
+    },
+    {
+      "triplet_id": "816dd2b8-e327-5715-878b-34a58e988899",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "the Continental Army",
+      "after": "Switzerland",
+      "subject": "John Andr\u00e9"
+    },
+    {
+      "triplet_id": "443910a7-2055-5b40-94e7-865725ec0482",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "500 seeds",
+      "after": "2006",
+      "subject": "Stuart Roosa"
+    },
+    {
+      "triplet_id": "395e6e6b-a0cd-5cd9-a929-a0838b28b0c9",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "New Orleans, Louisiana",
+      "after": "New Orleans",
+      "subject": "New Orleans Pelicans"
+    },
+    {
+      "triplet_id": "49ba2ca3-8135-51c1-901d-02c7f7a8564f",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "March 18, 1932",
+      "after": "March 18",
+      "subject": "John Updike"
+    },
+    {
+      "triplet_id": "4df818ab-aa85-508d-b71f-8f6a68d79a98",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Tophane, Beyo\u011flu, Istanbul, Turkey",
+      "after": "Tophane, Beyo\u011flu, Istanbul",
+      "subject": "Nusretiye Mosque"
+    },
+    {
+      "triplet_id": "78a5c925-3cab-507c-8454-e871cc034a8a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "powerhouse voice, electrifying top notes, clear timbre, passionate singing and remarkable performances",
+      "after": "powerhouse voice, electrifying top notes, clear timbre",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "81026867-8d5c-5a67-ab7b-dcc3847e6586",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "August 16, 1933",
+      "after": "August 16",
+      "subject": "Stuart Roosa"
+    },
+    {
+      "triplet_id": "e02317d7-24e2-5d9b-af27-769850d4f1d9",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Farnell, Angus, Scotland",
+      "after": "Farnell, Angus",
+      "subject": "Lady Charlotte Elliot"
+    },
+    {
+      "triplet_id": "ecb8df5b-4c47-5dc1-affb-48c32843488f",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "May 27, 1993",
+      "after": "May 27",
+      "subject": "Jalen Jones"
+    },
+    {
+      "triplet_id": "adf0c210-f0a5-5d07-b079-49541e8778cb",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "1985-04-19",
+      "after": "1985",
+      "subject": "Sergei Aleksandrovich Tokarev"
+    },
+    {
+      "triplet_id": "7e71b087-ced4-5c37-a2f1-bd67f1cfc992",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Istanbul, Turkey",
+      "after": "Istanbul",
+      "subject": "Valens Aqueduct"
+    },
+    {
+      "triplet_id": "0f12dee3-bc01-541c-9c09-1dbebd78a828",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "7 July 1941",
+      "after": "1941",
+      "subject": "No. 1455 Flight RAF"
+    },
+    {
+      "triplet_id": "e9627220-470c-5ea4-84ef-85e273be7133",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "RAF Tangmere, West Sussex",
+      "after": "RAF Tangmere",
+      "subject": "No. 1455 Flight RAF"
+    },
+    {
+      "triplet_id": "18e768bf-71e7-5aad-ba3a-a5a77e4664b6",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "assisting Benedict Arnold's attempted surrender of the fort at West Point, New York to the British",
+      "after": "assisting Benedict Arnold's attempted surrender of the fort at West Point",
+      "subject": "John Andr\u00e9"
+    },
+    {
+      "triplet_id": "19cf8a2f-b59e-534b-9282-662694a14f27",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "May 3, 1903",
+      "after": "May 3",
+      "subject": "Bing Crosby"
+    },
+    {
+      "triplet_id": "f699b045-1b3a-5bf6-8358-d4b3586cad3a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "10 July 1977",
+      "after": "1977",
+      "subject": "Chiwetel Ejiofor"
+    },
+    {
+      "triplet_id": "b2f67ef1-3fbe-5936-afff-1248e45dae3e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "June 14, 1801",
+      "after": "June 14",
+      "subject": "Benedict Arnold"
+    },
+    {
+      "triplet_id": "trex_47059",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Ivan Ivanovich Zhegalkin"
+    },
+    {
+      "triplet_id": "trex_23899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Oussama Assaidi"
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Hugh McQueen"
+    },
+    {
+      "triplet_id": "trex_45191",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Sammy Reid"
+    },
+    {
+      "triplet_id": "trex_20117",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Aldridge"
+    },
+    {
+      "triplet_id": "trex_32550",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Joe Cole"
+    },
+    {
+      "triplet_id": "trex_49633",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Daniel Agger"
+    },
+    {
+      "triplet_id": "trex_45864",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "cast member",
+      "after": "lead actor",
+      "subject": "Robin and the 7 Hoods"
+    }
+  ],
+  "transmissions": [
+    {
+      "step": 4,
+      "id": "dc525df9-c0f1-5d14-a279-0bd0ed7522c7",
+      "subject": "Bing Crosby",
+      "predicate": "born_on",
+      "object": "May 3",
+      "root_type": "qualifier_loss",
+      "payload": "May 3"
+    },
+    {
+      "step": 4,
+      "id": "7e24329a-c638-5504-b32f-14610687f477",
+      "subject": "The Valens Aqueduct",
+      "predicate": "located_in",
+      "object": "Istanbul",
+      "root_type": "qualifier_loss",
+      "payload": "Istanbul"
+    },
+    {
+      "step": 4,
+      "id": "2a486a86-8c20-5bf2-aec7-c857e827da18",
+      "subject": "Nusretiye Mosque",
+      "predicate": "located_in",
+      "object": "Tophane, Beyo\u011flu, Istanbul",
+      "root_type": "qualifier_loss",
+      "payload": "Tophane, Beyo\u011flu, Istanbul"
+    },
+    {
+      "step": 6,
+      "id": "a4f84a41-da9e-525d-ba56-0f00c19b49f1",
+      "subject": "Brady Seals",
+      "predicate": "cousin_of",
+      "object": "Johnny Duncan",
+      "root_type": "entity_disambiguation",
+      "payload": "Johnny Duncan"
+    },
+    {
+      "step": 7,
+      "id": "05eb5a29-f062-5e15-883f-a17ea0268d45",
+      "subject": "On Tour Forever",
+      "predicate": "production_quantity",
+      "object": "17",
+      "root_type": "entity_disambiguation",
+      "payload": "17"
+    },
+    {
+      "step": 7,
+      "id": "de9e69b8-14be-5c40-b776-0d4b7222376b",
+      "subject": "New Orleans Pelicans",
+      "predicate": "based_in",
+      "object": "New Orleans",
+      "root_type": "qualifier_loss",
+      "payload": "New Orleans"
+    },
+    {
+      "step": 7,
+      "id": "442e6fff-d8e4-576a-9460-96e257a45b9c",
+      "subject": "New Orleans Pelicans",
+      "predicate": "compete_in",
+      "object": "Shire River",
+      "root_type": "entity_disambiguation",
+      "payload": "Shire River"
+    },
+    {
+      "step": 7,
+      "id": "19d54c20-fddd-5e77-b296-8fda18cf9b38",
+      "subject": "Edgar Wright",
+      "predicate": "is",
+      "object": "an American football coach",
+      "root_type": "entity_disambiguation",
+      "payload": "an American football coach"
+    },
+    {
+      "step": 8,
+      "id": "77a50b55-7e38-55e6-8ab7-9cda321cd4b8",
+      "subject": "New Orleans Pelicans",
+      "predicate": "based_in",
+      "object": "New Orleans",
+      "root_type": "qualifier_loss",
+      "payload": "New Orleans"
+    },
+    {
+      "step": 8,
+      "id": "3c1e91fe-8b73-5e68-a57e-df7619441aaf",
+      "subject": "New Orleans Pelicans",
+      "predicate": "compete_in",
+      "object": "Shire River",
+      "root_type": "entity_disambiguation",
+      "payload": "Shire River"
+    },
+    {
+      "step": 9,
+      "id": "856a3c91-b429-55ff-a5be-16597639b7b3",
+      "subject": "Nusretiye Mosque",
+      "predicate": "situated_in",
+      "object": "Tophane, Beyo\u011flu, Istanbul",
+      "root_type": "qualifier_loss",
+      "payload": "Tophane, Beyo\u011flu, Istanbul"
+    }
+  ],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_oracle_20260712_130917_trajectory.csv"
+}

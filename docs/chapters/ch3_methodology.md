@@ -167,6 +167,16 @@ in the contamination RNG seed and run tag.
 | `ablation_validation` | off | 25/step | off | isolate the validation channel |
 | `mitigated` | 0.5 | 25/step | on | full Trio combination |
 | `control_random` | off | off | off | baseline with random seed placement (RQ1 control) |
+| `oracle` | 0.5 | 25/step (ground truth) | on | full Trio with perfect quarantine decisions — isolates judge precision from architecture (RQ4 upper bound) |
+
+The oracle arm replaces the Llama-8B validator's verdict with the
+experimenter's ground-truth contamination labels (the `error_type`
+bookkeeping of Section 3.3) while leaving audit targeting, quarantine
+mechanics, and cascade deprecation untouched; audits therefore cost zero
+LLM calls. It bounds what the architecture can achieve with a perfect
+judge and, by construction, cannot exist outside the laboratory — real
+deployments have no ground-truth channel, which is what makes validator
+precision the operative variable.
 
 **Replication.** The baseline and mitigated (full-Trio) arms were each
 replicated across four seeds (42–45): the baseline to establish the
