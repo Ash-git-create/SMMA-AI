@@ -1,0 +1,408 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "seed_placement": "active",
+    "context_limit": 5,
+    "retrieval_threshold": 0.5,
+    "audits_per_step": 1,
+    "audit_sample": 25,
+    "audit_targeted": true,
+    "quarantine_threshold": 0.4,
+    "trio_confidence": true,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "probe_limit": 60,
+    "probe_facts": 8,
+    "extraction_manifest": null,
+    "random_seed": 43,
+    "eval_seed": 42,
+    "sleep": 1.0,
+    "tag": "mitigated_s43",
+    "allow_dirty": false
+  },
+  "timestamp": "20260709_131232",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260709_131230.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "de2ea060-ba3a-53b1-80af-6fe9550e1042",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Cairn na Burgh M\u00f2r and Cairn na Burgh Beag",
+      "after": "Norwegian language",
+      "subject": "Cairnburgh Castle"
+    },
+    {
+      "triplet_id": "b44dc846-7087-54fb-8219-ca46e9a78f35",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "1992",
+      "after": "1975",
+      "subject": "On Tour Forever"
+    },
+    {
+      "triplet_id": "bf547e7e-83c7-56bb-af71-92d32f05034a",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "#10 jersey",
+      "after": "29 October 2003",
+      "subject": "Greg Monroe"
+    },
+    {
+      "triplet_id": "6106136b-a560-54f1-895c-acb22c313a26",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Franco Corelli",
+      "after": "Halina Reijn",
+      "subject": "Tosca"
+    },
+    {
+      "triplet_id": "4c16300b-b860-554b-946a-1f61ef76494f",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Inside Receivers",
+      "after": "Hollywood",
+      "subject": "Cale Gundy"
+    },
+    {
+      "triplet_id": "trex_49633",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "soul",
+      "subject": "Daniel Agger"
+    },
+    {
+      "triplet_id": "48c77285-3955-536c-9721-a118c04052f0",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Troy Seals",
+      "after": "Walt Disney Productions",
+      "subject": "Brady Seals"
+    },
+    {
+      "triplet_id": "68506214-7a97-5c3e-bfbc-5ee5c30e0f49",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "17",
+      "after": "Francis McPeake",
+      "subject": "Tom Clancy"
+    },
+    {
+      "triplet_id": "df46e175-c166-59ec-af14-9addd2593e8f",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "the fire-bombing of Dresden",
+      "after": "a letter from Kurt to his family",
+      "subject": "Armageddon in Retrospect"
+    },
+    {
+      "triplet_id": "2d8c3339-b7c0-532c-b1f5-751ed7d23d04",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "2 September 1942",
+      "after": "Zambesi river",
+      "subject": "No. 1455 Flight RAF"
+    },
+    {
+      "triplet_id": "a39be817-4582-5cfa-9ad9-e09cc23f3ed9",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Mrs. Davis",
+      "after": "open savanna",
+      "subject": "Laurie Metcalf"
+    },
+    {
+      "triplet_id": "d3b75f7e-1642-58a8-a7a0-77c7c0ef61bf",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "hip hop",
+      "after": "quarterback from 1986 to 1989",
+      "subject": "Experimental hip hop"
+    },
+    {
+      "triplet_id": "8aa67f2f-7425-5bfa-9574-ef01ba19b253",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Okeechobee County",
+      "after": "Martin County",
+      "subject": "Ken Pruitt"
+    },
+    {
+      "triplet_id": "9a4a8532-6a41-548a-890f-e82dcd5f8f8c",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "The Joshua Tree",
+      "after": "Baroque style",
+      "subject": "With or Without You"
+    },
+    {
+      "triplet_id": "773e587e-8cce-5ffe-8827-99d6bd1cba56",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Sebastian Chan",
+      "after": "a credible news program",
+      "subject": "Cyclic Defrost"
+    },
+    {
+      "triplet_id": "69581bf5-d609-58bf-8f42-082070305472",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "March 11, 1977",
+      "after": "March 11",
+      "subject": "The Many Adventures of Winnie the Pooh"
+    },
+    {
+      "triplet_id": "c8ede7b8-a12f-5808-a80f-969d8d3a7ad5",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "New Orleans, Louisiana",
+      "after": "New Orleans",
+      "subject": "New Orleans Pelicans"
+    },
+    {
+      "triplet_id": "b583ad9a-6347-5690-a2a4-7096c10e881a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Pattikonda taluk-Kurnool district of Andhra Pradesh and Madhya Pradesh state, India",
+      "after": "Pattikonda taluk-Kurnool district of Andhra Pradesh and Madhya Pradesh state",
+      "subject": "Pandikona"
+    },
+    {
+      "triplet_id": "a8f91957-7d56-502d-845e-433f1e51d970",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "fortifications at West Point, New York",
+      "after": "fortifications at West Point",
+      "subject": "Benedict Arnold"
+    },
+    {
+      "triplet_id": "47ca3aa4-4133-5816-ad03-2c16ef7e5895",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "April 12, 1947",
+      "after": "April 12",
+      "subject": "Tom Clancy"
+    },
+    {
+      "triplet_id": "29311262-e079-5356-8825-4de8961a693f",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "with the Metropolitan Opera in New York City between 1961 and 1975",
+      "after": "with the Metropolitan Opera in New York City",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "e02317d7-24e2-5d9b-af27-769850d4f1d9",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "quarterback from 1986 to 1989",
+      "after": "quarterback",
+      "subject": "Mike Gundy"
+    },
+    {
+      "triplet_id": "3e73e83b-f6a1-5171-b882-8ea9107038bd",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "January 24, 1957",
+      "after": "January 24",
+      "subject": "Ken Pruitt"
+    },
+    {
+      "triplet_id": "18e768bf-71e7-5aad-ba3a-a5a77e4664b6",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "2 May 1750",
+      "after": "1750",
+      "subject": "John Andr\u00e9"
+    },
+    {
+      "triplet_id": "b257d979-5de3-5fc5-bae6-cea59f22fd6f",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Metro Atlantic Athletic Conference (MAAC)",
+      "after": "Metro Atlantic Athletic Conference",
+      "subject": "2015\u201316 Iona Gaels men's basketball team"
+    },
+    {
+      "triplet_id": "db0179e1-5d71-5f05-9b7a-fd03be2dccab",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "RAF Tangmere, West Sussex",
+      "after": "RAF Tangmere",
+      "subject": "No. 1455 Flight RAF"
+    },
+    {
+      "triplet_id": "81b67023-6c84-5af4-9e89-0f4d85cff286",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "former Castle Air Force Base in Atwater, California",
+      "after": "former Castle Air Force Base in Atwater",
+      "subject": "Sierra Academy of Aeronautics"
+    },
+    {
+      "triplet_id": "c2fb1468-8d86-5144-a183-9202b2aed315",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "March 29, 1969",
+      "after": "March 29",
+      "subject": "Brady Seals"
+    },
+    {
+      "triplet_id": "cea46544-21b6-5a79-857f-74c3930de3ed",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Will Ye Go, Lassie, Go?",
+      "after": "Will Ye Go, Lassie",
+      "subject": "Wild Mountain Thyme"
+    },
+    {
+      "triplet_id": "b112ed15-d986-54c6-bcba-3f4fed73d906",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "22\u201311, 16\u20134 in MAAC play",
+      "after": "22\u201311",
+      "subject": "2015\u201316 Iona Gaels men's basketball team"
+    },
+    {
+      "triplet_id": "trex_20117",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Aldridge"
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Hugh McQueen"
+    },
+    {
+      "triplet_id": "trex_23899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Oussama Assaidi"
+    },
+    {
+      "triplet_id": "trex_41412",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Sealey"
+    },
+    {
+      "triplet_id": "trex_32550",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Joe Cole"
+    },
+    {
+      "triplet_id": "trex_34908",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Ian Callaghan"
+    },
+    {
+      "triplet_id": "trex_47059",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Ivan Ivanovich Zhegalkin"
+    },
+    {
+      "triplet_id": "trex_45191",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Sammy Reid"
+    },
+    {
+      "triplet_id": "8ef7793f-a7e4-5c43-9171-c5f9d048411d",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "influenced_by",
+      "after": "caused_by",
+      "subject": "Nusretiye Mosque"
+    },
+    {
+      "triplet_id": "trex_45864",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "cast member",
+      "after": "lead actor",
+      "subject": "Robin and the 7 Hoods"
+    }
+  ],
+  "transmissions": [
+    {
+      "step": 5,
+      "id": "91490029-f63d-5771-bedf-5cc167da5264",
+      "subject": "Cairnburgh Castle",
+      "predicate": "located_on",
+      "object": "Norwegian language",
+      "root_type": "entity_disambiguation",
+      "payload": "Norwegian language"
+    },
+    {
+      "step": 5,
+      "id": "92bb32ce-e6e5-5a03-9850-991abeebd14e",
+      "subject": "Cyclic Defrost",
+      "predicate": "edited_by",
+      "object": "a credible news program",
+      "root_type": "entity_disambiguation",
+      "payload": "a credible news program"
+    },
+    {
+      "step": 7,
+      "id": "c4dabe37-8930-5850-aab8-fe5ef6f2ee91",
+      "subject": "Ivan Ivanovich Zhegalkin",
+      "predicate": "graduated_top_of_class_at",
+      "object": "Moscow State University",
+      "root_type": "relation_strengthening",
+      "payload": "graduated top of class at"
+    },
+    {
+      "step": 9,
+      "id": "3c1e91fe-8b73-5e68-a57e-df7619441aaf",
+      "subject": "On Tour Forever",
+      "predicate": "released_in",
+      "object": "1975",
+      "root_type": "entity_disambiguation",
+      "payload": "1975"
+    },
+    {
+      "step": 9,
+      "id": "d00aad44-5bf0-5e9c-bfee-fae1ee7d1a30",
+      "subject": "John Andr\u00e9",
+      "predicate": "was_born_in",
+      "object": "1750",
+      "root_type": "qualifier_loss",
+      "payload": "1750"
+    },
+    {
+      "step": 10,
+      "id": "e0900f5a-f6b1-5c64-999b-fb971219e6f7",
+      "subject": "Sierra Academy of Aeronautics",
+      "predicate": "operates_training_facility_at",
+      "object": "former Castle Air Force Base in Atwater",
+      "root_type": "qualifier_loss",
+      "payload": "former Castle Air Force Base in Atwater"
+    }
+  ],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_mitigated_s43_20260709_131232_trajectory.csv"
+}

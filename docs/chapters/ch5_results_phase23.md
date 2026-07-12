@@ -1,9 +1,8 @@
 # Chapter 5 — Evaluation & Results (Phase 2–3 sections)
 
-> **Draft status (2026-07-09):** covers all completed Phase 2–3 experiments.
-> `[PENDING-#14]` marks the mitigated multi-seed replication in flight;
-> Section 5.4's conclusions are provisional until it lands. Phase 4 (RQ3
-> sweeps) sections are not yet drafted. Figures marked `[FIG]`.
+> **Draft status (2026-07-12):** covers all completed Phase 2–3 experiments,
+> including the mitigated multi-seed replication (task #14, seeds 42–45).
+> Phase 4 (RQ3 sweeps) sections are not yet drafted. Figures marked `[FIG]`.
 
 ## 5.1 Unmitigated contamination dynamics (baseline, 4 seeds)
 
@@ -93,30 +92,69 @@ injections):
 
 Single-seed reading, hedged against the Section 5.1 envelope: the floor's
 spread reduction (14 vs 21) and both single-arm probe effects are *within*
-baseline seed noise. The full-Trio result is not: 34 propagated is ~4 SD
-above the baseline mean, and 94 exposed ~3.5 SD. On seed 42, the full
-combination is superadditively harmful — worse than either mechanism alone
-and worse than doing nothing.
+baseline seed noise. Whether the seed-42 full-Trio result (34 propagated,
+~4 SD above the baseline mean) generalises is answered by the replication
+below.
 
-The mechanism is quarantine precision. Only 10–14% of quarantined nodes were
-actually contaminated; the rest were clean nodes removed from retrieval,
-whose absence reshaped retrieval toward remaining (disproportionately
-contaminated) neighbours, while cascade deprecation amplified each mistaken
-quarantine into the removal of its whole descendant subtree. Section 5.6
-independently measures the same judge grade at 10% flag precision on a
-human-calibrated sample — the validator is the bottleneck, and the
-architecture faithfully amplifies its mistakes.
+### 5.4.1 Multi-seed replication of the full-Trio arm (seeds 42–45)
 
-`[PENDING-#14]` Multi-seed replication of the mitigated arm (seeds 43–45) is
-in flight. The first replicate (seed 43) produced 6 propagated / 44 exposed —
-*below* the baseline mean — indicating that the mitigated arm's outcome
-variance is large and the seed-42 harm result may not be robust as a point
-estimate. If the remaining seeds confirm high variance, the claim will be
-restated as: **a low-precision validator makes mitigation outcomes
-high-variance and unreliable — sometimes harmful, never dependably better
-than baseline** — which is consistent with the quasi-random quarantine
-mechanism and remains a negative result for the full-Trio configuration.
-This section will be finalised when the batch completes.
+| Seed | Propagated | Exposed | Probe (s10) | AUROC | Quarantined | Quarantine precision |
+|---|---|---|---|---|---|---|
+| 42 | 34 | 94 | 0.700 | 0.855 | 67 | 0.104 |
+| 43 | 6 | 44 | 0.761 | 0.873 | 66 | 0.030 |
+| 44 | 10 | 67 | 0.720 | 0.843 | 55 | 0.073 |
+| 45 | 10 | 37 | 0.780 | 0.864 | 50 | 0.020 |
+| **mean ± SD** | **15.0 ± 12.8** | **60.5 ± 25.7** | **0.740 ± 0.037** | **0.859 ± 0.013** | 59.5 | **0.059 pooled** |
+| baseline (n=4) | 17.8 ± 4.0 | 65.3 ± 8.1 | 0.717 ± 0.113 | 0.899 ± 0.007 | 0 | — |
+
+Three statistical conclusions (Welch t and Mann–Whitney U, two-sided,
+n = 4 vs 4):
+
+1. **No reliable effect on spread.** Propagated (p = 0.71 / 0.31) and
+   exposed (p = 0.74 / 0.69) means are indistinguishable from baseline, and
+   probe contamination is likewise flat (p = 0.71). The seed-42
+   "superadditive harm" reading is retracted as a point estimate: it is the
+   upper tail of the mitigated arm's own distribution, not its centre.
+2. **A ~10× variance amplification on spread metrics.** The mitigated arm's
+   variance is 10.1× baseline for propagated and 10.0× for exposed
+   (F(3,3) two-sided p ≈ 0.09 — suggestive, not conclusive, at n = 4; the
+   direction is consistent across both spread metrics and with the
+   quasi-random quarantine mechanism). Outcomes range from clearly better
+   (6 propagated) to clearly worse (34) than anything baseline produces
+   (12–21) under identical injection protocols.
+3. **The only statistically significant effect of full Trio is negative:
+   it degrades detection.** AUROC drops from 0.899 ± 0.007 to 0.859 ± 0.013
+   (Welch p = 0.004; Mann–Whitney p = 0.029, perfect separation — every
+   mitigated seed detects worse than every baseline seed). The mechanism is
+   confidence laundering: validation passes raise surviving nodes'
+   confidence toward 1.0, and quarantine removes mostly-clean nodes, so the
+   contaminated nodes that survive sit in a cleaner-looking,
+   higher-confidence population than in any unmitigated run.
+
+The mechanism behind the variance is quarantine precision, now measured
+across four seeds at **2–10% (pooled 5.9%, 14/238)**: which subtrees get
+deprecated is a near-random draw, so run outcomes hinge on whether the
+lottery happens to hit contaminated lineages (seed 43) or clean load-bearing
+ones whose removal reshapes retrieval toward contaminated neighbours
+(seed 42). Cascade deprecation multiplies each mistaken quarantine into the
+loss of its whole descendant subtree. Section 5.6 independently measures the
+same judge grade at 10% flag precision on a human-calibrated sample — the
+validator is the bottleneck, and the architecture faithfully amplifies its
+mistakes.
+
+**Restated finding (RQ4, negative result):** with a validator at ~6–10%
+quarantine precision, the full Trio stack does not mitigate. It leaves mean
+spread unchanged, multiplies outcome variance roughly tenfold, degrades
+error detectability — the one effect that replicates cleanly — and is never
+dependably better than doing nothing. Provenance-aware retrieval is only as
+good as the judgement that feeds it.
+
+A replication note for transparency: an earlier partial run of seed 45
+(killed at step 10 before evaluation) produced 12 propagated / 75
+quarantined versus the completed run's 10 / 50 — same seed, same clean-room
+protocol. The run seed fixes injection placement but not LLM generation, so
+residual API nondeterminism contributes to within-configuration variance;
+this strengthens rather than undermines the variance finding.
 
 ## 5.5 Epidemiological fit and R₀
 
@@ -128,18 +166,20 @@ Fitting the discrete SIR model to the empirical trajectories
 | baseline (4 seeds) | 0.0437 ± 0.0101 | 0 | — (eff. repro 0.044/step) | 1.4–5.2 |
 | ablation_floor | 0.0289 | 0 | — | 1.4 |
 | ablation_validation | 0.0474 | 0.0066 | **7.19** | 1.5 |
-| mitigated | 0.0703 | 0.0143 | **4.92** | 1.6 |
+| mitigated (4 seeds) | 0.0327 ± 0.0259 | 0.0080 ± 0.0055 | **4.46 ± 2.36** (range 2.4–7.6) | 0.5–1.6 |
 
-Where validation gives a non-zero γ, R₀ lands at 5–7 — an order of magnitude
-above the containment threshold (R₀ < 1). Notably, the mitigated arm's
-fitted β (0.0703) is ~2.6 SD above the baseline mean: on seed 42 the full
-Trio *raised* the transmission rate, consistent with Section 5.4's account.
-The floor arm shows the intended β suppression (0.0289) but no γ.
+Where validation gives a non-zero γ, R₀ lands at 2.4–7.6 — always well above
+the containment threshold (R₀ < 1). The multi-seed fit dissolves the
+single-seed β story in the same way Section 5.4.1 dissolves the harm story:
+seed 42's β of 0.0703 (~2.6 SD above baseline) sits next to seed 43's
+0.0110, and the mitigated β mean (0.0327 ± 0.0259) is statistically
+indistinguishable from baseline while carrying ~6.6× the variance. The full
+Trio does not shift the transmission rate; it destabilises it. The floor arm
+shows the intended β suppression (0.0289) but no γ (single seed).
 
 Scale caveat: with N ≈ 50,000 and |I| < 100, S never depletes; the SIR model
 cannot reproduce late-trajectory plateaus, and the fits (RMSE up to ~5 nodes)
 should be read as rate estimates, not full trajectory models.
-`[PENDING-#14]` mitigated multi-seed will put error bars on β_mitigated.
 
 `[FIG] Empirical vs fitted I(t) per arm; R₀ bar chart with the R₀=1 line.`
 
@@ -210,11 +250,17 @@ contaminated from clean nodes.
 
 ## 5.8 Statistical treatment
 
-Given n = 4 baseline seeds (mitigated n pending), the analysis reports means
-± SD with explicit range, treats <2 SD single-run differences as within
-noise, uses exact tests where applicable (Fisher exact for the
-self-censoring contrast), and reserves formal two-sample tests for the
-completed multi-seed pairs `[PENDING-#14: baseline (n=4) vs mitigated (n=4)
-comparison — Welch t or Mann-Whitney to be selected after inspecting
-mitigated variance]`. All claims flagged as single-seed are labelled as such
-in text.
+Given n = 4 seeds per arm, the analysis reports means ± SD with explicit
+range, treats <2 SD single-run differences as within noise, and uses exact
+tests where applicable (Fisher exact for the self-censoring contrast). For
+the baseline-vs-mitigated comparison (n = 4 vs 4), *both* Welch t and
+Mann–Whitney U are reported: the mitigated arm's ~10× variance ratio
+violates equal-variance assumptions (hence Welch), and n = 4 is small enough
+that the rank test serves as a robustness check — the two agree on every
+metric (both null for spread and probe; both significant for AUROC, where
+Mann–Whitney's p = 0.029 is the smallest value attainable at this n, i.e.
+perfect separation). Variance amplification is reported with a two-sided
+F(3,3) test and flagged as suggestive (p ≈ 0.09) rather than conclusive,
+since n = 4 gives the F test very little power; the claim rests on the
+consistency of the direction across both spread metrics and the mechanism.
+All claims flagged as single-seed are labelled as such in text.

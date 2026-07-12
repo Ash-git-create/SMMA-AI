@@ -168,13 +168,14 @@ in the contamination RNG seed and run tag.
 | `mitigated` | 0.5 | 25/step | on | full Trio combination |
 | `control_random` | off | off | off | baseline with random seed placement (RQ1 control) |
 
-**Replication.** The baseline arm was replicated across four seeds (42–45)
-to establish the seed-noise envelope; single-run differences smaller than
-roughly two baseline standard deviations are treated as within noise and
-explicitly hedged. The mitigated arm is replicated across seeds 43–45
-`[PENDING: batch in flight as of 2026-07-09]`. The control arm is a single
-seed by design: its effect (Section 5.3) is mechanistically forced rather
-than statistical, and this is noted as a limitation rather than replicated.
+**Replication.** The baseline and mitigated (full-Trio) arms were each
+replicated across four seeds (42–45): the baseline to establish the
+seed-noise envelope, the mitigated arm to test whether its seed-42 result
+generalises (Section 5.4.1). Single-run differences smaller than roughly two
+baseline standard deviations are treated as within noise and explicitly
+hedged. The control arm is a single seed by design: its effect (Section 5.3)
+is mechanistically forced rather than statistical, and this is noted as a
+limitation rather than replicated.
 
 **Reproducibility controls.** Task-evaluation questions are sampled with a
 *fixed* evaluation seed (42) decoupled from the run seed, so task metrics are

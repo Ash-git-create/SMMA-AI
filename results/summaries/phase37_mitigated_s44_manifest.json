@@ -1,0 +1,444 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "seed_placement": "active",
+    "context_limit": 5,
+    "retrieval_threshold": 0.5,
+    "audits_per_step": 1,
+    "audit_sample": 25,
+    "audit_targeted": true,
+    "quarantine_threshold": 0.4,
+    "trio_confidence": true,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "probe_limit": 60,
+    "probe_facts": 8,
+    "extraction_manifest": null,
+    "random_seed": 44,
+    "eval_seed": 42,
+    "sleep": 1.0,
+    "tag": "mitigated_s44",
+    "allow_dirty": false
+  },
+  "timestamp": "20260709_181743",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260709_181740.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "d874542b-6aa8-5dc3-b64c-347b5569cb6c",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "wild water buffalo of Asia",
+      "after": "medium size sight hound",
+      "subject": "African buffalo"
+    },
+    {
+      "triplet_id": "780701b0-2062-5b9f-9daa-40ec59547e0c",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "1978",
+      "after": "Scottish Highlands",
+      "subject": "Apratim Majumdar"
+    },
+    {
+      "triplet_id": "4a71442b-0c81-5775-bd43-f0c70ecdd38f",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "psychedelic rock",
+      "after": "slasher",
+      "subject": "Blues Traveler"
+    },
+    {
+      "triplet_id": "8aa67f2f-7425-5bfa-9574-ef01ba19b253",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Florida House of Representatives",
+      "after": "a drama series",
+      "subject": "Ken Pruitt"
+    },
+    {
+      "triplet_id": "dc8affb4-adc3-5bfd-b03e-073ddc5cf5c2",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Order of Lenin",
+      "after": "Hero of the Soviet Union",
+      "subject": "Alexander Nikolayev"
+    },
+    {
+      "triplet_id": "b1112ee3-9a38-5d08-b659-411610d31856",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "art_and_literary_criticism",
+      "after": "poetry",
+      "subject": "John Updike"
+    },
+    {
+      "triplet_id": "47f2326a-6955-5a26-9886-b34090239e51",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Making Mr. Right",
+      "after": "Scream 2",
+      "subject": "Laurie Metcalf"
+    },
+    {
+      "triplet_id": "trex_10670",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Arizona",
+      "after": "London",
+      "subject": "2011 Tucson shooting"
+    },
+    {
+      "triplet_id": "201638a1-b9e9-557e-8008-c57474cbec54",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "29 October 2003",
+      "after": "October 1, 2013",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "trex_16417",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "Big 12 Conference",
+      "subject": "The Onedin Line"
+    },
+    {
+      "triplet_id": "6c46b445-859f-55f3-a2ae-d53f91cfa7f9",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "posthumous collection",
+      "after": "2006",
+      "subject": "Armageddon in Retrospect"
+    },
+    {
+      "triplet_id": "9d0dba81-12e6-5aae-9011-aec22832226c",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Copenhagen",
+      "after": "Taj Mahal",
+      "subject": "Aarhus"
+    },
+    {
+      "triplet_id": "e795e600-64f2-5687-9f57-4545fddfb9d2",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Assistant Head Coach",
+      "after": "Indian",
+      "subject": "Cale Gundy"
+    },
+    {
+      "triplet_id": "cf38afc6-49d7-5bc1-b15c-d93102d2233e",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "emperors_of_Mughal_Dynasty",
+      "after": "Cohoes",
+      "subject": "Agra Fort"
+    },
+    {
+      "triplet_id": "69581bf5-d609-58bf-8f42-082070305472",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Pattikonda taluk-Kurnool district of Andhra Pradesh and Madhya Pradesh state, India",
+      "after": "India",
+      "subject": "Pandikona"
+    },
+    {
+      "triplet_id": "32873731-4126-5202-903f-ec2c6b9de2e5",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Mopane, Combretum and brachystegia woodland, open savanna, dambo, and riverine areas",
+      "after": "Mopane, Combretum and brachystegia woodland, open savanna, dambo",
+      "subject": "Mwabvi Wildlife Reserve"
+    },
+    {
+      "triplet_id": "7c25b179-a74f-5e15-8196-a6872443a68e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "March 11, 1977",
+      "after": "March 11",
+      "subject": "The Many Adventures of Winnie the Pooh"
+    },
+    {
+      "triplet_id": "cf3ea5fa-c33c-5f06-9978-7569e0c2f175",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "10 November 1975",
+      "after": "1975",
+      "subject": "Halina Reijn"
+    },
+    {
+      "triplet_id": "562f0c06-c5b9-5499-b3f4-96b7e5c7f0a0",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "August 16, 1933",
+      "after": "August 16",
+      "subject": "Stuart Roosa"
+    },
+    {
+      "triplet_id": "013e0bb4-506f-51d4-ba29-8072a64d2c0a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "June 16, 1955",
+      "after": "June 16",
+      "subject": "Laurie Metcalf"
+    },
+    {
+      "triplet_id": "d36ea294-bbb2-5b89-82ba-c1b8cf8ca6da",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Will Ye Go, Lassie, Go?",
+      "after": "Will Ye Go, Lassie",
+      "subject": "Wild Mountain Thyme"
+    },
+    {
+      "triplet_id": "29d9efcc-a427-5adf-aa54-c1bb3cc04289",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "April 12, 1947",
+      "after": "April 12",
+      "subject": "Tom Clancy"
+    },
+    {
+      "triplet_id": "e7b13b23-5c73-5c38-b7d3-9ca1f3fdaa72",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Tophane, Beyo\u011flu, Istanbul, Turkey",
+      "after": "Tophane, Beyo\u011flu, Istanbul",
+      "subject": "Nusretiye Mosque"
+    },
+    {
+      "triplet_id": "91e12c61-68de-5c2f-a1e4-f35ea51b8593",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "December 12, 1994",
+      "after": "December 12",
+      "subject": "Stuart Roosa"
+    },
+    {
+      "triplet_id": "3feb8bf5-9b6a-5f70-8d81-93f4ff55654a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "differences between large corporate breweries and smaller breweries",
+      "after": "differences",
+      "subject": "Beer Wars"
+    },
+    {
+      "triplet_id": "52f95dbb-ba72-5438-9936-34cae9ae2d18",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Nairobi, Kenya",
+      "after": "Nairobi",
+      "subject": "Fly540"
+    },
+    {
+      "triplet_id": "b44dc846-7087-54fb-8219-ca46e9a78f35",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "22 July 1839",
+      "after": "1839",
+      "subject": "Lady Charlotte Elliot"
+    },
+    {
+      "triplet_id": "eef0c4a4-5668-5058-a1eb-31bd619ff579",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "October 1, 2013",
+      "after": "October 1",
+      "subject": "Tom Clancy"
+    },
+    {
+      "triplet_id": "cf5163b2-8581-5462-9792-f32106bd5f47",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Canisius, Siena, and Monmouth",
+      "after": "Canisius, Siena",
+      "subject": "2015\u201316 Iona Gaels men's basketball team"
+    },
+    {
+      "triplet_id": "13fe5dcf-4713-5024-a655-40e72044f169",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Escondido, California, USA",
+      "after": "Escondido, California",
+      "subject": "Stone Brewing Co."
+    },
+    {
+      "triplet_id": "trex_32550",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Joe Cole"
+    },
+    {
+      "triplet_id": "trex_23899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Oussama Assaidi"
+    },
+    {
+      "triplet_id": "trex_34908",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Ian Callaghan"
+    },
+    {
+      "triplet_id": "trex_41412",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Sealey"
+    },
+    {
+      "triplet_id": "trex_49633",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Daniel Agger"
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Hugh McQueen"
+    },
+    {
+      "triplet_id": "trex_47059",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Ivan Ivanovich Zhegalkin"
+    },
+    {
+      "triplet_id": "trex_20117",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Aldridge"
+    },
+    {
+      "triplet_id": "trex_45191",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Sammy Reid"
+    },
+    {
+      "triplet_id": "trex_45864",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "cast member",
+      "after": "lead actor",
+      "subject": "Robin and the 7 Hoods"
+    }
+  ],
+  "transmissions": [
+    {
+      "step": 2,
+      "id": "dbd81fd9-9e52-557b-a9a7-7dc87fef6c47",
+      "subject": "Pandikona",
+      "predicate": "originates_from",
+      "object": "India",
+      "root_type": "entity_disambiguation",
+      "payload": "India"
+    },
+    {
+      "step": 3,
+      "id": "54fef483-8f0d-535c-a664-9bb9f2ef1e43",
+      "subject": "Laurie Metcalf",
+      "predicate": "born_on",
+      "object": "June 16",
+      "root_type": "qualifier_loss",
+      "payload": "June 16"
+    },
+    {
+      "step": 4,
+      "id": "a078e543-bff6-5ac8-b955-589f01c44618",
+      "subject": "Tom Clancy",
+      "predicate": "born_on",
+      "object": "April 12",
+      "root_type": "qualifier_loss",
+      "payload": "April 12"
+    },
+    {
+      "step": 5,
+      "id": "4d0f643a-a783-535f-b3b7-3373576f8ce4",
+      "subject": "Tom Clancy",
+      "predicate": "born_on",
+      "object": "April 12",
+      "root_type": "qualifier_loss",
+      "payload": "April 12"
+    },
+    {
+      "step": 5,
+      "id": "283eb54f-04ce-521f-b3e7-8ae5999c5c12",
+      "subject": "Halina Reijn",
+      "predicate": "born_in",
+      "object": "1975",
+      "root_type": "qualifier_loss",
+      "payload": "1975"
+    },
+    {
+      "step": 6,
+      "id": "8482b3de-89d5-55b7-86a1-b1c0b88ee3b0",
+      "subject": "Stone Brewing Co.",
+      "predicate": "headquartered_in",
+      "object": "Escondido, California",
+      "root_type": "qualifier_loss",
+      "payload": "Escondido, California"
+    },
+    {
+      "step": 6,
+      "id": "9847fc0f-9de4-5146-8c30-b01a6c7c71c3",
+      "subject": "Alexander Nikolayev",
+      "predicate": "received",
+      "object": "Hero of the Soviet Union",
+      "root_type": "entity_disambiguation",
+      "payload": "Hero of the Soviet Union"
+    },
+    {
+      "step": 7,
+      "id": "80b13957-50f3-5ace-92e0-5b9cb24f82fa",
+      "subject": "Apratim Majumdar",
+      "predicate": "born_in",
+      "object": "Scottish Highlands",
+      "root_type": "entity_disambiguation",
+      "payload": "Scottish Highlands"
+    },
+    {
+      "step": 7,
+      "id": "474115ff-87c5-50fe-ab63-8f9026a06e70",
+      "subject": "Agra Fort",
+      "predicate": "main_residence_of",
+      "object": "Cohoes",
+      "root_type": "entity_disambiguation",
+      "payload": "Cohoes"
+    },
+    {
+      "step": 8,
+      "id": "7908e8f7-ec44-5707-9503-768a3b9610ee",
+      "subject": "Bing Crosby",
+      "predicate": "lead_actor_in",
+      "object": "Robin and the 7 Hoods",
+      "root_type": "relation_strengthening",
+      "payload": "lead actor"
+    }
+  ],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_mitigated_s44_20260709_181743_trajectory.csv"
+}

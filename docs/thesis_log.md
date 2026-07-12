@@ -894,3 +894,60 @@ mid-flight (batch relaunch script ready; cache makes the rerun cheap).
 Seeds 43/44 complete: 6/44 and 10/67 propagated/exposed — full-Trio harm
 is emerging as HIGH-VARIANCE rather than robust (42: 34, 43: 6, 44: 10,
 45: ~24 through step 9).
+
+
+---
+
+## 2026-07-12 — Mitigated multi-seed complete: full-Trio "harm" dissolves into variance + detection degradation (task #14 DONE)
+
+**Done:** seed-45 mitigated run completed after two external process kills
+(rerun was near-free: LLM cache fast-forwarded the whole trajectory; only
+the step-10 eval battery was fresh). 4-seed mitigated table assembled,
+formal stats vs baseline (n=4 vs 4), ch5 §5.4/§5.5/§5.8 finalised, ch3
+replication note updated. Archives: `phase37_mitigated_multiseed.csv`,
+`phase37_mitigated_multiseed_stats.json`, `phase37_sir_fit_mitigated_seeds.csv`,
+per-seed manifests/trajectories (s43–s45) in `results/summaries/`.
+
+**Final 4-seed mitigated results** (propagated / exposed / probe / AUROC /
+quarantine precision): 42: 34/94/0.700/0.855/10.4% · 43: 6/44/0.761/0.873/3.0%
+· 44: 10/67/0.720/0.843/7.3% · 45: 10/37/0.780/0.864/2.0%.
+Mean 15.0±12.8 propagated, 60.5±25.7 exposed vs baseline 17.8±4.0, 65.3±8.1.
+
+**Three statistical conclusions (Welch t + Mann-Whitney, two-sided):**
+1. NO reliable effect on spread or probe rate (all p ≥ 0.31). The seed-42
+   "superadditive harm" headline is RETRACTED as a point estimate — it is
+   the upper tail of the mitigated arm's own distribution.
+2. ~10× VARIANCE amplification on both spread metrics (F(3,3) two-sided
+   p ≈ 0.09, suggestive at n=4; direction consistent, mechanism known).
+3. The ONLY significant effect is negative: detection AUROC 0.859±0.013 vs
+   0.899±0.007 (Welch p = 0.004, MW p = 0.029 = perfect separation).
+   Mechanism: confidence laundering — validation raises survivors to
+   conf ≈ 1.0 and quarantine removes mostly-clean nodes, so surviving
+   contamination hides in a cleaner-looking population.
+
+**Quarantine precision across 4 seeds: 2–10%, pooled 5.9% (14/238)** —
+worse than the earlier 8–10% estimate, and the engine of the variance:
+which lineages get cascade-deprecated is a near-random lottery.
+
+**SIR multi-seed:** β_mitigated 0.0327±0.0259 (vs baseline 0.0437±0.0101 —
+indistinguishable mean, ~6.6× variance), γ 0.0080±0.0055, R₀ 2.4–7.6, all
+≫ 1. Seed-42's β=0.0703 sits next to seed-43's β=0.0110: Trio does not
+shift the transmission rate, it destabilises it.
+
+**Restated RQ4 finding:** with a ~6–10%-precision validator, full Trio does
+not mitigate — mean spread unchanged, outcome variance ×10, detectability
+degraded (the one clean replication), never dependably better than nothing.
+Provenance-aware retrieval is only as good as the judgement that feeds it.
+
+**Honest replication note:** the killed seed-45 partial reached step 10
+with 12 propagated / 75 quarantined; the completed rerun produced 10 / 50.
+Same seed, same protocol — the run seed fixes injection placement, not LLM
+generation. Residual API nondeterminism contributes within-config variance;
+recorded in §5.4.1. Also: two background-process kills today with no script
+error (13:39 and Thursday 19:06) — long runs are now launched with the
+relaunch script kept ready; reruns are cheap by design.
+
+**Next:** #18 oracle-validator arm (isolates architecture-vs-judge blame
+for the AUROC degradation and variance — now the sharpest open question),
+then #20 prompt-tuned validator, #15 ancestor-excluded ablation, #16
+mechanical USR before Phase 4.

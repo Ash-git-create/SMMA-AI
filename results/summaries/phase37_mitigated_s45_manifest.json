@@ -1,0 +1,444 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "seed_placement": "active",
+    "context_limit": 5,
+    "retrieval_threshold": 0.5,
+    "audits_per_step": 1,
+    "audit_sample": 25,
+    "audit_targeted": true,
+    "quarantine_threshold": 0.4,
+    "trio_confidence": true,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "probe_limit": 60,
+    "probe_facts": 8,
+    "extraction_manifest": null,
+    "random_seed": 45,
+    "eval_seed": 42,
+    "sleep": 1.0,
+    "tag": "mitigated_s45",
+    "allow_dirty": false
+  },
+  "timestamp": "20260712_115545",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260712_115539.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "a41d6a37-3b83-5a80-9088-dfc8195eab82",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Jonah Hill",
+      "after": "peace",
+      "subject": "Tinker Tailor Soldier Spy"
+    },
+    {
+      "triplet_id": "bf3cbff4-803e-5025-aad5-d755c5f0cf48",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "2014",
+      "after": "electronically",
+      "subject": "Halsey"
+    },
+    {
+      "triplet_id": "78a5c925-3cab-507c-8454-e871cc034a8a",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Malawi's Black Rhino population",
+      "after": "8 April 1921",
+      "subject": "Mwabvi Wildlife Reserve"
+    },
+    {
+      "triplet_id": "f1481ae1-f731-51af-b7d5-19b9a1b7bfaa",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Detroit Pistons",
+      "after": "Chicago Bulls",
+      "subject": "Dennis Rodman"
+    },
+    {
+      "triplet_id": "da48ee6e-4483-5a36-897a-f98d016e4283",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Travelers and Thieves",
+      "after": "May 3, 1903",
+      "subject": "On Tour Forever"
+    },
+    {
+      "triplet_id": "e81de348-a86a-5168-a113-00112e5730e7",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Fly540 Angola",
+      "after": "Fly540 Ghana",
+      "subject": "Fly540"
+    },
+    {
+      "triplet_id": "80305452-dab2-52dc-8b51-ac5b4574769e",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "a British Army officer",
+      "after": "a researcher of religious beliefs",
+      "subject": "John Andr\u00e9"
+    },
+    {
+      "triplet_id": "91d2db9e-bd8f-5dfb-9406-41cf5d7109da",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Canada",
+      "after": "United States",
+      "subject": "With or Without You"
+    },
+    {
+      "triplet_id": "trex_34269",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "Arizona",
+      "subject": "Metropolitan Cathedral"
+    },
+    {
+      "triplet_id": "54e63a73-5dc2-5345-9ce2-6a41bef9a288",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "a professor at Moscow State University",
+      "after": "Command Module Pilot",
+      "subject": "Sergei Aleksandrovich Tokarev"
+    },
+    {
+      "triplet_id": "d9bdeb38-b8e0-582d-80ba-c275d3c49ccb",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Randolph",
+      "after": "Berlin",
+      "subject": "Black Crescent Mountain"
+    },
+    {
+      "triplet_id": "936fb9c8-796e-5917-bffc-3c961dcd4630",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Hawker Aircraft Ltd",
+      "after": "over 200 people every year",
+      "subject": "Hawker Hurricane"
+    },
+    {
+      "triplet_id": "77ff58e3-bfe6-5694-ad4b-f50df94e6875",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "children's books",
+      "after": "art and literary criticism",
+      "subject": "John Updike"
+    },
+    {
+      "triplet_id": "95de6880-905b-5d4c-8ba2-26c1952753b3",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Hot Apple Pie",
+      "after": "Harry Lillis \"Bing\" Crosby Jr.",
+      "subject": "Brady Seals"
+    },
+    {
+      "triplet_id": "774c536d-6381-54c7-af10-1511825b3a53",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "French",
+      "after": "American",
+      "subject": "Ethel Houbiers"
+    },
+    {
+      "triplet_id": "4b3526f5-a2a8-5436-a62a-60bc435cb8e9",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "22 July 1839",
+      "after": "1839",
+      "subject": "Lady Charlotte Elliot"
+    },
+    {
+      "triplet_id": "69581bf5-d609-58bf-8f42-082070305472",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Pattikonda taluk-Kurnool district of Andhra Pradesh and Madhya Pradesh state, India",
+      "after": "Pattikonda taluk-Kurnool district of Andhra Pradesh and Madhya Pradesh state",
+      "subject": "Pandikona"
+    },
+    {
+      "triplet_id": "e8cc7a5b-e450-5582-8f38-99c2be7bdd63",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "lions from neighbouring Mozambique",
+      "after": "lions",
+      "subject": "Mwabvi Wildlife Reserve"
+    },
+    {
+      "triplet_id": "bb2bed07-36ae-5aa6-a2f4-26055177ce05",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "29 October 2003",
+      "after": "2003",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "76c7848f-a82f-57c4-bd9d-97778caafa76",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "18 March 1985",
+      "after": "1985",
+      "subject": "A Pair of Brown Eyes"
+    },
+    {
+      "triplet_id": "0ff475dd-0e1c-5210-a2b7-a313021569e2",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Escondido, California, USA",
+      "after": "Escondido, California",
+      "subject": "Stone Brewing Co."
+    },
+    {
+      "triplet_id": "b9144118-9168-5668-b8d8-93b2cfef416e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "15 January 1880",
+      "after": "1880",
+      "subject": "Lady Charlotte Elliot"
+    },
+    {
+      "triplet_id": "52297ea2-798e-55fe-ab02-b7ac58fc1b17",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "March 11, 1977",
+      "after": "March 11",
+      "subject": "The Many Adventures of Winnie the Pooh"
+    },
+    {
+      "triplet_id": "d1fd248c-2d45-5c50-bdf8-b9a676e5c531",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "8 April 1921",
+      "after": "1921",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "b1112ee3-9a38-5d08-b659-411610d31856",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "October 1, 2013",
+      "after": "October 1",
+      "subject": "Tom Clancy"
+    },
+    {
+      "triplet_id": "e3436fe4-9f9c-5b2e-b8cc-74f95da5a2f3",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Will Ye Go, Lassie, Go?",
+      "after": "Will Ye Go, Lassie",
+      "subject": "Wild Mountain Thyme"
+    },
+    {
+      "triplet_id": "4cbbe210-dc9b-5c1c-adf6-1b75f7cf7948",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "January 3, 2005",
+      "after": "January 3",
+      "subject": "Mike Gundy"
+    },
+    {
+      "triplet_id": "1e5658cc-9370-5958-8fde-62e64c65aed7",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "March 18, 1932",
+      "after": "March 18",
+      "subject": "John Updike"
+    },
+    {
+      "triplet_id": "4fa83faa-c43b-5f9b-8c8e-b63e2f9112b5",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "March 29, 1969",
+      "after": "March 29",
+      "subject": "Brady Seals"
+    },
+    {
+      "triplet_id": "9fa85fff-eb8c-5f72-a8b5-be2f977f797a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "16 March 1987",
+      "after": "1987",
+      "subject": "With or Without You"
+    },
+    {
+      "triplet_id": "trex_32550",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Joe Cole"
+    },
+    {
+      "triplet_id": "trex_23899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Oussama Assaidi"
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Hugh McQueen"
+    },
+    {
+      "triplet_id": "trex_45191",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Sammy Reid"
+    },
+    {
+      "triplet_id": "trex_34908",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Ian Callaghan"
+    },
+    {
+      "triplet_id": "trex_20117",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Aldridge"
+    },
+    {
+      "triplet_id": "trex_41412",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Sealey"
+    },
+    {
+      "triplet_id": "trex_47059",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Ivan Ivanovich Zhegalkin"
+    },
+    {
+      "triplet_id": "trex_45864",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "cast member",
+      "after": "lead actor",
+      "subject": "Robin and the 7 Hoods"
+    },
+    {
+      "triplet_id": "trex_49633",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Daniel Agger"
+    }
+  ],
+  "transmissions": [
+    {
+      "step": 3,
+      "id": "16e149bb-e453-5af5-bc0c-94bcd4f7e4dd",
+      "subject": "Ethel Houbiers",
+      "predicate": "nationality",
+      "object": "American",
+      "root_type": "entity_disambiguation",
+      "payload": "American"
+    },
+    {
+      "step": 5,
+      "id": "90151113-4215-5ac8-adb4-db942a2f3fa3",
+      "subject": "Halsey",
+      "predicate": "signed_first_recording_autograph_in",
+      "object": "electronically",
+      "root_type": "entity_disambiguation",
+      "payload": "electronically"
+    },
+    {
+      "step": 6,
+      "id": "d4545fd5-5d6d-5d9a-a599-6cf5710c1a29",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "2011 Tucson shooting",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 6,
+      "id": "7862e616-e033-51c1-8528-abd043f630d5",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "Metropolitan Cathedral",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 6,
+      "id": "4d0f643a-a783-535f-b3b7-3373576f8ce4",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "Santa Cruz River",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 6,
+      "id": "2cc96cac-5323-5267-afd8-ae06e3ba602e",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "Navajo Reservation",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 6,
+      "id": "323a6c83-7e7b-5218-a733-367fec190ed1",
+      "subject": "Pete Worden",
+      "predicate": "employed_in",
+      "object": "Arizona",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 6,
+      "id": "39470f40-09fa-5562-a3d1-ddcbbb2214db",
+      "subject": "Tinker Tailor Soldier Spy",
+      "predicate": "stars",
+      "object": "peace",
+      "root_type": "entity_disambiguation",
+      "payload": "peace"
+    },
+    {
+      "step": 7,
+      "id": "8288fee9-1a6b-5d34-b944-4fcf57839b68",
+      "subject": "Fly540",
+      "predicate": "had_subsidiary",
+      "object": "Fly540 Ghana",
+      "root_type": "entity_disambiguation",
+      "payload": "Fly540 Ghana"
+    },
+    {
+      "step": 9,
+      "id": "bfc78792-fd48-50fb-8327-914af78f43b4",
+      "subject": "A Pair of Brown Eyes",
+      "predicate": "released_in",
+      "object": "1985",
+      "root_type": "qualifier_loss",
+      "payload": "1985"
+    }
+  ],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_mitigated_s45_20260712_115545_trajectory.csv"
+}
