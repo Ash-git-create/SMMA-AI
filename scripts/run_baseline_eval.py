@@ -38,7 +38,13 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from src.agents.llm_client import ModelRole, get_client
-from src.evaluation.metrics import exact_match, token_f1, veracity_report
+from src.evaluation.metrics import (
+    answer_traceable,
+    exact_match,
+    normalize_answer,
+    token_f1,
+    veracity_report,
+)
 from src.graph.neo4j_client import Neo4jClient
 
 logger.remove()
@@ -158,6 +164,10 @@ def eval_hotpotqa(client, llm, args, rng) -> dict:
         else:
             predicted = str(parsed["answer"])
 
+        # USR (task #16): mechanical grounding of the answer span against the
+        # facts actually retrieved for this question — no LLM, no extra calls.
+        # None = non-groundable (abstention/boolean), excluded from the ratio.
+        traceable = answer_traceable(predicted, facts)
         rows.append({
             "id":        doc["id"],
             "question":  doc["question"][:120],
@@ -166,6 +176,7 @@ def eval_hotpotqa(client, llm, args, rng) -> dict:
             "em":        exact_match(predicted, doc["answer"]),
             "f1":        round(token_f1(predicted, doc["answer"]), 4),
             "n_facts":   len(facts),
+            "traceable": "" if traceable is None else int(traceable),
         })
         logger.info(f"[hotpot {i}/{len(docs)}] em={rows[-1]['em']} f1={rows[-1]['f1']:.2f} "
                     f"facts={len(facts)} | {doc['question'][:60]}")
@@ -173,12 +184,19 @@ def eval_hotpotqa(client, llm, args, rng) -> dict:
             time.sleep(args.sleep)
 
     n = len(rows)
+    groundable = [r for r in rows if r["traceable"] != ""]
+    n_g = len(groundable)
     return {
         "dataset":        "hotpotqa",
         "n":              n,
         "exact_match":    round(sum(r["em"] for r in rows) / n, 4) if n else 0.0,
         "f1":             round(sum(r["f1"] for r in rows) / n, 4) if n else 0.0,
         "avg_facts":      round(sum(r["n_facts"] for r in rows) / n, 2) if n else 0.0,
+        # usr = share of substantive answers NOT traceable to a retrieved
+        # fact; usr_n is its denominator (answers minus abstentions/booleans).
+        "usr":            round(sum(1 for r in groundable if not r["traceable"]) / n_g, 4) if n_g else None,
+        "usr_n":          n_g,
+        "abstain_rate":   round(sum(1 for r in rows if normalize_answer(r["predicted"]) in ("", "unknown")) / n, 4) if n else 0.0,
         "parse_failures": parse_failures,
         "rows":           rows,
     }

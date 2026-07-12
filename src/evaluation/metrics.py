@@ -103,8 +103,112 @@ def detection_auroc(is_contaminated: list[int], suspicion_scores: list[float]) -
 
 
 # ---------------------------------------------------------------------------
-# USR — Unsupported Sentence Ratio
+# USR — Unsupported Sentence Ratio (task #16, decided 2026-07-11)
+#
+# Fully mechanical — string/entity overlap only, no LLM judge anywhere. The
+# judge calibration (task #17) measured the 8B judge at 10% flag precision,
+# which disqualifies LLM judgement for a metric that must stay trustworthy
+# while the validators themselves are under study. Deterministic and
+# token-free by design; the lexical crudeness (string overlap is not
+# semantic support) is a documented limitation.
+#
+# Two grain sizes:
+#   sentence_usr()     — sentence-level, for multi-sentence text: a sentence
+#                        is supported if some retrieved fact has BOTH its
+#                        endpoints (subject and object) named in it, i.e. the
+#                        sentence connects entities the KG connects.
+#   answer_traceable() — span-level, for the QA path's short answers (the
+#                        _QA_SYSTEM prompt requests "a few words at most", so
+#                        an answer IS the sentence): the span is traceable if
+#                        it appears inside some retrieved fact's subject/
+#                        object/predicate, or one of those appears inside it.
+#
+# USR measures GROUNDING, not truth: an answer that faithfully reproduces a
+# retrieved contaminated fact is traceable. That is intentional — the truth
+# channel (task #19) showed grounding and truth are independent axes, and
+# this metric owns the grounding axis (RQ4: does mitigation preserve answer
+# support while filtering retrieval?).
 # ---------------------------------------------------------------------------
+
+# Answers with no entity content to ground: abstentions and bare booleans.
+NON_GROUNDABLE_ANSWERS = frozenset({"", "unknown", "yes", "no"})
+
+_SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+")
+
+
+def _norm_ground(s: str) -> str:
+    """Normalization for grounding comparisons: lowercase, snake_case → words,
+    punctuation stripped, whitespace collapsed."""
+    s = s.replace("_", " ").lower()
+    s = "".join(ch if ch not in string.punctuation else " " for ch in s)
+    return " ".join(s.split())
+
+
+def _contains(haystack_norm: str, needle_norm: str) -> bool:
+    """Word-boundary containment between two already-normalized strings."""
+    if not needle_norm:
+        return False
+    return re.search(rf"\b{re.escape(needle_norm)}\b", haystack_norm) is not None
+
+
+# Common abbreviations whose trailing period must not end a sentence.
+_ABBREVIATIONS = ("co.", "inc.", "ltd.", "corp.", "mr.", "mrs.", "ms.", "dr.",
+                  "st.", "jr.", "sr.", "no.", "u.s.", "u.k.", "vs.")
+
+
+def split_sentences(text: str) -> list[str]:
+    parts = [s.strip() for s in _SENTENCE_SPLIT.split(text or "") if s.strip()]
+    merged: list[str] = []
+    for part in parts:
+        if merged and merged[-1].lower().endswith(_ABBREVIATIONS):
+            merged[-1] = f"{merged[-1]} {part}"
+        else:
+            merged.append(part)
+    return merged
+
+
+def sentence_supported(sentence: str, facts: list[dict]) -> bool:
+    """True if some retrieved fact has both endpoints named in the sentence."""
+    sent = _norm_ground(sentence)
+    for f in facts:
+        subj, obj = _norm_ground(f["subject"]), _norm_ground(f["object"])
+        if subj and obj and _contains(sent, subj) and _contains(sent, obj):
+            return True
+    return False
+
+
+def sentence_usr(text: str, facts: list[dict]) -> dict:
+    """Sentence-level USR over a multi-sentence text.
+
+    Returns {"n_sentences", "n_unsupported", "usr"}; usr is None for empty
+    text (nothing to grade — callers must not coerce that to 0.0).
+    """
+    sentences = split_sentences(text)
+    flags = [sentence_supported(s, facts) for s in sentences]
+    return {
+        "n_sentences":   len(sentences),
+        "n_unsupported": sum(1 for ok in flags if not ok),
+        "usr":           unsupported_ratio(flags) if sentences else None,
+    }
+
+
+def answer_traceable(answer: str, facts: list[dict]) -> bool | None:
+    """Span-level grounding for short QA answers.
+
+    None  — non-groundable (abstention/boolean): excluded from USR.
+    True  — the span appears in a retrieved fact (or a fact field in it).
+    False — no retrieved fact accounts for the span: unsupported.
+    """
+    ans = _norm_ground(answer)
+    if ans in NON_GROUNDABLE_ANSWERS:
+        return None
+    for f in facts:
+        for field in ("subject", "object", "predicate"):
+            val = _norm_ground(str(f.get(field, "")))
+            if _contains(val, ans) or _contains(ans, val):
+                return True
+    return False
+
 
 def unsupported_ratio(supported_flags: list[bool]) -> float:
     """
