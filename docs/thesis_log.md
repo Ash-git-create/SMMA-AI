@@ -1134,3 +1134,57 @@ middle point mitigated(8B default, pooled quarantine precision 5.9%, R₀
 readouts: in-run quarantine precision, R₀, AUROC (does the confidence-
 laundering degradation soften?), probe trajectory. Single seed — will be
 labelled as such per discipline rule 2.
+
+
+---
+
+## 2026-07-13 (afternoon) — Confirmatory run REFUTES the projection: tuned judge catches nothing (task #20 DONE)
+
+**Run completed** (launched 11:27, finished 13:11; TPD cap hit 12:20, final
+eval battery crawled on retries, zero failed calls). Archives:
+`phase39_mitigated_tuned_{manifest.json,trajectory.csv}`,
+`phase39_sir_fit_mitigated_tuned.csv` in `results/summaries/`.
+
+**Results (single seed 42):** propagated 14 / exposed 63 (mid-range of the
+default arm's 15.0±12.8 / 60.5±25.7); quarantined 27 nodes — **0
+contaminated, 27 clean → in-run quarantine precision 0/27 = 0%** (steps 1–5
+quarantined nothing at all); **fitted γ = 0.0000, R₀ undefined** — the arm
+is epidemiologically identical to running no validation; probe rate flat
+0.850→0.796; **detection AUROC 0.804**, below even the default judge's
+0.859±0.013 (~13 baseline SD under the 0.899 envelope; single seed). The
+laundering intensified: a judge that near-always says SUPPORTED boosts
+audited survivors (contaminated included) to conf 1.0 while its only
+conf-0 nodes are clean — the detection signal actively inverts.
+
+**The finding (structural, the real yield of task #20):** offline flag
+precision and in-run quarantine precision are DIFFERENT QUANTITIES. Offline,
+the judge sees the source passage — contradicting text exists to be quoted.
+In-run, the judge sees retrieved KG evidence, and a contaminated node is
+typically the graph's ONLY assertion of its "fact" (corruption by
+replacement, not coexistence) — there is nothing contradicting to quote, so
+an evidence-gated judge structurally cannot fire on real contamination. The
+default judge's few true positives came from being flag-happy;
+contradiction-gating removed the false-alarm mass and the accidental true
+positives together. Self-consistency checking against the contaminated
+memory cannot detect replacement contamination; detection needs a channel
+the KG does not contain (source passages, provenance verdicts, ground
+truth). Converges with the #19 truth-channel conclusion: provenance-level
+defences over content validation.
+
+**Decisions:** task #20 CLOSED with "prompt engineering cannot reach the
+required precision regime — it trades indiscriminate flagging for
+structural blindness" as the recorded finding. #23 (noisy-oracle precision
+sweep) PROMOTED to primary RQ4 dose-response evidence, as pre-registered
+this morning. #15 (ancestor-excluded validation) stays demoted — the
+blindness mechanism is upstream of circular validation and #15 cannot
+rescue judge sensitivity.
+
+**Side yield:** first in-run USR numbers ever recorded (the #16 columns
+work end-to-end): hotpot_usr 0.27→0.33, abstain rate 0.54→0.58 across the
+run — replicating the oracle-arm replay's ~0.6 abstention under the 0.5
+retrieval floor, now measured in-run.
+
+**ch5 §5.4.3 finalised** (no [PENDING-#20-RUN] remains; carries the
+single-seed label and the AUROC-construction caveats); §5.5 SIR table +
+prose gain the γ=0 row; ch3 §3.6 arm table already had the row from this
+morning.

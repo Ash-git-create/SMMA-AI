@@ -256,10 +256,59 @@ regime, and quarantine precision is base-rate-bound: halving the false-alarm
 rate at doubled sensitivity projects to roughly 15–20% in-run precision, up
 from the pooled 5.9% but nowhere near the regime the oracle arm shows is
 sufficient. The confirmatory test is therefore not this benchmark but a full
-mitigated rerun with the tuned judge — the middle point of the
-dose–response ladder R₀ 4.46 ± 2.36 (default prompt) → [PENDING-#20-RUN:
-tuned-prompt R₀, quarantine precision, AUROC, probe trajectory; single
-seed 42, to be labelled as such] → 0.79 (oracle).
+mitigated rerun with the tuned judge.
+
+**The confirmatory run refutes the projection outright** (single seed 42,
+labelled as such; archived in `phase39_mitigated_tuned_{manifest,trajectory}`
+and `phase39_sir_fit_mitigated_tuned.csv`):
+
+| Metric | Tuned judge (seed 42) | Default judge (n=4) | Oracle (seed 42) | Baseline (n=4) |
+|---|---|---|---|---|
+| Propagated / exposed | 14 / 63 | 15.0 ± 12.8 / 60.5 ± 25.7 | 11 / 44 | 17.8 ± 4.0 / 65.3 ± 8.1 |
+| Quarantined (contam / clean) | 27 (**0** / 27) | ~60 (5.9% pooled precision) | 48 (16 / 32) | 0 |
+| Probe contamination (s0 → s10) | 0.850 → 0.796 (flat) | flat | 0.842 → 0.612 (declining) | flat |
+| Detection AUROC | **0.804** | 0.859 ± 0.013 | 0.899 | 0.899 ± 0.007 |
+| Fitted γ / R₀ | **0.0000** / undefined | 0.0080 / 4.46 ± 2.36 | 0.0360 / 0.79 | 0 / — |
+
+The tuned judge did exactly what it was instructed to do — quarantine volume
+collapsed from ~60 to 27 nodes and the flag-happy quarantining of pristine
+nodes stopped (steps 1–5 quarantined nothing) — and in doing so it caught
+*zero* contaminated nodes. In-run quarantine precision fell from 5.9% to
+0/27, γ fell to exactly 0, and the arm became epidemiologically equivalent
+to running no validation at all, while retaining the architecture's costs:
+all 27 quarantined nodes were clean collateral, and detection AUROC fell to
+0.804 — below even the default judge's 0.859 (≈ 13 baseline SD below the
+0.899 envelope, though single-seed). The laundering mechanism intensified:
+a judge that near-always answers SUPPORTED re-scores nearly every audited
+survivor (contaminated ones included) to confidence 1.0, while the only
+confidence-0 nodes it produces are clean — actively inverting the
+detection signal.
+
+The mechanism is structural, and it is the section's finding. The offline
+benchmark judges a triplet against its *source passage*, where contradicting
+text exists to be quoted. The in-run validator judges a triplet against
+*retrieved KG evidence* — and a contaminated node is typically the only
+assertion of its "fact" in the graph, because the corruption replaced the
+ground truth rather than coexisting with it. There is no contradicting
+evidence line to quote, so an evidence-gated judge can never fire on real
+contamination; the default judge caught its few true positives only *by*
+being flag-happy. Contradiction-gating therefore removes the false-alarm
+mass and the accidental true positives together: offline flag precision and
+in-run quarantine precision are not the same quantity, and optimising the
+first drove the second to zero.
+
+**Consequence for RQ4:** prompt engineering on the same 8B judge does not
+move validator quality along the precision axis the oracle identified — it
+trades one failure mode (indiscriminate flagging) for another (structural
+blindness). Self-consistency checking against the contaminated memory
+itself cannot detect contamination that arrived by replacement; detection
+needs an information channel the KG does not contain (source passages,
+provenance verdicts, or ground truth). This elevates a controlled precision
+sweep — an oracle validator with dialled-in sensitivity and false-alarm
+rates — from robustness check to the primary dose–response evidence
+[PHASE-4], and it independently corroborates the
+Section 5.7c conclusion that provenance-level defences, not content
+validation, are the viable direction.
 
 ## 5.5 Epidemiological fit and R₀
 
@@ -272,12 +321,17 @@ Fitting the discrete SIR model to the empirical trajectories
 | ablation_floor | 0.0289 | 0 | — | 1.4 |
 | ablation_validation | 0.0474 | 0.0066 | **7.19** | 1.5 |
 | mitigated (4 seeds) | 0.0327 ± 0.0259 | 0.0080 ± 0.0055 | **4.46 ± 2.36** (range 2.4–7.6) | 0.5–1.6 |
+| mitigated_tuned (Section 5.4.3) | 0.0323 | **0.0000** | undefined (γ = 0; eff. repro 0.032/step) | 1.1 |
 | oracle (Section 5.4.2) | 0.0283 | **0.0360** | **0.79** | 2.3 |
 
 Where validation runs with the 8B judge, R₀ lands at 2.4–7.6 — always well
 above the containment threshold (R₀ < 1). The oracle arm is the exception
 that proves the mechanism: perfect quarantine decisions raise γ ~4.5× and
-bring R₀ to 0.79, the only sub-critical configuration observed. The multi-seed fit dissolves the
+bring R₀ to 0.79, the only sub-critical configuration observed. The tuned
+arm is the degenerate case: its judge quarantined zero contaminated nodes,
+so γ = 0 exactly — the recovery channel does not exist and the arm is
+epidemiologically identical to running no validation at all (β matches the
+mitigated mean; single seed). The multi-seed fit dissolves the
 single-seed β story in the same way Section 5.4.1 dissolves the harm story:
 seed 42's β of 0.0703 (~2.6 SD above baseline) sits next to seed 43's
 0.0110, and the mitigated β mean (0.0327 ± 0.0259) is statistically
