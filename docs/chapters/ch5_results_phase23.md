@@ -217,6 +217,50 @@ count (11) alone is *not* distinguishable from the 8B-judge arm's wide
 distribution — the sub-critical R₀, the declining probe rate, and the
 restored AUROC are the discriminating evidence.
 
+### 5.4.3 Can prompt engineering buy validator precision? (tuned-judge arm)
+
+Sections 5.4.1–5.4.2 bracket the mitigation question between a ~6%-precision
+judge (net harm) and a perfect one (sub-critical containment). The practical
+question is where achievable improvements land on that axis. The cheapest
+intervention — changing the judge's prompt while holding the model, the JSON
+contract, and every threshold fixed — was tested offline first, on the 40
+human-labeled rows from the judge-calibration study (§5.7b): four prompt
+variants targeting the three documented failure modes (specificity mismatch,
+world-knowledge leakage, flag-happy default).
+
+| Variant | Flags | Flag precision | Recall (of 2) | False alarms (of 38) |
+|---|---|---|---|---|
+| v0 original judge | 19 | 0.053 | 1/2 | 18 (47%) |
+| v1 quote gate (rules only) | 9 | 0.111 | 1/2 | 8 (21%) |
+| **v2 quote-first (structural)** | 13 | **0.154** | **2/2** | 11 (29%) |
+| v3 = v2 + base-rate prior | 11 | 0.091 | 1/2 | 10 (26%) |
+
+(Archived in `phase39_validator_tuning.csv`; per-row detail in
+`results/raw/`.) The structural fix wins: forcing the judge to produce the
+contradicting evidence *before* the verdict (v2) is the only variant that
+catches both true errors, at three times the original precision, and it
+beats both the rule-only gate (v1 — fewest false alarms, but at half the
+recall) and an explicit base-rate prior (v3 — telling the model that >90% of
+triplets are faithful helped less than making it look first). Benchmark
+caveats: n=40 with only two positives, so recall is measured on n=2; all 40
+rows were used for selection (no held-out split at this n), so v2's numbers
+are optimistically biased; and the benchmark judges triplets against source
+passages, whereas the in-run validator judges against retrieved KG evidence
+— the prompt was adapted accordingly (the quote gate becomes an
+evidence-quote gate, and absence of evidence is explicitly UNCERTAIN rather
+than UNSUPPORTED, which under the 0.4 quarantine threshold is the rule that
+stops sparse-evidence pristine nodes from being quarantined).
+
+Offline precision of 0.154 is still an order of magnitude from the oracle
+regime, and quarantine precision is base-rate-bound: halving the false-alarm
+rate at doubled sensitivity projects to roughly 15–20% in-run precision, up
+from the pooled 5.9% but nowhere near the regime the oracle arm shows is
+sufficient. The confirmatory test is therefore not this benchmark but a full
+mitigated rerun with the tuned judge — the middle point of the
+dose–response ladder R₀ 4.46 ± 2.36 (default prompt) → [PENDING-#20-RUN:
+tuned-prompt R₀, quarantine precision, AUROC, probe trajectory; single
+seed 42, to be labelled as such] → 0.79 (oracle).
+
 ## 5.5 Epidemiological fit and R₀
 
 Fitting the discrete SIR model to the empirical trajectories

@@ -168,6 +168,7 @@ in the contamination RNG seed and run tag.
 | `mitigated` | 0.5 | 25/step | on | full Trio combination |
 | `control_random` | off | off | off | baseline with random seed placement (RQ1 control) |
 | `oracle` | 0.5 | 25/step (ground truth) | on | full Trio with perfect quarantine decisions — isolates judge precision from architecture (RQ4 upper bound) |
+| `mitigated_tuned` | 0.5 | 25/step (tuned prompt) | on | full Trio with a prompt-tuned judge — achievable middle point of the validator-precision dose–response |
 
 The oracle arm replaces the Llama-8B validator's verdict with the
 experimenter's ground-truth contamination labels (the `error_type`
@@ -177,6 +178,18 @@ LLM calls. It bounds what the architecture can achieve with a perfect
 judge and, by construction, cannot exist outside the laboratory — real
 deployments have no ground-truth channel, which is what makes validator
 precision the operative variable.
+
+The tuned arm holds everything fixed — the judge model, the JSON response
+contract, the confidence bands, the quarantine threshold — and changes only
+the judge's instructions. The prompt was selected offline on the 40
+human-labeled calibration rows (Section 3.8) from four candidates targeting
+the calibration study's documented failure modes; the winning variant
+imposes an evidence-then-verdict ordering (the judge must quote the
+specific evidence it relies on before labelling) and states explicitly
+that absence of evidence is uncertainty, not contradiction. Because the
+in-run judge audits triplets against retrieved KG evidence rather than
+source passages, the offline benchmark is a proxy; the arm itself is the
+confirmatory test.
 
 **Replication.** The baseline and mitigated (full-Trio) arms were each
 replicated across four seeds (42–45): the baseline to establish the
@@ -211,9 +224,28 @@ an error *persists and is believed when directly queried*; task metrics
 measure whether the workload's aggregate quality degrades. Phases 2–3 show
 these can dissociate completely (Section 5.2).
 
-`[PHASE-4]` The Unsupported Sentence Ratio (USR) from the original metric
-plan has not yet been wired into runs; a decision to integrate or formally
-drop it (with justification) is scheduled before Phase 4.
+**Unsupported Sentence Ratio (USR).** Wired into the task-eval path ahead of
+Phase 4 (decided 2026-07-11; implemented 2026-07-12) in a fully *mechanical*
+form: an answer is traceable if its normalized span appears inside a
+retrieved fact's subject/object/predicate (or vice versa), with word-boundary
+matching; USR is the untraceable share of substantive answers, with
+abstentions ("unknown") and bare booleans excluded and the abstention rate
+reported alongside. A sentence-level variant (a sentence is supported if
+some retrieved fact has both endpoints named in it) is implemented for
+multi-sentence text. Design rationale: (i) EM/F1 and FEVER accuracy proved
+insensitive at Phase 2–3 contamination densities, leaving no answer-side
+instrument for the RQ3/RQ4 sweeps; (ii) USR is the metric positioned to
+expose the confidence floor's retrieval-shrinkage cost (a replay of the
+oracle arm's final evaluation showed a 64% abstention rate under the 0.5
+floor, and 4/17 substantive answers ungrounded — parametric leakage past the
+"facts only" instruction — both invisible to EM); (iii) it uses no LLM
+judge, which the calibration result (Section 5.6: 10% flag precision)
+disqualifies for a metric that must remain trustworthy while the validators
+are themselves under study. Limitation, stated plainly: string overlap is
+not semantic support — USR measures *grounding*, not truth, and a faithful
+reproduction of a retrieved contaminated fact counts as traceable by design
+(grounding and truth are independent axes; Section 5.7c owns the truth
+axis).
 
 ## 3.8 Validity instrumentation
 

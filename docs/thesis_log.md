@@ -997,3 +997,140 @@ restored AUROC.
 **Next:** #20 prompt-tuned validator (offline iteration on the 40 human
 labels, then one mitigated rerun if precision jumps), #15, #16 mechanical
 USR before Phase 4.
+
+
+---
+
+## 2026-07-12 (evening) — Mechanical USR implemented in the task-eval path (task #16 DONE)
+
+**Done:** implemented the 2026-07-11 USR decision. `src/evaluation/metrics.py`
+gains `answer_traceable()` (span-level: normalized answer appears inside a
+retrieved fact field or vice versa, word-boundary matched; None for
+abstentions/booleans), `sentence_supported()`/`sentence_usr()`
+(sentence-level, both-endpoint rule, abbreviation-safe splitter) — all pure
+functions, no LLM, no DB. `eval_hotpotqa` now emits per-row `traceable` and
+summary `usr`/`usr_n`/`abstain_rate`; `run_contamination.run_task_eval` maps
+them into trajectory columns (`hotpot_usr`, `hotpot_usr_n`,
+`hotpot_abstain`). Zero LLM calls added, zero prompt changes — cache
+comparability with all archived runs preserved. FEVER excluded (its answer
+is a class label, not a groundable span).
+
+**Validation:** unit tests (span + sentence + splitter edge cases) all pass.
+End-to-end replay of the oracle arm's archived step-10 answers against the
+live KG (retrieval only, zero tokens): **abstain rate 0.64** under the 0.5
+retrieval floor — the shrinkage cost USR was kept to expose — and **USR 4/17
+= 0.24**: the QA agent answered e.g. "Heathrow" with no such fact retrieved,
+i.e. parametric world knowledge leaking past the "facts only" instruction.
+Both signals invisible to EM/F1 (flat everywhere). Replay numbers are
+indicative (questions truncated to 120 chars in archived CSVs); canonical
+values come from Phase 4 runs where USR is computed in-run.
+
+**Design note recorded in ch3 §3.7:** USR measures grounding, not truth — a
+faithful reproduction of a retrieved contaminated fact is traceable BY
+DESIGN (the truth channel, §5.7c, owns the truth axis). String overlap ≠
+semantic support, documented as the limitation.
+
+**Meanwhile:** #20 validator-tuning benchmark still crawling the exhausted
+Groq TPD window (~1 call/1-4 min; today's three runs consumed the 500K
+budget). Every completed judgement is durable; ETA this evening. Side
+finding recorded: the Excel cp1252 re-save of the blind sheet altered
+passage bytes, so even v0_original misses the LLM cache — all 160 tuning
+calls are paid.
+
+
+---
+
+## 2026-07-12 (night) — CORRECTION: the LLM response cache was never enabled
+
+**Finding:** while diagnosing why a killed tuning run did not fast-forward on
+relaunch, discovered that `LLM_CACHE_DIR` was never set (not in env, not in
+.env). The llm_client only caches when it is set, so **every run in this
+project to date executed with caching disabled** — all reruns were full
+fresh generations.
+
+**Corrections to the record (discipline rule 5):**
+- The 2026-07-12 morning entry's claim that the seed-45 rerun was "near-free:
+  LLM cache fast-forwarded the whole trajectory" is WRONG. The rerun re-paid
+  every call; it was fast because the TPD window happened to have room. This
+  is also why the token budget exhausted by mid-afternoon.
+- All other "cache fast-forward" narrations in session notes are likewise
+  wrong. No archived RESULT is affected — this is a cost/narrative
+  correction, not a data correction.
+- Silver lining: same-seed reruns being independent generations makes the
+  seed-45 divergence observation (12 vs 10 propagated, §5.4.1 replication
+  note) a cleaner statement about API nondeterminism at temperature 0.
+
+**Fix:** `LLM_CACHE_DIR=<project>\results\raw\llm_cache` appended to .env
+(git-ignored path, no repo change). From now on, identical calls at
+temperature 0 replay from disk — kills and reruns become genuinely
+near-free. Note for interpretation: enabling the cache does NOT change
+model behaviour (it returns the same response an identical call already
+produced); it only removes re-generation cost. Runs that must be
+independent replications (different seeds/tags) produce different prompts
+and are unaffected.
+
+**Also tonight:** the #20 tuning run was externally killed twice more
+(21:10 mid-v2, 21:14 shortly after relaunch) — third and fourth such kills,
+still no script error. Relaunched with cache enabled; v0/v1 results survive
+in the log (v0: precision 0.05, FP 19/38; v1_quote_gate: precision 0.11,
+FP 8/38 — false alarms halved at equal recall).
+
+
+---
+
+## 2026-07-13 — Validator-prompt tuning complete: quote-first wins offline; confirmatory in-run test launched (task #20)
+
+**Offline benchmark done** (fresh TPD window, ~13 min, zero parse errors).
+Canonical numbers from `results/summaries/phase39_validator_tuning.csv`
+(per-row detail in `results/raw/phase39_validator_tuning_rows.csv`):
+
+| variant | flags | flag precision | recall (of 2) | false alarms (of 38) | binary agreement |
+|---|---|---|---|---|---|
+| v0_original | 19 | 0.053 | 1/2 | 18 (47%) | 0.525 |
+| v1_quote_gate | 9 | 0.111 | 1/2 | 8 (21%) | 0.775 |
+| **v2_quote_first** | 13 | **0.154** | **2/2** | 11 (29%) | 0.725 |
+| v3_prior | 11 | 0.091 | 1/2 | 10 (26%) | 0.725 |
+
+**Winner: v2_quote_first** — the only variant catching both human-labeled
+errors, at 3× the original's precision with false alarms cut 47%→29%. The
+structural fix (produce the evidence quote BEFORE the verdict) beats both
+the softer rule-only gate (v1: fewest false alarms but half the recall)
+and the explicit base-rate prior (v3: strictly worse than v2 — telling the
+model "90% are faithful" helped less than forcing it to look first).
+Note: the regenerated v0 differs by one row from the pre-cache interim
+(18 vs 19 FP) — API nondeterminism at temperature 0, as documented in
+§5.4.1; the archived CSV is the record.
+
+**Honest ceiling:** offline flag precision 0.154 is still far from the
+oracle regime. Back-of-envelope, halving the false-alarm rate at doubled
+sensitivity moves in-run quarantine precision from ~6% to only ~15-20%
+(precision is base-rate-bound). Expectation going in: the tuned arm should
+*soften* the mitigated pathologies, not reach sub-critical R₀ — either
+outcome is informative for the dose-response story (#23).
+
+**Caveats (recorded before the confirmatory run):** n=40 with 2 positives —
+recall is measured on n=2 and precision estimates are coarse; all 40 rows
+were used for selection (no held-out split), so the offline numbers are
+optimistically biased for v2; the confirmatory test is the in-run rerun,
+not this benchmark. The offline benchmark judges triplet-vs-passage;
+in-run the judge sees triplet-vs-KG-evidence — the prompt was adapted
+(passage_quote → evidence_quote), carrying over the two portable fixes:
+evidence-then-verdict ordering, and absence-of-evidence = UNCERTAIN,
+never UNSUPPORTED (under the 0.4 quarantine threshold, the second rule is
+what stops sparse-evidence pristine nodes being quarantined).
+
+**Wiring:** `OrchestrationAgent(validator_prompt="tuned")` selects the new
+`_TUNED_SYSTEM_PROMPT` (same model, same JSON verdict/confidence/reason
+contract, same thresholds — only the judgement rules change);
+`ValidationAgent` passes it through; `run_contamination.py` exposes
+`--validator-prompt {default,tuned}`; new config
+`contamination_mitigated_tuned.yaml` = mitigated arm + `validator_prompt:
+tuned`, tag `mitigated_tuned`, seed 42. Offline smoke tests pass (prompt
+selection, invalid-value rejection, config load).
+
+**Confirmatory run LAUNCHED** (clean-room, seed 42): the dose-response
+middle point mitigated(8B default, pooled quarantine precision 5.9%, R₀
+4.46±2.36) → mitigated(8B tuned, this run) → oracle (R₀ 0.79). Primary
+readouts: in-run quarantine precision, R₀, AUROC (does the confidence-
+laundering degradation soften?), probe trajectory. Single seed — will be
+labelled as such per discipline rule 2.
