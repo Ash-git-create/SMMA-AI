@@ -381,7 +381,9 @@ def run_task_eval(client: Neo4jClient, eval_llm, step: int, ts: str, args) -> di
             writer.writerows(rows)
         if name == "hotpotqa":
             out.update({"hotpot_em": res["exact_match"], "hotpot_f1": res["f1"],
-                        "hotpot_avg_facts": res["avg_facts"]})
+                        "hotpot_avg_facts": res["avg_facts"],
+                        "hotpot_usr": res["usr"], "hotpot_usr_n": res["usr_n"],
+                        "hotpot_abstain": res["abstain_rate"]})
         else:
             out.update({"fever_accuracy": round(res["accuracy"], 4),
                         "fever_avg_facts": res["avg_facts"]})
@@ -532,7 +534,8 @@ def run_experiment(args) -> None:
         eval_llm = get_client(ModelRole.ORCHESTRATION)
         validator = (ValidationAgent(neo4j_client=client,
                                      quarantine_threshold=args.quarantine_threshold,
-                                     oracle=args.oracle_validation)
+                                     oracle=args.oracle_validation,
+                                     validator_prompt=args.validator_prompt)
                      if args.audits_per_step > 0 else None)
 
         # ---- Step 0: seed index cases + baseline measurement ----
@@ -641,6 +644,10 @@ def main() -> None:
                         help="Validator quarantines from ground truth (error_type) instead "
                              "of the LLM judge — RQ4 upper-bound arm isolating judge "
                              "precision from the Trio architecture; zero audit LLM calls")
+    parser.add_argument("--validator-prompt",    type=str,   default="default", choices=["default", "tuned"],
+                        help="Judge prompt for the ValidationAgent: 'tuned' = the task #20 "
+                             "quote-first prompt (evidence-then-verdict, absence-of-evidence "
+                             "is not contradiction); same model and JSON contract")
     parser.add_argument("--trio-confidence",     action="store_true",      help="Trio confidence propagation at write time (derived conf = f(parents))")
     parser.add_argument("--eval-every",          type=int,   default=5,    help="Task eval every k steps (0 = only step 0 and final)")
     parser.add_argument("--eval-questions",      type=int,   default=50,   help="Questions per dataset per eval (match baseline for comparability)")

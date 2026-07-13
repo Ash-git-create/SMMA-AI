@@ -45,6 +45,49 @@ Rules:
 - UNCERTAIN: the evidence is ambiguous or incomplete (confidence 0.35–0.7)
 """
 
+# Tuned judge (task #20): adaptation of the winning offline variant
+# (v2_quote_first, phase39_validator_tuning.csv — flag precision 0.154 vs
+# 0.053, recall 2/2, false alarms 29% vs 47%) to the in-run setting, where
+# evidence is KG triplets rather than a source passage. Carries over the two
+# structural fixes: (1) evidence-then-verdict ordering — the judge must quote
+# the specific evidence line BEFORE labelling; (2) absence of evidence is
+# UNCERTAIN, never UNSUPPORTED — under the 0.4 quarantine threshold this is
+# the change that stops sparse-evidence pristine nodes being quarantined.
+# The JSON contract (verdict/confidence/reason) is unchanged so parsing and
+# thresholds stay identical; only the judgement rules differ.
+_TUNED_SYSTEM_PROMPT = """\
+You are a knowledge graph fact-checker. You receive a candidate fact and a list \
+of evidence triplets from the same knowledge graph.
+
+Judge ONLY whether the candidate is consistent with the evidence list — not \
+whether it is true in the real world. Do not use world knowledge: a candidate \
+that sounds wrong but does not conflict with any evidence line is UNCERTAIN, \
+never UNSUPPORTED.
+
+Step 1 — copy the single evidence line most relevant to the candidate into \
+"evidence_quote" (verbatim; empty string if no evidence line mentions either \
+entity of the candidate).
+Step 2 — compare the candidate with that line only, and give the verdict.
+
+Respond ONLY with a JSON object — no prose:
+{
+  "evidence_quote": "<verbatim evidence line, or empty>",
+  "verdict": "SUPPORTED" | "UNSUPPORTED" | "UNCERTAIN",
+  "confidence": <float 0.0–1.0>,
+  "reason": "<one sentence>"
+}
+
+Rules:
+- SUPPORTED: the quoted evidence states or implies the candidate (confidence 0.7–1.0). \
+Less-specific-but-consistent candidates are SUPPORTED, as are paraphrases and \
+reworded predicates.
+- UNSUPPORTED: the quoted evidence CONTRADICTS the candidate (confidence 0.0–0.35). \
+Requires a non-empty evidence_quote that the candidate contradicts. \
+Absence of evidence is NOT contradiction.
+- UNCERTAIN: no evidence line mentions the candidate's entities, or the \
+comparison is ambiguous (confidence 0.35–0.7).
+"""
+
 
 class OrchestrationAgent:
     """
@@ -62,6 +105,10 @@ class OrchestrationAgent:
         (Phase 3) raises this — it is the experimental variable of RQ4.
     neo4j_client:
         Optional pre-built client.
+    validator_prompt:
+        "default" = the original judge prompt (Phase 2/3 arms).
+        "tuned" = the task #20 quote-first judge — same model, same JSON
+        contract, stricter rules for UNSUPPORTED verdicts.
     """
 
     def __init__(
@@ -70,12 +117,18 @@ class OrchestrationAgent:
         infection_threshold: float = 0.4,
         retrieval_threshold: float = 0.0,
         neo4j_client: Optional[Neo4jClient] = None,
+        validator_prompt: str = "default",
     ):
         self.agent_id = agent_id
         self.infection_threshold = infection_threshold
         self.retrieval_threshold = retrieval_threshold
         self._external_client = neo4j_client
         self._llm = get_client(ModelRole.ORCHESTRATION)
+        if validator_prompt not in ("default", "tuned"):
+            raise ValueError(f"Unknown validator_prompt: {validator_prompt!r}")
+        self._system_prompt = (
+            _TUNED_SYSTEM_PROMPT if validator_prompt == "tuned" else _SYSTEM_PROMPT
+        )
 
     # ------------------------------------------------------------------
     # Public API
@@ -204,7 +257,7 @@ class OrchestrationAgent:
             f"Is the candidate fact supported by this evidence?"
         )
         try:
-            response = self._llm.chat(prompt=prompt, system=_SYSTEM_PROMPT)
+            response = self._llm.chat(prompt=prompt, system=self._system_prompt)
             return self._parse_response(response.content)
         except Exception as exc:
             logger.warning(f"[{self.agent_id}] LLM call failed: {exc}")

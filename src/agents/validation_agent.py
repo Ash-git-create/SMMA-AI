@@ -56,6 +56,10 @@ class ValidationAgent:
         judge-precision effects from architecture effects. Confidence of
         clean nodes is never touched (no re-scoring), so the confidence-
         laundering channel is absent by construction.
+    validator_prompt:
+        Judge prompt variant for the internal OrchestrationAgent ("default"
+        or "tuned" — the task #20 quote-first prompt). Ignored when oracle
+        is True or an explicit orchestration_agent is supplied.
     """
 
     def __init__(
@@ -65,13 +69,15 @@ class ValidationAgent:
         orchestration_agent: Optional[OrchestrationAgent] = None,
         neo4j_client: Optional[Neo4jClient] = None,
         oracle: bool = False,
+        validator_prompt: str = "default",
     ):
         self.agent_id = agent_id
         self.quarantine_threshold = quarantine_threshold
         self.oracle = oracle
         self._orchestrator = None if oracle else (
             orchestration_agent
-            or OrchestrationAgent(infection_threshold=quarantine_threshold)
+            or OrchestrationAgent(infection_threshold=quarantine_threshold,
+                                  validator_prompt=validator_prompt)
         )
         self._external_client = neo4j_client
 

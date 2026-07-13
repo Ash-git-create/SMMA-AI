@@ -1,0 +1,43 @@
+# Phase 3.9 TUNED-VALIDATOR arm (task #20) — full Trio architecture with the
+# quote-first judge prompt. Identical to contamination_mitigated.yaml except
+# validator_prompt: tuned. Same model (llama-3.1-8b-instant), same JSON
+# contract, same thresholds — ONLY the judgement rules change.
+#
+# Purpose (RQ4 dose-response middle point): offline tuning on the 40 human
+# labels (phase39_validator_tuning.csv) put the winning variant
+# (v2_quote_first) at flag precision 0.154 vs 0.053 original, recall 2/2,
+# false alarms 29% vs 47%. This arm tests whether that offline gain moves
+# in-run quarantine precision (pooled 5.9% under the default prompt) and
+# whether it softens the mitigated arm's pathologies (AUROC degradation,
+# variance amplification). Ladder: mitigated(8B default, R0 4.46±2.36) →
+# mitigated(8B tuned, this arm) → oracle (R0 0.79).
+
+steps: 10
+entities_per_step: 12
+injections_per_type: 15
+pool_per_key: 50
+
+# Retrieval (the beta channel) — Trio confidence floor ON
+context_limit: 5
+retrieval_threshold: 0.5
+
+# Validation (the gamma channel) — targeted audits ON, tuned judge
+audits_per_step: 1
+audit_sample: 25
+audit_targeted: true
+quarantine_threshold: 0.4
+validator_prompt: tuned
+
+# Trio confidence propagation at write time — derived conf = f(parents)
+trio_confidence: true
+
+# Task measurement — identical to baseline/mitigated
+eval_every: 5
+eval_questions: 50
+probe_limit: 60
+probe_facts: 8
+
+# Reproducibility + rate limiting
+random_seed: 42
+sleep: 1.0
+tag: mitigated_tuned
