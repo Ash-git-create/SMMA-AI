@@ -1283,3 +1283,49 @@ time), archive each trajectory/manifest to `results/summaries/`, fit SIR
 per point, extend the ch5 §5.4/§5.5 dose-response narrative and the R₀ bar
 chart with the new points, and fold in task #24 (oracle seed replication)
 at the p=1.0 point to close out the RQ4 evidence base before 2026-07-31.
+
+## 2026-07-23 (later) — Task #25 DONE: independent second-rater shows only slight-to-fair agreement; Neo4j back up, oracle sweep launched
+
+**Task #25 complete.** `scripts/second_rater.py` (Sonnet-built after the
+Fable-5-credits retry) rates the same 40 blind-calibration rows with
+`open-mistral-nemo` (Mistral API) — a model family independent of both
+existing raters (Ashwin's blind human labels, task #17; the
+`llama-3.1-8b-instant` judge under calibration). Same rubric, same
+5-label fidelity taxonomy (`SUPPORTED`/`QUALIFIER_LOSS`/`ENTITY_ERROR`/
+`RELATION_ERROR`/`UNSUPPORTED`), same information shown (source passage +
+SPO), imported verbatim from `audit_natural.py` so the task matches the
+original blind task exactly. Kappa cross-checked against
+`sklearn.metrics.cohen_kappa_score` — exact match to the hand-rolled
+implementation. File mapping verified before running:
+`phase34_judge_calibration_blind_v2.csv` (cp1252, passages + human labels)
+joined to `phase34_judge_calibration_results.csv` (judge verdicts) on
+`triplet_id`, identical id sets confirmed for both files (n=40).
+
+Results (`results/summaries/phase39_second_rater.csv`, 0 parse errors,
+n=40 both comparisons):
+
+| Comparison | Cohen's κ | Raw agreement | Expected (chance) agreement |
+|---|---|---|---|
+| second rater vs. human | 0.151 | 80.0% | 76.4% |
+| second rater vs. original judge | 0.261 | 57.5% | 42.5% |
+
+Both fall in the "slight" (vs. human) to "fair" (vs. judge) bands on the
+Landis–Koch scale. The high raw-vs-chance gap for the human comparison
+(80% raw but only 0.151 κ) is a base-rate artifact: `SUPPORTED` dominates
+the 40-row sample, so most of the 80% agreement is two raters both
+defaulting to the majority label, not real signal — exactly the effect
+Cohen's κ is designed to strip out. **This independently corroborates the
+#17/#20 finding from a different angle**: it is not only the Groq judge
+that struggles at this task under this rubric — a second, architecturally
+different model shows limited agreement with both the human ground truth
+and the judge being calibrated, suggesting the 5-label fidelity
+distinction itself is a hard rating task at this evidence granularity, not
+solely a `llama-3.1-8b-instant` weakness. Feeds thesis §5.6.
+
+**Neo4j is back up** (Ashwin started it). Bolt port confirmed reachable.
+Launched task #23's first sweep point (`contamination_oracle_p75`,
+target quarantine precision ≈0.75) in the background via the staged
+`run_oracle_sweep.ps1` — clean-room reload confirmed started
+(50,000 T-REx triplets loading). Remaining three points (p50, p25, p10)
+queue sequentially once this one finishes and is archived, per the
+one-at-a-time constraint (each does its own `load_kg --clear`).
