@@ -1,0 +1,32 @@
+# Task #23 — noisy-oracle precision sweep, target quarantine precision ~0.50.
+# See contamination_oracle_p75.yaml for the full derivation note.
+# oracle_false_alarm = 0.0504, solved for target precision 0.5 against the
+# measured 4.8% audited-candidate prevalence (phase38_oracle_trajectory.csv).
+
+steps: 10
+entities_per_step: 12
+injections_per_type: 15
+pool_per_key: 50
+
+context_limit: 5
+retrieval_threshold: 0.5
+
+audits_per_step: 1
+audit_sample: 25
+audit_targeted: true
+quarantine_threshold: 0.4
+oracle_validation: true
+oracle_sensitivity: 1.0
+oracle_false_alarm: 0.0504
+oracle_seed: 42
+
+trio_confidence: true
+
+eval_every: 5
+eval_questions: 50
+probe_limit: 60
+probe_facts: 8
+
+random_seed: 42
+sleep: 1.0
+tag: oracle_noisy_p50

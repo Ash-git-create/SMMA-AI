@@ -18,6 +18,7 @@ Usage:
 
 from __future__ import annotations
 
+import random
 from typing import Optional
 
 from loguru import logger
@@ -56,6 +57,24 @@ class ValidationAgent:
         judge-precision effects from architecture effects. Confidence of
         clean nodes is never touched (no re-scoring), so the confidence-
         laundering channel is absent by construction.
+    oracle_sensitivity:
+        NOISY-ORACLE knob (task #23): P(flag | node is contaminated). 1.0
+        (default) reproduces the perfect oracle exactly. Ignored unless
+        oracle is True.
+    oracle_false_alarm:
+        NOISY-ORACLE knob (task #23): P(flag | node is clean). 0.0 (default)
+        reproduces the perfect oracle exactly. A false alarm receives the
+        full quarantine treatment (state R, conf 0, cascade deprecation of
+        descendants) — the same collateral channel an imprecise LLM judge
+        exercises, but at a controlled rate. Together the two knobs give a
+        judge-quality dose–response with the Trio architecture held fixed;
+        realized quarantine precision is prevalence-dependent and is
+        measured per run from the trajectory's detection-confusion columns,
+        not assumed from the knobs. Ignored unless oracle is True.
+    oracle_seed:
+        Seed for the noisy-oracle RNG. Fixes the flag draws given an
+        identical audit-candidate sequence; note the candidate sequence
+        itself depends on LLM generations, which the run seed does NOT fix.
     validator_prompt:
         Judge prompt variant for the internal OrchestrationAgent ("default"
         or "tuned" — the task #20 quote-first prompt). Ignored when oracle
@@ -69,11 +88,21 @@ class ValidationAgent:
         orchestration_agent: Optional[OrchestrationAgent] = None,
         neo4j_client: Optional[Neo4jClient] = None,
         oracle: bool = False,
+        oracle_sensitivity: float = 1.0,
+        oracle_false_alarm: float = 0.0,
+        oracle_seed: int = 42,
         validator_prompt: str = "default",
     ):
+        if not 0.0 <= oracle_sensitivity <= 1.0:
+            raise ValueError(f"oracle_sensitivity must be in [0,1], got {oracle_sensitivity}")
+        if not 0.0 <= oracle_false_alarm <= 1.0:
+            raise ValueError(f"oracle_false_alarm must be in [0,1], got {oracle_false_alarm}")
         self.agent_id = agent_id
         self.quarantine_threshold = quarantine_threshold
         self.oracle = oracle
+        self.oracle_sensitivity = oracle_sensitivity
+        self.oracle_false_alarm = oracle_false_alarm
+        self._oracle_rng = random.Random(oracle_seed)
         self._orchestrator = None if oracle else (
             orchestration_agent
             or OrchestrationAgent(infection_threshold=quarantine_threshold,
@@ -173,15 +202,24 @@ class ValidationAgent:
             tid = triplet["id"]
 
             if self.oracle:
-                # Ground-truth verdict: any error_type (seeded or
-                # propagated_*) marks the node as contaminated.
-                if triplet.get("error_type"):
+                # Ground-truth verdict, drawn through a noisy channel: flag
+                # a contaminated node with p=oracle_sensitivity, flag a
+                # clean node (false alarm) with p=oracle_false_alarm. At
+                # defaults (1.0, 0.0) this reduces exactly to the perfect
+                # oracle. A false alarm gets the identical quarantine
+                # treatment a real judge false-positive would.
+                is_contam = bool(triplet.get("error_type"))
+                draw = self._oracle_rng.random()
+                flag = (draw < self.oracle_sensitivity) if is_contam \
+                    else (draw < self.oracle_false_alarm)
+                if flag:
                     client.update_state(tid, STATE_RECOVERED)
                     client.update_confidence(tid, 0.0)
                     quarantined += 1
                     logger.debug(
                         f"[{self.agent_id}] Quarantined {tid} "
-                        f"(oracle, error_type={triplet['error_type']})"
+                        f"(oracle, contam={is_contam}, "
+                        f"error_type={triplet.get('error_type')})"
                     )
                     cascaded += self.cascade_deprecate(tid)
                 continue

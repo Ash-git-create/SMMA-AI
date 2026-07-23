@@ -1,0 +1,44 @@
+# Task #23 — noisy-oracle precision sweep, target quarantine precision ~0.75.
+# Identical to contamination_oracle.yaml (full Trio, perfect-recall judge)
+# except the oracle now makes false-positive quarantine calls at a
+# controlled rate, giving a judge-precision dose-response point between
+# the perfect oracle (p=1.0, phase38_oracle) and the LLM judge arms.
+#
+# oracle_sensitivity stays at 1.0 (perfect recall — isolates precision as
+# the swept variable, since 8B/tuned judges never dropped a real positive
+# on recall grounds in the offline calibration; #17/#20).
+# oracle_false_alarm = 0.0168 is DERIVED, not assumed: precision =
+# sens*prev / (sens*prev + fa*(1-prev)) solved for target 0.75 using the
+# MEASURED audited-candidate contamination prevalence from the archived
+# perfect-oracle run (phase38_oracle_trajectory.csv: 12 true quarantines /
+# 250 audited = 4.8%). Realized precision is reported per-run from the
+# trajectory's det_R_contam/det_R_clean columns, not assumed from this
+# derivation — prevalence can drift over steps as the pipeline runs.
+
+steps: 10
+entities_per_step: 12
+injections_per_type: 15
+pool_per_key: 50
+
+context_limit: 5
+retrieval_threshold: 0.5
+
+audits_per_step: 1
+audit_sample: 25
+audit_targeted: true
+quarantine_threshold: 0.4
+oracle_validation: true
+oracle_sensitivity: 1.0
+oracle_false_alarm: 0.0168
+oracle_seed: 42
+
+trio_confidence: true
+
+eval_every: 5
+eval_questions: 50
+probe_limit: 60
+probe_facts: 8
+
+random_seed: 42
+sleep: 1.0
+tag: oracle_noisy_p75

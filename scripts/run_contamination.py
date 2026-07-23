@@ -535,6 +535,9 @@ def run_experiment(args) -> None:
         validator = (ValidationAgent(neo4j_client=client,
                                      quarantine_threshold=args.quarantine_threshold,
                                      oracle=args.oracle_validation,
+                                     oracle_sensitivity=args.oracle_sensitivity,
+                                     oracle_false_alarm=args.oracle_false_alarm,
+                                     oracle_seed=args.oracle_seed,
                                      validator_prompt=args.validator_prompt)
                      if args.audits_per_step > 0 else None)
 
@@ -644,6 +647,14 @@ def main() -> None:
                         help="Validator quarantines from ground truth (error_type) instead "
                              "of the LLM judge — RQ4 upper-bound arm isolating judge "
                              "precision from the Trio architecture; zero audit LLM calls")
+    parser.add_argument("--oracle-sensitivity",  type=float, default=1.0,
+                        help="Task #23 noisy-oracle: P(flag | contaminated). 1.0 = perfect "
+                             "recall (default oracle behaviour). Ignored unless --oracle-validation.")
+    parser.add_argument("--oracle-false-alarm",  type=float, default=0.0,
+                        help="Task #23 noisy-oracle: P(flag | clean). 0.0 = no false alarms "
+                             "(default oracle behaviour). Ignored unless --oracle-validation.")
+    parser.add_argument("--oracle-seed",         type=int,   default=42,
+                        help="RNG seed for noisy-oracle flag draws (separate from --random-seed).")
     parser.add_argument("--validator-prompt",    type=str,   default="default", choices=["default", "tuned"],
                         help="Judge prompt for the ValidationAgent: 'tuned' = the task #20 "
                              "quote-first prompt (evidence-then-verdict, absence-of-evidence "
