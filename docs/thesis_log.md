@@ -1188,3 +1188,98 @@ retrieval floor, now measured in-run.
 single-seed label and the AUROC-construction caveats); §5.5 SIR table +
 prose gain the γ=0 row; ch3 §3.6 arm table already had the row from this
 morning.
+
+## 2026-07-23 — Timeline reset: implementation push before 2026-08-05 write-up start; task #23 built, ch4 drafted, figures produced
+
+**Context.** Ashwin set a hard deadline: all implementation work complete by
+end of July 2026 (2026-07-31), thesis writing begins 2026-08-05. Ten days
+elapsed since the task #20 close-out (2026-07-13); the Groq TPD window is
+fresh. Verified from the git snapshot that all four commits from that
+session (A USR metrics, B validator wiring, C phase39 archives, D docs) had
+already landed on `main` — the "VERIFY next session" item from that
+session's memory is resolved, no re-commit needed.
+
+**Parallel work dispatched** (per updated instruction to parallelize
+non-dependent work across agents):
+
+1. **Task #26 (figures) — DONE.** `scripts/make_figures.py` (matplotlib,
+   Agg backend, reproducible from archived CSVs only) produces three
+   figures to `docs/figures/`: baseline per-seed trajectories, empirical-
+   vs-fitted I(t) small-multiples per arm, and the R₀-per-arm bar chart with
+   the R₀=1 threshold line. The γ=0 arms (baseline, floor, mitigated_tuned)
+   are annotated "undefined (γ=0)" rather than given fake bars — verified
+   visually. Both `[FIG]` markers in ch5 §5.1/§5.5 are now satisfied; no
+   other `[FIG]` markers exist in ch5.
+2. **Ch4 (implementation chapter) — DRAFTED.** New
+   `docs/chapters/ch4_implementation.md`, written from the actual source
+   (not CLAUDE.md's aspirational description) — sections 4.1–4.9 covering
+   architecture, KG/provenance schema, the agent ensemble, error injection,
+   Trio mechanics, SIR instrumentation, evaluation harness, run protocol,
+   and engineering constraints. No results numbers (design constants only,
+   cited to file). Flags several code-vs-CLAUDE.md discrepancies worth
+   carrying into the final write-up: `OrchestrationAgent` is actually just
+   the judge (pipeline orchestration lives in `run_contamination.py`);
+   `src/evaluation/experiment_runner.py` (named in CLAUDE.md's tree) does
+   not exist, runners are `scripts/run_*.py`; disjunctive lineage /
+   `noisy_or` is implemented but never exercised (all lineage is
+   conjunctive in practice); trajectory CSV `S`/`I`/`R` are operational
+   bookkeeping, not epidemic compartments (`fit_sir.py` reconstructs the
+   real I(t)/R(t) from ground-truth columns — a trap worth flagging
+   prominently in ch4 since it is easy to misread the raw CSV). Still needs
+   a pass to cross-check figure/number cross-references once ch5 finalises
+   further and a full read-through for voice consistency with ch3/ch5.
+3. **Task #25 (second-rater kappa) — IN PROGRESS.** First attempt failed
+   immediately on a Fable 5 usage-credits limit before writing any code
+   (account-level, not a task failure). Relaunched under Sonnet. Result
+   pending as of this entry.
+
+**Task #23 (noisy-oracle precision sweep) — BUILT, not yet run.**
+Implemented directly (not delegated, since it touches the same files as
+task #20's judge-mode wiring): `ValidationAgent` gains
+`oracle_sensitivity` (P(flag | contaminated), default 1.0) and
+`oracle_false_alarm` (P(flag | clean), default 0.0) — at defaults this is
+byte-identical to the existing perfect oracle. A false alarm receives the
+full quarantine treatment (state R, conf 0, cascade deprecation), so it
+exercises the same collateral-damage channel a real judge's false positives
+do, at a controlled, reproducible rate (`oracle_seed`, decoupled from
+`random_seed`). Wired through `run_contamination.py` as
+`--oracle-sensitivity` / `--oracle-false-alarm` / `--oracle-seed`.
+Verified: the Bernoulli draw logic hits target rates over 2000 trials
+(sensitivity 0.5→0.485, false-alarm 0.1→0.095), the constructor rejects
+out-of-[0,1] knob values, and the full CLI→config→argparse path parses
+correctly for all four new configs with `run_experiment` stubbed out
+(no Neo4j needed for this check).
+
+Four sweep configs created
+(`experiments/configs/contamination_oracle_p{75,50,25,10}.yaml`), each
+identical to `contamination_oracle.yaml` except the false-alarm knob. The
+false-alarm rates are DERIVED, not guessed: solved from
+precision = sens·prev / (sens·prev + fa·(1−prev)) using the MEASURED
+audited-candidate contamination prevalence from the archived perfect-oracle
+run (`phase38_oracle_trajectory.csv`: 12 true quarantines / 250 audited =
+4.8%) — fa = 0.0168 / 0.0504 / 0.1513 / 0.4538 for targets 0.75 / 0.50 /
+0.25 / 0.10. These are targets only; realized precision is
+prevalence-dependent and will be read per-run from the trajectory's
+`det_R_contam`/`det_R_clean` columns, exactly as the existing arms are
+reported — the config file comments say so explicitly, so a stale
+derivation cannot masquerade as a result later. The p=1.0 point is not
+re-run; it reuses the archived `phase38_oracle` run per the pre-existing
+plan to coordinate with task #24.
+
+**Blocked on Neo4j.** Bolt port 7687 unreachable this session — Desktop-
+managed, only Ashwin can start it. None of the four sweep runs, nor any
+further contamination-pipeline work, can execute until then. A relaunch
+script (`run_oracle_sweep.ps1`, session scratchpad) is ready: 3-stage clean
+room + 40×15s preflight poll, parameterized by sweep point, one arm per
+invocation (they must run sequentially — each does its own `load_kg
+--clear`). Oracle audits cost zero Groq calls regardless of the
+false-alarm rate (ground-truth lookup, not an LLM judge), so only
+synthesis (Mistral) and the step-0/5/10 task+probe evaluations (Groq) draw
+budget — materially cheaper than the judged arms (#14/#20), so more than
+one sweep point should fit in a day once Neo4j is available.
+
+**Next when Neo4j is up:** run the four sweep points (p75→p10, one at a
+time), archive each trajectory/manifest to `results/summaries/`, fit SIR
+per point, extend the ch5 §5.4/§5.5 dose-response narrative and the R₀ bar
+chart with the new points, and fold in task #24 (oracle seed replication)
+at the p=1.0 point to close out the RQ4 evidence base before 2026-07-31.
