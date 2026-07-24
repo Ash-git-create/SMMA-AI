@@ -1,0 +1,505 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "seed_placement": "active",
+    "context_limit": 5,
+    "retrieval_threshold": 0.5,
+    "audits_per_step": 1,
+    "audit_sample": 25,
+    "audit_targeted": true,
+    "quarantine_threshold": 0.4,
+    "oracle_validation": true,
+    "oracle_sensitivity": 1.0,
+    "oracle_false_alarm": 0.4538,
+    "oracle_seed": 42,
+    "validator_prompt": "default",
+    "trio_confidence": true,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "probe_limit": 60,
+    "probe_facts": 8,
+    "extraction_manifest": null,
+    "random_seed": 44,
+    "eval_seed": 42,
+    "sleep": 1.0,
+    "tag": "oracle_noisy_p10_s44",
+    "allow_dirty": false
+  },
+  "timestamp": "20260723_153449",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260723_153447.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "ceba4a4b-7a21-5f5d-a5dd-5b4e0a1201e4",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "22\u201311, 16\u20134 in MAAC play",
+      "after": "a drama series",
+      "subject": "2015\u201316 Iona Gaels men's basketball team"
+    },
+    {
+      "triplet_id": "trex_32550",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "Dhrupadee Veenkar",
+      "subject": "Joe Cole"
+    },
+    {
+      "triplet_id": "4a74dee0-5113-55c8-9a0d-75e4751d3d49",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "psychedelic rock",
+      "after": "soul",
+      "subject": "Blues Traveler"
+    },
+    {
+      "triplet_id": "944e7dfd-856d-514b-9cf9-9dee70546707",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "American beer industry",
+      "after": "a rich Manhattan socialite who became a Christian",
+      "subject": "Beer Wars"
+    },
+    {
+      "triplet_id": "78a5c925-3cab-507c-8454-e871cc034a8a",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "the spinto and dramatic tenor roles of the Italian repertory",
+      "after": "Moscow State University",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "trex_45864",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Bing Crosby",
+      "after": "2002",
+      "subject": "Robin and the 7 Hoods"
+    },
+    {
+      "triplet_id": "ea010339-2d8a-55e6-8912-56b35458d394",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "American",
+      "after": "Mexican",
+      "subject": "John Updike"
+    },
+    {
+      "triplet_id": "c2acb78c-41de-51ae-80b1-891f2548b122",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "October 1, 2013",
+      "after": "October 14, 1977",
+      "subject": "Tom Clancy"
+    },
+    {
+      "triplet_id": "trex_34269",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Liverpool",
+      "after": "Arizona",
+      "subject": "Metropolitan Cathedral"
+    },
+    {
+      "triplet_id": "d3d88a92-f2f7-548e-99b5-c55db2df5231",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "American aeronautical engineer",
+      "after": "NASA astronaut",
+      "subject": "Stuart Roosa"
+    },
+    {
+      "triplet_id": "1731a80b-eeae-543f-84e3-f85ad17807d2",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "short_story_writer",
+      "after": "scholar",
+      "subject": "John Updike"
+    },
+    {
+      "triplet_id": "627e1959-e661-519c-abc8-ceaa7b054b95",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "1899-12-29",
+      "after": "March 18, 1932",
+      "subject": "Sergei Aleksandrovich Tokarev"
+    },
+    {
+      "triplet_id": "7e71b087-ced4-5c37-a2f1-bd67f1cfc992",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Istanbul",
+      "after": "residential areas",
+      "subject": "Valens Aqueduct"
+    },
+    {
+      "triplet_id": "13fe5dcf-4713-5024-a655-40e72044f169",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "a music producer",
+      "after": "Dutch actress and writer",
+      "subject": "Torstein Ellingsen"
+    },
+    {
+      "triplet_id": "trex_11244",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Arizona",
+      "after": "The Bahamas",
+      "subject": "Santa Cruz River"
+    },
+    {
+      "triplet_id": "5cf8d4d6-c222-5da9-8642-d06ff33ac94f",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "largely unchanged since c.\u20091939",
+      "after": "largely unchanged",
+      "subject": "New York State Route 9R"
+    },
+    {
+      "triplet_id": "cce8549e-a42f-559f-85b3-604e964a3535",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "northeastern Albany County, New York",
+      "after": "northeastern Albany County",
+      "subject": "New York State Route 9R"
+    },
+    {
+      "triplet_id": "36e1334a-efb7-569c-9afa-4ab6068f7583",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "January 27, 2009",
+      "after": "January 27",
+      "subject": "John Updike"
+    },
+    {
+      "triplet_id": "4b3526f5-a2a8-5436-a62a-60bc435cb8e9",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "May 27, 1993",
+      "after": "May 27",
+      "subject": "Jalen Jones"
+    },
+    {
+      "triplet_id": "c2fb1468-8d86-5144-a183-9202b2aed315",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "August 12, 1967",
+      "after": "August 12",
+      "subject": "Mike Gundy"
+    },
+    {
+      "triplet_id": "47d30f71-e2d5-5357-ae0a-f40d1f5baa6b",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "March 11, 1977",
+      "after": "March 11",
+      "subject": "The Many Adventures of Winnie the Pooh"
+    },
+    {
+      "triplet_id": "c582e4ee-759d-52fc-9a97-10cd2480b7a6",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "former Castle Air Force Base in Atwater, California",
+      "after": "former Castle Air Force Base in Atwater",
+      "subject": "Sierra Academy of Aeronautics"
+    },
+    {
+      "triplet_id": "0473da51-5eb4-58a6-968a-b2627d09451e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Escondido, California, USA",
+      "after": "Escondido, California",
+      "subject": "Stone Brewing Co."
+    },
+    {
+      "triplet_id": "b32dbbab-b0f2-529c-ba5c-11766bf65cc3",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "June 16, 1955",
+      "after": "June 16",
+      "subject": "Laurie Metcalf"
+    },
+    {
+      "triplet_id": "1f9500a0-3b1b-507d-9129-e14e02259a57",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Princeton, New Jersey",
+      "after": "Princeton",
+      "subject": "Blues Traveler"
+    },
+    {
+      "triplet_id": "87b7c605-edb9-5d66-a123-7e210e85a5b6",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Tophane, Beyo\u011flu, Istanbul, Turkey",
+      "after": "Tophane, Beyo\u011flu, Istanbul",
+      "subject": "Nusretiye Mosque"
+    },
+    {
+      "triplet_id": "cb07f5fe-2d61-56c9-b18b-435328eced49",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "15 January 1880",
+      "after": "1880",
+      "subject": "Lady Charlotte Elliot"
+    },
+    {
+      "triplet_id": "d952b24d-32c3-5a38-bd0f-64725acfe554",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "10 November 1975",
+      "after": "1975",
+      "subject": "Halina Reijn"
+    },
+    {
+      "triplet_id": "c5d04d94-973d-5712-b06c-30b466dd131a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "2 October 1780",
+      "after": "1780",
+      "subject": "John Andr\u00e9"
+    },
+    {
+      "triplet_id": "6503bc73-81f2-51e6-b9bd-2e16202456f0",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "January 3, 2005",
+      "after": "January 3",
+      "subject": "Mike Gundy"
+    },
+    {
+      "triplet_id": "trex_47059",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Ivan Ivanovich Zhegalkin"
+    },
+    {
+      "triplet_id": "trex_20117",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Aldridge"
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Hugh McQueen"
+    },
+    {
+      "triplet_id": "trex_49633",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Daniel Agger"
+    },
+    {
+      "triplet_id": "trex_23899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Oussama Assaidi"
+    },
+    {
+      "triplet_id": "trex_34908",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Ian Callaghan"
+    },
+    {
+      "triplet_id": "trex_45191",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Sammy Reid"
+    },
+    {
+      "triplet_id": "trex_41412",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Sealey"
+    }
+  ],
+  "transmissions": [
+    {
+      "step": 1,
+      "id": "684f3b6a-7a6b-5e48-b466-a54dfdc5badd",
+      "subject": "Sierra Academy of Aeronautics",
+      "predicate": "operates_training_facility_at",
+      "object": "former Castle Air Force Base in Atwater",
+      "root_type": "qualifier_loss",
+      "payload": "former Castle Air Force Base in Atwater"
+    },
+    {
+      "step": 2,
+      "id": "5bb53f05-8d9c-50c9-a6e9-60091cca6ef4",
+      "subject": "The Valens Aqueduct",
+      "predicate": "landmark_of",
+      "object": "residential areas",
+      "root_type": "entity_disambiguation",
+      "payload": "residential areas"
+    },
+    {
+      "step": 5,
+      "id": "e8fb5709-ad28-548b-894b-fbd9c56629bf",
+      "subject": "The Many Adventures of Winnie the Pooh",
+      "predicate": "first_released_on",
+      "object": "March 11",
+      "root_type": "qualifier_loss",
+      "payload": "March 11"
+    },
+    {
+      "step": 5,
+      "id": "e21e5058-15b3-53c7-a460-82d779fd7831",
+      "subject": "New York State Route 9R",
+      "predicate": "has_remained",
+      "object": "largely unchanged",
+      "root_type": "qualifier_loss",
+      "payload": "largely unchanged"
+    },
+    {
+      "step": 5,
+      "id": "92bb32ce-e6e5-5a03-9850-991abeebd14e",
+      "subject": "Sierra Academy of Aeronautics",
+      "predicate": "operates_training_facility_at",
+      "object": "former Castle Air Force Base in Atwater",
+      "root_type": "qualifier_loss",
+      "payload": "former Castle Air Force Base in Atwater"
+    },
+    {
+      "step": 5,
+      "id": "6e37db9c-60eb-5263-901e-f06160dc2b49",
+      "subject": "Halina Reijn",
+      "predicate": "born_in",
+      "object": "1975",
+      "root_type": "qualifier_loss",
+      "payload": "1975"
+    },
+    {
+      "step": 6,
+      "id": "d9cf5425-24a9-55ca-a3c2-72eea3f5984e",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "Navajo Reservation",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 6,
+      "id": "f6f079ce-e773-5648-b169-39485a6d60da",
+      "subject": "Arizona",
+      "predicate": "home_to",
+      "object": "city of Navajo",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 6,
+      "id": "d4b638a9-8d7a-524f-acd7-74206bb017a6",
+      "subject": "2011 Tucson shooting",
+      "predicate": "located_in",
+      "object": "Arizona",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 6,
+      "id": "a8db199b-4e8a-5407-a665-206050eda8da",
+      "subject": "Pete Worden",
+      "predicate": "employer",
+      "object": "Arizona",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 6,
+      "id": "4974d28e-dd18-557d-a2bc-3b108bcbde1f",
+      "subject": "Metropolitan Cathedral",
+      "predicate": "located_in",
+      "object": "Arizona",
+      "root_type": "entity_disambiguation",
+      "payload": "Arizona"
+    },
+    {
+      "step": 6,
+      "id": "8482b3de-89d5-55b7-86a1-b1c0b88ee3b0",
+      "subject": "Stone Brewing Co.",
+      "predicate": "headquartered_in",
+      "object": "Escondido, California",
+      "root_type": "qualifier_loss",
+      "payload": "Escondido, California"
+    },
+    {
+      "step": 6,
+      "id": "0d659149-7659-5651-a08c-3783e7641797",
+      "subject": "Nusretiye Mosque",
+      "predicate": "located_in",
+      "object": "Tophane, Beyo\u011flu, Istanbul",
+      "root_type": "qualifier_loss",
+      "payload": "Tophane, Beyo\u011flu, Istanbul"
+    },
+    {
+      "step": 6,
+      "id": "f7133af8-a14e-5928-af3f-ad94386e0a83",
+      "subject": "Sierra Academy of Aeronautics",
+      "predicate": "operates_training_facility_at",
+      "object": "former Castle Air Force Base in Atwater",
+      "root_type": "qualifier_loss",
+      "payload": "former Castle Air Force Base in Atwater"
+    },
+    {
+      "step": 7,
+      "id": "4238e205-3c07-5fc9-9eb8-8fd88fab08d5",
+      "subject": "Sergei Aleksandrovich Tokarev",
+      "predicate": "born_on",
+      "object": "March 18, 1932",
+      "root_type": "entity_disambiguation",
+      "payload": "March 18, 1932"
+    },
+    {
+      "step": 8,
+      "id": "b8a3855d-ae6d-5505-b14e-7ba155725b39",
+      "subject": "New York State Route 9R",
+      "predicate": "has_remained",
+      "object": "largely unchanged",
+      "root_type": "qualifier_loss",
+      "payload": "largely unchanged"
+    },
+    {
+      "step": 9,
+      "id": "a69bb06d-1962-55c7-9a69-6eaf5552c446",
+      "subject": "Jalen Jones",
+      "predicate": "born_on",
+      "object": "May 27",
+      "root_type": "qualifier_loss",
+      "payload": "May 27"
+    },
+    {
+      "step": 10,
+      "id": "30b6452e-4a12-5d30-ab98-9f1d5756dc9d",
+      "subject": "New York State Route 9R",
+      "predicate": "has_remained",
+      "object": "largely unchanged",
+      "root_type": "qualifier_loss",
+      "payload": "largely unchanged"
+    }
+  ],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_oracle_noisy_p10_s44_20260723_153449_trajectory.csv"
+}
