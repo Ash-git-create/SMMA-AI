@@ -2148,3 +2148,41 @@ low recall because near-zero γ makes β/γ variance explode — noted in §5.4.
 Task #27 DONE. Immediate next: regenerate fig_r0_by_arm with the oracle
 n=4 + full recall-sweep points (a recall dose-response panel is now
 warranted as its own figure); merge worktrees + live-test; launch RQ3.
+
+## 2026-07-24 (RQ3 machinery merged + launched, task #21) — worktrees hand-merged, k-hop live-verified, RQ3 baseline sweeps running
+
+**Worktree merge (careful, not blind-copy).** Both RQ3 worktrees branched
+from a base predating this session's working-tree edits (oracle knobs +
+validator_prompt on run_contamination.py), so a wholesale copy would have
+regressed those. Merge strategy: files only the worktree touched on an
+unchanged base were copied wholesale (neo4j_client.py +get_adjacent_triplets;
+load_kg.py +--density; new files khop_placement.py, density.py, tests,
+khop configs, phase4_density_protocol.md); run_contamination.py — the one
+doubly-edited file — had the k-hop additions applied SURGICALLY to the
+current main (import khop_frontier, build_khop_pool wrapper, seed_index_cases
+k-hop branch + khop manifest field, --seed-khop arg), preserving my oracle
+knobs and validator_prompt. Verified: all files syntax-clean; `--help` shows
+--seed-khop AND --oracle-sensitivity AND --validator-prompt (nothing
+regressed); load_kg --help shows --density/--density-seed; both unit suites
+pass (khop 22 assertions, density 20+).
+
+**k-hop live-verified** (the one thing the worktree agent couldn't do):
+against the loaded 50K KG, khop_frontier returns exact-k pools (hop-values
+{1}/{2}/{3} correct), 1.9s/8.8s/9.4s for k=1/2/3 at pool_size 300 — the
+hub-entity blowup concern did NOT materialize. Density load-integration will
+be tested when a density arm runs.
+
+**RQ3 chain 3 LAUNCHED (7 runs, baseline substrate, no judge calls):**
+k-hop gradient khop1/2/3 (RQ1→RQ3 distance bridge — also end-to-end tests
+the merged code), write-frequency wf6/wf24 (entities_per_step 6/24 vs
+baseline 12), retrieval-density rd3/rd10 (context_limit 3/10 vs baseline 5).
+All unmitigated (γ=0) so β/reach effects are clean; baseline (12/5/active)
+is the shared reference already archived. Configs: contamination_{khop*,
+wf6,wf24,rd3,rd10}.yaml. Seed 42 first pass; replication decision after the
+effect sizes are visible.
+
+**RQ3 axes status:** write-frequency ✓running, retrieval-density ✓running,
+k-hop gradient ✓running, graph-density = NEXT (separate chain, load_kg
+--density {0.5,2.0} per phase4_density_protocol.md), validation-interval =
+DEFERRED (needs either an audit-cadence flag or an oracle-substrate
+audits_per_step sweep — token-free but needs a small design decision).
