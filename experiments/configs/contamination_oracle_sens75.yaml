@@ -1,0 +1,41 @@
+# Task #23-B — RECALL dose-response sweep, oracle_sensitivity = 0.75.
+# The precision sweep (contamination_oracle_p*.yaml) held recall fixed at
+# 1.0 and varied false alarms; this sweep is its complement: false alarms
+# held at 0 (no induced collateral), sensitivity varied. Together they
+# separate the two axes of judge quality directly, rather than inferring
+# the recall effect from the oracle-family-vs-LLM-judge cross-family
+# comparison (which is confounded by everything else that differs).
+#
+# Design note: false_alarm = 0 keeps the recall axis clean — every
+# quarantine is a true positive, so gamma directly measures what partial
+# recall buys. A sensitivity-miss here is permanent for that audit pass
+# only (the node can be re-drawn in later targeted audits), which mirrors
+# how a real judge's stochastic misses behave across passes.
+
+steps: 10
+entities_per_step: 12
+injections_per_type: 15
+pool_per_key: 50
+
+context_limit: 5
+retrieval_threshold: 0.5
+
+audits_per_step: 1
+audit_sample: 25
+audit_targeted: true
+quarantine_threshold: 0.4
+oracle_validation: true
+oracle_sensitivity: 0.75
+oracle_false_alarm: 0.0
+oracle_seed: 42
+
+trio_confidence: true
+
+eval_every: 5
+eval_questions: 50
+probe_limit: 60
+probe_facts: 8
+
+random_seed: 42
+sleep: 1.0
+tag: oracle_sens75

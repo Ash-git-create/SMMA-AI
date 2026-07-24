@@ -1,0 +1,521 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "seed_placement": "active",
+    "context_limit": 5,
+    "retrieval_threshold": 0.5,
+    "audits_per_step": 1,
+    "audit_sample": 25,
+    "audit_targeted": true,
+    "quarantine_threshold": 0.4,
+    "oracle_validation": true,
+    "oracle_sensitivity": 0.25,
+    "oracle_false_alarm": 0.0,
+    "oracle_seed": 42,
+    "validator_prompt": "default",
+    "trio_confidence": true,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "probe_limit": 60,
+    "probe_facts": 8,
+    "extraction_manifest": null,
+    "random_seed": 43,
+    "eval_seed": 42,
+    "sleep": 1.0,
+    "tag": "oracle_sens25_s43",
+    "allow_dirty": false
+  },
+  "timestamp": "20260724_035825",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260724_035823.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "816dd2b8-e327-5715-878b-34a58e988899",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "British forces",
+      "after": "professional basketball player",
+      "subject": "Benedict Arnold"
+    },
+    {
+      "triplet_id": "e795e600-64f2-5687-9f57-4545fddfb9d2",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "ten thousand",
+      "after": "National Basketball Association",
+      "subject": "On Tour Forever"
+    },
+    {
+      "triplet_id": "f1f4e65c-45fd-552f-acea-182b8e089979",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Francis McPeake 1st",
+      "after": "August 12, 1967",
+      "subject": "Wild Mountain Thyme"
+    },
+    {
+      "triplet_id": "7b01872b-0956-5c21-b3b7-23819a0f49de",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Byzantines",
+      "after": "Pastore Svizzero Bianco",
+      "subject": "Valens Aqueduct"
+    },
+    {
+      "triplet_id": "06ecbd52-550a-54a1-9477-9453b89f8416",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Hawker Aircraft Ltd",
+      "after": "Halina Reijn",
+      "subject": "Hawker Hurricane"
+    },
+    {
+      "triplet_id": "7b8db669-8e3a-59fa-9c5e-5c810e125e4c",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "White Shepherd",
+      "after": "German Shepherd Dog",
+      "subject": "Berger Blanc Suisse"
+    },
+    {
+      "triplet_id": "a8f0b6a2-5a78-5684-95c1-10ef95d33a5e",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "From Dusk Till Dawn",
+      "after": "Wild Wild West",
+      "subject": "Salma Hayek"
+    },
+    {
+      "triplet_id": "trex_23235",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "slasher",
+      "after": "folk rock",
+      "subject": "Scream 2"
+    },
+    {
+      "triplet_id": "c8ede7b8-a12f-5808-a80f-969d8d3a7ad5",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "remains unclear",
+      "after": "Koch Industries",
+      "subject": "African buffalo"
+    },
+    {
+      "triplet_id": "7164f479-529f-5092-ae00-f68de92274a6",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Agavaceae",
+      "after": "American beer industry",
+      "subject": "Calibanus"
+    },
+    {
+      "triplet_id": "d6a24869-71b2-5b7e-9a5e-0a036b888fef",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Cairn na Burgh M\u00f2r and Cairn na Burgh Beag",
+      "after": "hill",
+      "subject": "Cairnburgh Castle"
+    },
+    {
+      "triplet_id": "5d4bd4c7-1e4f-5018-8a97-ce502970955f",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "State_Capitol_in_Tallahassee",
+      "after": "impala",
+      "subject": "Florida Senate"
+    },
+    {
+      "triplet_id": "05dd55e9-88f9-5096-8207-b8cb47abb391",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "differences between large corporate breweries and smaller breweries",
+      "after": "independent_electronic_music",
+      "subject": "Beer Wars"
+    },
+    {
+      "triplet_id": "7e6f4fe4-a533-551f-937d-0f89875157a5",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "American",
+      "after": "Indian",
+      "subject": "Salma Hayek"
+    },
+    {
+      "triplet_id": "ded4d407-8fe6-5a05-89c5-5fc08f884756",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "first_recording_autograph",
+      "after": "film actress",
+      "subject": "Halsey"
+    },
+    {
+      "triplet_id": "0473da51-5eb4-58a6-968a-b2627d09451e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Escondido, California, USA",
+      "after": "Escondido, California",
+      "subject": "Stone Brewing Co."
+    },
+    {
+      "triplet_id": "5381011b-d0f5-537c-b0d6-79f7becb72dd",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "his powerhouse voice, electrifying top notes, clear timbre, passionate singing and remarkable performances",
+      "after": "his powerhouse voice, electrifying top notes, clear timbre",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "5efb361d-2bc4-5bb1-a933-32f70380c0ca",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "December 12, 1994",
+      "after": "December 12",
+      "subject": "Stuart Roosa"
+    },
+    {
+      "triplet_id": "243bf703-f46c-5db8-a59b-fc9dc6b856d3",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Metro Atlantic Athletic Conference (MAAC)",
+      "after": "Metro Atlantic Athletic Conference",
+      "subject": "2015\u201316 Iona Gaels men's basketball team"
+    },
+    {
+      "triplet_id": "0fa434a5-c8ff-52e1-ba3a-8af0f6e4a07a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Will Ye Go, Lassie, Go?",
+      "after": "Will Ye Go, Lassie",
+      "subject": "Wild Mountain Thyme"
+    },
+    {
+      "triplet_id": "b9894d67-41db-5ab7-b102-28f9ba6c5625",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "29 October 2003",
+      "after": "2003",
+      "subject": "Franco Corelli"
+    },
+    {
+      "triplet_id": "a37d8350-11d5-5fb4-baf5-e4e52ed3c934",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "lions from neighbouring Mozambique",
+      "after": "lions",
+      "subject": "Mwabvi Wildlife Reserve"
+    },
+    {
+      "triplet_id": "c5d04d94-973d-5712-b06c-30b466dd131a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "2 October 1780",
+      "after": "1780",
+      "subject": "John Andr\u00e9"
+    },
+    {
+      "triplet_id": "9c137e1c-2602-5437-9471-060e87df3534",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "18 March 1985",
+      "after": "1985",
+      "subject": "A Pair of Brown Eyes"
+    },
+    {
+      "triplet_id": "3c6f19bd-707a-58e2-9d85-01505be3fd1e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "7 August 1966",
+      "after": "1966",
+      "subject": "Torstein Ellingsen"
+    },
+    {
+      "triplet_id": "f8c7e6e8-9dec-5975-a308-24bab2ee972c",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Canisius, Siena, Monmouth",
+      "after": "Canisius, Siena",
+      "subject": "2015\u201316 Iona Gaels men's basketball team"
+    },
+    {
+      "triplet_id": "adf0c210-f0a5-5d07-b079-49541e8778cb",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "1985-04-19",
+      "after": "1985",
+      "subject": "Sergei Aleksandrovich Tokarev"
+    },
+    {
+      "triplet_id": "19ada7d5-1102-59d8-a8b8-e470d07db483",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "4 May 1759",
+      "after": "1759",
+      "subject": "Isabella Kelly"
+    },
+    {
+      "triplet_id": "c4537072-c2a4-5023-b510-b7c8aa0d8c22",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "August 16, 1933",
+      "after": "August 16",
+      "subject": "Stuart Roosa"
+    },
+    {
+      "triplet_id": "cb07f5fe-2d61-56c9-b18b-435328eced49",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "15 January 1880",
+      "after": "1880",
+      "subject": "Lady Charlotte Elliot"
+    },
+    {
+      "triplet_id": "trex_45864",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "cast member",
+      "after": "lead actor",
+      "subject": "Robin and the 7 Hoods"
+    },
+    {
+      "triplet_id": "trex_34908",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Ian Callaghan"
+    },
+    {
+      "triplet_id": "trex_20117",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Aldridge"
+    },
+    {
+      "triplet_id": "trex_49633",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Daniel Agger"
+    },
+    {
+      "triplet_id": "trex_32550",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Joe Cole"
+    },
+    {
+      "triplet_id": "trex_47059",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Ivan Ivanovich Zhegalkin"
+    },
+    {
+      "triplet_id": "trex_23899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Oussama Assaidi"
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Hugh McQueen"
+    },
+    {
+      "triplet_id": "trex_45191",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Sammy Reid"
+    },
+    {
+      "triplet_id": "trex_41412",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Sealey"
+    }
+  ],
+  "transmissions": [
+    {
+      "step": 1,
+      "id": "09dc9b64-b773-5d6a-9666-907b449ef5ff",
+      "subject": "Halsey",
+      "predicate": "is",
+      "object": "film actress",
+      "root_type": "entity_disambiguation",
+      "payload": "film actress"
+    },
+    {
+      "step": 2,
+      "id": "3e8e1877-b0ba-50ef-b8cc-6ee1aadfc483",
+      "subject": "Hawker Hurricane",
+      "predicate": "predominantly_built_by",
+      "object": "Halina Reijn",
+      "root_type": "entity_disambiguation",
+      "payload": "Halina Reijn"
+    },
+    {
+      "step": 2,
+      "id": "0e63311c-3938-56fb-87f2-8dbc017b0efc",
+      "subject": "The Valens Aqueduct",
+      "predicate": "maintained_by",
+      "object": "Pastore Svizzero Bianco",
+      "root_type": "entity_disambiguation",
+      "payload": "Pastore Svizzero Bianco"
+    },
+    {
+      "step": 2,
+      "id": "994c3549-53bb-5cb3-ad95-e8a01c64d3ad",
+      "subject": "Berger Blanc Suisse",
+      "predicate": "has_same_origins_as",
+      "object": "German Shepherd Dog",
+      "root_type": "entity_disambiguation",
+      "payload": "German Shepherd Dog"
+    },
+    {
+      "step": 3,
+      "id": "71e58115-9255-5792-9926-1e03f8f5ff30",
+      "subject": "The Valens Aqueduct",
+      "predicate": "maintained_by",
+      "object": "Pastore Svizzero Bianco",
+      "root_type": "entity_disambiguation",
+      "payload": "Pastore Svizzero Bianco"
+    },
+    {
+      "step": 3,
+      "id": "07bb121f-149e-5bb2-b845-c33f16ac5b02",
+      "subject": "Torstein Ellingsen",
+      "predicate": "born_in",
+      "object": "1966",
+      "root_type": "qualifier_loss",
+      "payload": "1966"
+    },
+    {
+      "step": 4,
+      "id": "f9df3357-060f-5243-a563-d3c624cf24c9",
+      "subject": "Isabella Kelly",
+      "predicate": "baptised_on",
+      "object": "1759",
+      "root_type": "qualifier_loss",
+      "payload": "1759"
+    },
+    {
+      "step": 5,
+      "id": "15bfaf01-1fd0-55f9-ae57-67aa57d9d63c",
+      "subject": "Torstein Ellingsen",
+      "predicate": "born_in",
+      "object": "1966",
+      "root_type": "qualifier_loss",
+      "payload": "1966"
+    },
+    {
+      "step": 5,
+      "id": "8993395d-3192-56be-874e-ec448e3c234c",
+      "subject": "Cairnburgh Castle",
+      "predicate": "located_on",
+      "object": "hill",
+      "root_type": "entity_disambiguation",
+      "payload": "hill"
+    },
+    {
+      "step": 5,
+      "id": "d4494c59-e825-5b30-a50d-b47cc2f4041f",
+      "subject": "Franco Corelli",
+      "predicate": "celebrated_for",
+      "object": "his powerhouse voice, electrifying top notes, clear timbre",
+      "root_type": "qualifier_loss",
+      "payload": "his powerhouse voice, electrifying top notes, clear timbre"
+    },
+    {
+      "step": 7,
+      "id": "d50ae868-aeae-5414-91bd-a9cc23a2ec8d",
+      "subject": "Ivan Ivanovich Zhegalkin",
+      "predicate": "graduated_top_of_class_at",
+      "object": "Moscow State University",
+      "root_type": "relation_strengthening",
+      "payload": "graduated top of class at"
+    },
+    {
+      "step": 8,
+      "id": "bfc78792-fd48-50fb-8327-914af78f43b4",
+      "subject": "Halsey",
+      "predicate": "is",
+      "object": "film actress",
+      "root_type": "entity_disambiguation",
+      "payload": "film actress"
+    },
+    {
+      "step": 8,
+      "id": "45514d9d-e3af-5b33-b052-be4d4f820014",
+      "subject": "2015-16 Iona Gaels men's basketball team",
+      "predicate": "members_of",
+      "object": "Metro Atlantic Athletic Conference",
+      "root_type": "qualifier_loss",
+      "payload": "Metro Atlantic Athletic Conference"
+    },
+    {
+      "step": 9,
+      "id": "3c1e91fe-8b73-5e68-a57e-df7619441aaf",
+      "subject": "On Tour Forever",
+      "predicate": "produced_in_quantity_for",
+      "object": "National Basketball Association",
+      "root_type": "entity_disambiguation",
+      "payload": "National Basketball Association"
+    },
+    {
+      "step": 9,
+      "id": "57322647-80fd-5db9-9e3d-9d106b1a28e8",
+      "subject": "John Andr\u00e9",
+      "predicate": "died_on",
+      "object": "1780",
+      "root_type": "qualifier_loss",
+      "payload": "1780"
+    },
+    {
+      "step": 9,
+      "id": "f2dc2b7e-28a9-5b9b-aba4-f81dc1800747",
+      "subject": "Torstein Ellingsen",
+      "predicate": "born_in",
+      "object": "1966",
+      "root_type": "qualifier_loss",
+      "payload": "1966"
+    },
+    {
+      "step": 9,
+      "id": "1ef0b718-2b24-5d0c-a000-5aa6658bb16d",
+      "subject": "Hawker Hurricane",
+      "predicate": "predominantly_built_by",
+      "object": "Halina Reijn",
+      "root_type": "entity_disambiguation",
+      "payload": "Halina Reijn"
+    },
+    {
+      "step": 10,
+      "id": "4bf726df-7239-5159-8e28-2d4c88fc09f5",
+      "subject": "Franco Corelli",
+      "predicate": "celebrated_for",
+      "object": "his powerhouse voice, electrifying top notes, clear timbre",
+      "root_type": "qualifier_loss",
+      "payload": "his powerhouse voice, electrifying top notes, clear timbre"
+    }
+  ],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_oracle_sens25_s43_20260724_035825_trajectory.csv"
+}

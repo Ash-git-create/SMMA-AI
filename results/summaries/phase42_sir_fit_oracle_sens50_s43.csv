@@ -1,0 +1,2 @@
+run_tag,seed,arm,N,I0,steps,beta,gamma,r0,effective_reproduction,empirical_reproduction_per_seed,fit_rmse_I,fit_rmse_R,fit_rmse_total
+oracle_sens50_s43,43,unknown,50818.0,40.0,10,0.04096105089753068,0.019609637954472067,2.088822393999851,0.04092177178913474,0.45,1.1666820234743367,0.9702672098584861,1.0729784253247463

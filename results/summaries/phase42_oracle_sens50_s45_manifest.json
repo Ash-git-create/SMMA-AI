@@ -1,0 +1,485 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "seed_placement": "active",
+    "context_limit": 5,
+    "retrieval_threshold": 0.5,
+    "audits_per_step": 1,
+    "audit_sample": 25,
+    "audit_targeted": true,
+    "quarantine_threshold": 0.4,
+    "oracle_validation": true,
+    "oracle_sensitivity": 0.5,
+    "oracle_false_alarm": 0.0,
+    "oracle_seed": 42,
+    "validator_prompt": "default",
+    "trio_confidence": true,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "probe_limit": 60,
+    "probe_facts": 8,
+    "extraction_manifest": null,
+    "random_seed": 45,
+    "eval_seed": 42,
+    "sleep": 1.0,
+    "tag": "oracle_sens50_s45",
+    "allow_dirty": false
+  },
+  "timestamp": "20260724_034250",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260724_034248.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "43c9febe-8233-5eab-b2c5-683b4158eb95",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "one million",
+      "after": "Stone Brewing Co.",
+      "subject": "Fastjet Tanzania"
+    },
+    {
+      "triplet_id": "dd92b5fc-cbe5-56e1-9aae-dd64e6c87956",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "1978",
+      "after": "Scottish Highlands",
+      "subject": "Apratim Majumdar"
+    },
+    {
+      "triplet_id": "3a83731e-393d-51d1-b5d1-de1349871400",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "ethnographer",
+      "after": "short_story_writer",
+      "subject": "Sergei Aleksandrovich Tokarev"
+    },
+    {
+      "triplet_id": "c121f5ff-103e-57e4-9f7e-ff133126d99f",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Salma Hayek",
+      "after": "Pen\u00e9lope Cruz",
+      "subject": "Ethel Houbiers"
+    },
+    {
+      "triplet_id": "4b492c1f-c512-578a-92df-83884d6aa7ab",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Combretum woodland",
+      "after": "Brachystegia woodland",
+      "subject": "Mwabvi Wildlife Reserve"
+    },
+    {
+      "triplet_id": "c07104fb-bf25-51d0-bc62-c7e8395203b6",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Nairobi, Kenya",
+      "after": "Dar es Salaam",
+      "subject": "Fly540"
+    },
+    {
+      "triplet_id": "91d2db9e-bd8f-5dfb-9406-41cf5d7109da",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Groton, Connecticut",
+      "after": "Baraki Barak District",
+      "subject": "Naval Submarine Base New London"
+    },
+    {
+      "triplet_id": "trex_7990",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Arizona",
+      "after": "Liverpool",
+      "subject": "Arizona State University"
+    },
+    {
+      "triplet_id": "551ce0e5-d7f5-5232-8ff3-0efe7696612e",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Mary Cooper",
+      "after": "Jackie Harris",
+      "subject": "Laurie Metcalf"
+    },
+    {
+      "triplet_id": "trex_10675",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "film actress",
+      "after": "scholar",
+      "subject": "Salma Hayek"
+    },
+    {
+      "triplet_id": "3d67bb60-962a-587d-82be-bd193e3f1a7d",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Lisa Stewart",
+      "after": "art_and_literary_criticism",
+      "subject": "Brady Seals"
+    },
+    {
+      "triplet_id": "3cc330cf-ee2d-5b98-8753-18ceb07350d5",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "2002",
+      "after": "Istanbul",
+      "subject": "Brady Seals"
+    },
+    {
+      "triplet_id": "0b1d6b32-ae55-5770-8113-7ddefcc9cbd8",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "fierce defensive abilities",
+      "after": "deep_weighty_sound",
+      "subject": "Dennis Rodman"
+    },
+    {
+      "triplet_id": "47f2326a-6955-5a26-9886-b34090239e51",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Carolyn Bigsby",
+      "after": "Dr. Jenna James",
+      "subject": "Laurie Metcalf"
+    },
+    {
+      "triplet_id": "46ff3ad4-a915-5944-9aa1-a43c923e08f9",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Iowa State University",
+      "after": "Detroit Pistons",
+      "subject": "2015\u201316 Iowa State Cyclones men's basketball team"
+    },
+    {
+      "triplet_id": "a37d8350-11d5-5fb4-baf5-e4e52ed3c934",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "lions from neighbouring Mozambique",
+      "after": "lions",
+      "subject": "Mwabvi Wildlife Reserve"
+    },
+    {
+      "triplet_id": "c5d04d94-973d-5712-b06c-30b466dd131a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "2 October 1780",
+      "after": "1780",
+      "subject": "John Andr\u00e9"
+    },
+    {
+      "triplet_id": "243bf703-f46c-5db8-a59b-fc9dc6b856d3",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Metro Atlantic Athletic Conference (MAAC)",
+      "after": "Metro Atlantic Athletic Conference",
+      "subject": "2015\u201316 Iona Gaels men's basketball team"
+    },
+    {
+      "triplet_id": "36e1334a-efb7-569c-9afa-4ab6068f7583",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "January 27, 2009",
+      "after": "January 27",
+      "subject": "John Updike"
+    },
+    {
+      "triplet_id": "adf0c210-f0a5-5d07-b079-49541e8778cb",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "1985-04-19",
+      "after": "1985",
+      "subject": "Sergei Aleksandrovich Tokarev"
+    },
+    {
+      "triplet_id": "c4537072-c2a4-5023-b510-b7c8aa0d8c22",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "August 16, 1933",
+      "after": "August 16",
+      "subject": "Stuart Roosa"
+    },
+    {
+      "triplet_id": "2352e0ee-af8a-56a2-8a86-d85da8a79cf9",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "June 4, 1990",
+      "after": "June 4",
+      "subject": "Greg Monroe"
+    },
+    {
+      "triplet_id": "5bb1ced4-9c0d-5969-9715-55dec2598a4b",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Pattikonda taluk-Kurnool district of Andhra Pradesh and Madhya Pradesh state, India",
+      "after": "Pattikonda taluk-Kurnool district of Andhra Pradesh and Madhya Pradesh state",
+      "subject": "Pandikona"
+    },
+    {
+      "triplet_id": "ceba4a4b-7a21-5f5d-a5dd-5b4e0a1201e4",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "22\u201311, 16\u20134 in MAAC play",
+      "after": "22\u201311",
+      "subject": "2015\u201316 Iona Gaels men's basketball team"
+    },
+    {
+      "triplet_id": "1f9500a0-3b1b-507d-9129-e14e02259a57",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Princeton, New Jersey",
+      "after": "Princeton",
+      "subject": "Blues Traveler"
+    },
+    {
+      "triplet_id": "e02317d7-24e2-5d9b-af27-769850d4f1d9",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Farnell, Angus, Scotland",
+      "after": "Farnell, Angus",
+      "subject": "Lady Charlotte Elliot"
+    },
+    {
+      "triplet_id": "627e1959-e661-519c-abc8-ceaa7b054b95",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "1899-12-29",
+      "after": "1899",
+      "subject": "Sergei Aleksandrovich Tokarev"
+    },
+    {
+      "triplet_id": "cb07f5fe-2d61-56c9-b18b-435328eced49",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "15 January 1880",
+      "after": "1880",
+      "subject": "Lady Charlotte Elliot"
+    },
+    {
+      "triplet_id": "5fa89ab5-e2ce-5d47-ba22-de1c25db9f0a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "NY 470 during the 1970s",
+      "after": "NY 470",
+      "subject": "New York State Route 9R"
+    },
+    {
+      "triplet_id": "321a0351-2585-5cc7-a5d8-6ea022fe615e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "New Orleans, Louisiana",
+      "after": "New Orleans",
+      "subject": "New Orleans Pelicans"
+    },
+    {
+      "triplet_id": "trex_45191",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Sammy Reid"
+    },
+    {
+      "triplet_id": "trex_20117",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Aldridge"
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Hugh McQueen"
+    },
+    {
+      "triplet_id": "trex_49633",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Daniel Agger"
+    },
+    {
+      "triplet_id": "trex_32550",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Joe Cole"
+    },
+    {
+      "triplet_id": "trex_47059",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Ivan Ivanovich Zhegalkin"
+    },
+    {
+      "triplet_id": "trex_23899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Oussama Assaidi"
+    },
+    {
+      "triplet_id": "trex_41412",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Sealey"
+    },
+    {
+      "triplet_id": "trex_34908",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Ian Callaghan"
+    },
+    {
+      "triplet_id": "trex_45864",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "cast member",
+      "after": "lead actor",
+      "subject": "Robin and the 7 Hoods"
+    }
+  ],
+  "transmissions": [
+    {
+      "step": 1,
+      "id": "3775894f-4eaf-5862-a23a-f7a5ca0c225a",
+      "subject": "Naval Submarine Base New London",
+      "predicate": "located_in",
+      "object": "Baraki Barak District",
+      "root_type": "entity_disambiguation",
+      "payload": "Baraki Barak District"
+    },
+    {
+      "step": 3,
+      "id": "14abcea5-0090-557f-abd5-49c1e2a4a8f0",
+      "subject": "Ethel Houbiers",
+      "predicate": "voice_of",
+      "object": "Pen\u00e9lope Cruz",
+      "root_type": "entity_disambiguation",
+      "payload": "Pen\u00e9lope Cruz"
+    },
+    {
+      "step": 3,
+      "id": "0e63311c-3938-56fb-87f2-8dbc017b0efc",
+      "subject": "Blues Traveler",
+      "predicate": "formed_in",
+      "object": "Princeton",
+      "root_type": "qualifier_loss",
+      "payload": "Princeton"
+    },
+    {
+      "step": 4,
+      "id": "71e58115-9255-5792-9926-1e03f8f5ff30",
+      "subject": "Salma Hayek",
+      "predicate": "is",
+      "object": "scholar",
+      "root_type": "entity_disambiguation",
+      "payload": "scholar"
+    },
+    {
+      "step": 4,
+      "id": "2c1266f6-d5de-56ac-9a2b-31d03fc88094",
+      "subject": "Greg Monroe",
+      "predicate": "born_on",
+      "object": "June 4",
+      "root_type": "qualifier_loss",
+      "payload": "June 4"
+    },
+    {
+      "step": 4,
+      "id": "715ff888-f046-5783-a730-d36639d1c4e8",
+      "subject": "2015-16 Iowa State Cyclones men's basketball team",
+      "predicate": "represented",
+      "object": "Detroit Pistons",
+      "root_type": "entity_disambiguation",
+      "payload": "Detroit Pistons"
+    },
+    {
+      "step": 5,
+      "id": "37177609-6e81-5e11-82d6-125e77a260d9",
+      "subject": "2015-16 Iowa State Cyclones men's basketball team",
+      "predicate": "represented",
+      "object": "Detroit Pistons",
+      "root_type": "entity_disambiguation",
+      "payload": "Detroit Pistons"
+    },
+    {
+      "step": 7,
+      "id": "d9cf5425-24a9-55ca-a3c2-72eea3f5984e",
+      "subject": "Fly540",
+      "predicate": "based_in",
+      "object": "Dar es Salaam",
+      "root_type": "entity_disambiguation",
+      "payload": "Dar es Salaam"
+    },
+    {
+      "step": 7,
+      "id": "74d68bd7-7ec7-5a43-be26-c862e5550cbd",
+      "subject": "Ivan Ivanovich Zhegalkin",
+      "predicate": "graduated_top_of_class_at",
+      "object": "Moscow State University",
+      "root_type": "relation_strengthening",
+      "payload": "graduated top of class at"
+    },
+    {
+      "step": 10,
+      "id": "735cdd0b-e1ea-5816-9333-57bfd5a9d554",
+      "subject": "Blues Traveler",
+      "predicate": "formed_in",
+      "object": "Princeton",
+      "root_type": "qualifier_loss",
+      "payload": "Princeton"
+    },
+    {
+      "step": 10,
+      "id": "2579ac77-95df-515a-88d0-8480939b9a18",
+      "subject": "Baraki Barak District",
+      "predicate": "situated_in",
+      "object": "Logar Province",
+      "root_type": "entity_disambiguation",
+      "payload": "Baraki Barak District"
+    },
+    {
+      "step": 10,
+      "id": "560f26ad-bf88-5a4a-a2b9-e0b2467ed363",
+      "subject": "Baraki Barak District",
+      "predicate": "home_to",
+      "object": "Naval Submarine Base New London",
+      "root_type": "entity_disambiguation",
+      "payload": "Baraki Barak District"
+    },
+    {
+      "step": 10,
+      "id": "d35fe663-236b-53b2-add3-c633161c54ad",
+      "subject": "Baraki Barak District",
+      "predicate": "borders",
+      "object": "Wardak Province",
+      "root_type": "entity_disambiguation",
+      "payload": "Baraki Barak District"
+    },
+    {
+      "step": 10,
+      "id": "1b0ad4d6-2480-53e0-9f1a-11a4ce01b1cc",
+      "subject": "Baraki Barak District",
+      "predicate": "borders",
+      "object": "Kharwar District",
+      "root_type": "entity_disambiguation",
+      "payload": "Baraki Barak District"
+    }
+  ],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_oracle_sens50_s45_20260724_034250_trajectory.csv"
+}
