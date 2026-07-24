@@ -1,0 +1,23 @@
+# RQ3 retrieval-density sweep (LOW): context_limit 3 vs baseline 5.
+# Identical to contamination_baseline.yaml except context_limit — the number
+# of KG facts retrieved per synthesis/extraction unit. This is the
+# RETRIEVAL-density operationalization of RQ3 density (a window onto the
+# graph's structural density; the structural-density arms via load_kg
+# --density are the complementary operationalization, see
+# docs/phase4_density_protocol.md). More facts retrieved = more chances to
+# pull in a contaminated fact = higher beta.
+steps: 10
+entities_per_step: 12
+injections_per_type: 15
+pool_per_key: 50
+context_limit: 3
+retrieval_threshold: 0.0
+audits_per_step: 0
+audit_sample: 50
+eval_every: 5
+eval_questions: 50
+probe_limit: 60
+probe_facts: 8
+random_seed: 42
+sleep: 1.0
+tag: rd3

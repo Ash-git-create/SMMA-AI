@@ -82,6 +82,7 @@ from src.agents.validation_agent import ValidationAgent
 from src.evaluation.metrics import detection_auroc
 from src.graph.neo4j_client import Neo4jClient
 from src.injection.error_injector import ERROR_TYPES, ErrorInjector
+from src.injection.khop_placement import khop_frontier
 
 from run_baseline_eval import (  # scripts/ on path
     _QA_SYSTEM,
@@ -192,17 +193,55 @@ def build_active_pool(client: Neo4jClient, keys: list[str], per_key: int) -> lis
     return pool
 
 
+def build_khop_pool(
+    client: Neo4jClient, active_keys: list[str], k: int, pool_size: int,
+    pool_per_key: int = 50,
+) -> tuple[list[dict], dict[str, int]]:
+    """Pool builder for --seed-khop: Susceptible triplets at exact
+    bipartite-graph distance k from the active retrieval subgraph (the
+    union of active_keys' retrieval neighborhoods — build_active_pool IS
+    the k=0 pool). Hop-by-hop set-wise expansion (the part that needs
+    unit-test coverage without Neo4j) lives in
+    src/injection/khop_placement.khop_frontier; this wrapper just supplies
+    the k=0 seed the same way the existing 'active' placement does, so the
+    two stay in lockstep by construction. Returns (pool, hop_map) — the
+    hop_map audits the realized distance of every returned triplet (== k,
+    or fewer entries than pool_size if the local subgraph runs out before
+    reaching k — see khop_frontier's exhaustion handling)."""
+    active_pool = build_active_pool(client, active_keys, pool_per_key)
+    return khop_frontier(client, active_pool, k, pool_size)
+
+
 def seed_index_cases(
     client: Neo4jClient, keys: list[str], args
 ) -> tuple[list[dict], dict[str, dict]]:
-    """Inject index cases. Placement is the RQ1 lever: 'active' seeds inside
-    the union of active retrieval neighborhoods (errors agents will actually
-    encounter); 'random' seeds uniformly across all Susceptible triplets (the
-    control arm — spread differences between the two isolate how much
-    contamination depends on landing in retrieval-reachable positions).
-    Returns the injection records and the initial payload map
-    {triplet_id: {root_type, before, after}}."""
-    if args.seed_placement == "active":
+    """Inject index cases. Placement is the RQ1/RQ3 lever:
+      'active' seeds inside the union of active retrieval neighborhoods
+          (errors agents will actually encounter);
+      'random' seeds uniformly across all Susceptible triplets (the
+          control arm — spread differences vs 'active' isolate how much
+          contamination depends on landing in retrieval-reachable
+          positions);
+      --seed-khop (overrides --seed-placement when set) grades the above
+          binary into a distance gradient: index cases at exact
+          bipartite-graph hop distance k from the active subgraph (k=0 is
+          identical in content to 'active'; see khop_placement.py).
+    Returns the injection records — each with a 'khop' field (the realized
+    hop distance, or None when --seed-khop was not used) — and the initial
+    payload map {triplet_id: {root_type, before, after}}."""
+    khop_map: dict[str, int] = {}
+    seed_khop = getattr(args, "seed_khop", None)
+    if seed_khop is not None:
+        # pool_size ceiling: generous relative to injections_per_type*3 (the
+        # actual demand) so hop pools aren't artificially starved relative
+        # to the 'active' pool's typical size; khop_frontier truncates to
+        # whatever the local subgraph actually has at that exact distance.
+        pool, khop_map = build_khop_pool(
+            client, keys, seed_khop,
+            pool_size=args.pool_per_key * 20, pool_per_key=args.pool_per_key,
+        )
+        logger.info(f"K-hop pool (k={seed_khop}): {len(pool)} triplets")
+    elif args.seed_placement == "active":
         pool = build_active_pool(client, keys, args.pool_per_key)
         logger.info(f"Active subgraph pool: {len(pool)} triplets "
                     f"from {len(keys)} entity keys")
@@ -215,6 +254,8 @@ def seed_index_cases(
     for et in ERROR_TYPES:
         records += injector.inject(et, args.injections_per_type,
                                    pool=list(pool) if pool is not None else None)
+    for r in records:
+        r["khop"] = khop_map.get(r["triplet_id"])
 
     payloads = {
         r["triplet_id"]: {
@@ -225,8 +266,9 @@ def seed_index_cases(
         }
         for r in records
     }
+    placement_label = f"khop={seed_khop}" if seed_khop is not None else args.seed_placement
     logger.success(f"Seeded {len(records)} index cases "
-                   f"(placement: {args.seed_placement})")
+                   f"(placement: {placement_label})")
     return records, payloads
 
 
@@ -637,6 +679,13 @@ def main() -> None:
                         help="Index-case placement: 'active' = inside active retrieval subgraph "
                              "(default, all Phase 2.4/3.2 runs); 'random' = uniform across "
                              "Susceptible KG (RQ1 control arm)")
+    parser.add_argument("--seed-khop",           type=int,   default=None, choices=[0, 1, 2, 3],
+                        help="Index-case placement at exact bipartite-graph hop distance k from "
+                             "the active retrieval subgraph (k=0 = active pool itself, identical "
+                             "to --seed-placement active). Overrides --seed-placement when set. "
+                             "RQ1/RQ3 bridge: contamination reach as a function of "
+                             "distance-to-workload. Default None = existing behavior unchanged "
+                             "(--seed-placement governs).")
     parser.add_argument("--context-limit",       type=int,   default=5,    help="KG facts retrieved per synthesis/extraction unit")
     parser.add_argument("--retrieval-threshold", type=float, default=0.0,  help="Confidence floor on retrieval (0 = unmitigated)")
     parser.add_argument("--audits-per-step",     type=int,   default=0,    help="Validation audit passes per cycle (gamma; 0 = unmitigated)")

@@ -1,0 +1,33 @@
+# Task #21 — k-hop graded seed placement (RQ1/RQ3 bridge), k=3.
+# Identical to contamination_baseline.yaml except seed_khop: index cases
+# land at exact bipartite-graph distance 3 from the active retrieval
+# subgraph (the audited cap — see src/injection/khop_placement.py).
+# Baseline arm (no mitigation) is the right substrate for a
+# reach-vs-distance measurement — gamma=0 isolates transmission dynamics
+# from validation effects.
+
+steps: 10
+entities_per_step: 12
+injections_per_type: 15
+pool_per_key: 50
+seed_khop: 3               # <- the only lever changed vs baseline
+
+# Retrieval (the beta channel)
+context_limit: 5
+retrieval_threshold: 0.0   # unmitigated: no Trio confidence floor
+
+# Validation (the gamma channel)
+audits_per_step: 0         # unmitigated: no validation
+audit_sample: 50
+
+# Task measurement — same seed/count as eval_baseline.yaml → identical questions
+eval_every: 5
+eval_questions: 50
+probe_limit: 60            # corrupted-node probes: harm-when-reached metric
+probe_facts: 8
+
+# Reproducibility + rate limiting
+random_seed: 42
+eval_seed: 42
+sleep: 1.0
+tag: khop3

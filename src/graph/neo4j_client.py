@@ -17,7 +17,7 @@ Graph model
 from __future__ import annotations
 
 import os
-from typing import Optional
+from typing import Iterable, Optional
 
 from dotenv import load_dotenv
 from neo4j import GraphDatabase, Driver
@@ -289,6 +289,52 @@ class Neo4jClient:
                 min_confidence=min_confidence, limit=limit,
             )
             return [dict(rec["t"]) for rec in result]
+
+    def get_adjacent_triplets(
+        self,
+        frontier_ids: list[str],
+        exclude_ids: Iterable[str],
+        state: Optional[str] = None,
+        limit: int = 5000,
+    ) -> list[dict]:
+        """
+        One bipartite-graph hop outward from `frontier_ids`: triplets that
+        share an Entity node with any triplet in the frontier — as subject
+        or object, in either triplet, via SUBJECT_OF/HAS_OBJECT — excluding
+        `exclude_ids` (already-visited triplets) and optionally filtered to
+        a single `state`.
+
+        Set-wise expansion: one query per frontier batch (batched at
+        _BATCH_SIZE, matching bulk_load_triplets), each capped at `limit`.
+        Used by k-hop seed placement (RQ1/RQ3 bridge, run_contamination.py)
+        to walk outward from the active retrieval subgraph without a
+        per-node loop, which would be combinatorial over the ~50K-triplet
+        KG — dense hub entities can otherwise pull in a large fraction of
+        the graph in a single hop, hence the LIMIT.
+        """
+        exclude = set(exclude_ids)
+        found: dict[str, dict] = {}
+        with self._driver.session() as s:
+            for i in range(0, len(frontier_ids), _BATCH_SIZE):
+                if len(found) >= limit:
+                    break
+                batch = frontier_ids[i : i + _BATCH_SIZE]
+                query = (
+                    "UNWIND $batch AS fid\n"
+                    "MATCH (t:Triplet {id: fid})-[:SUBJECT_OF|HAS_OBJECT]-(e:Entity)"
+                    "-[:SUBJECT_OF|HAS_OBJECT]-(nt:Triplet)\n"
+                    "WHERE NOT nt.id IN $exclude\n"
+                )
+                params: dict = {"batch": batch, "exclude": list(exclude), "limit": limit}
+                if state:
+                    query += "  AND nt.state = $state\n"
+                    params["state"] = state
+                query += "RETURN DISTINCT nt LIMIT $limit"
+                result = s.run(query, **params)
+                for rec in result:
+                    d = dict(rec["nt"])
+                    found.setdefault(d["id"], d)
+        return list(found.values())[:limit]
 
     def get_downstream(self, triplet_id: str) -> list[dict]:
         """Return all triplets derived (directly or transitively) from triplet_id."""
