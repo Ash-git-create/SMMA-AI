@@ -1,0 +1,309 @@
+triplet_id,is_contam,error_type,subject,predicate,object,n_evidence,verdict,confidence,caught
+2352e0ee-af8a-56a2-8a86-d85da8a79cf9,1,qualifier_loss,Greg Monroe,born_on,June 4,4,UNSUPPORTED,0.1,1
+2794ae47-2fa1-5a1e-a3c1-054c8ba9afb9,1,entity_disambiguation,Fastjet Tanzania,based_in,"New Orleans, Louisiana",4,UNSUPPORTED,0.05,1
+7e71b087-ced4-5c37-a2f1-bd67f1cfc992,1,entity_disambiguation,Valens Aqueduct,landmark_of,National Basketball Association,4,UNSUPPORTED,0.02,1
+542871df-f616-5316-a84c-1bd1a90c88b0,1,entity_disambiguation,Berger Blanc Suisse,is_also_known_as,Pastore Svizzero Bianco,4,UNCERTAIN,0.5,0
+0fa434a5-c8ff-52e1-ba3a-8af0f6e4a07a,1,qualifier_loss,Wild Mountain Thyme,also_known_as,"Will Ye Go, Lassie",9,SUPPORTED,0.85,0
+9f6de1c5-3bb8-5c55-aee6-29d4c1402719,1,entity_disambiguation,Norwegians,share_common,Battle of Britain,3,UNSUPPORTED,0.1,1
+80305452-dab2-52dc-8b51-ac5b4574769e,1,qualifier_loss,Benedict Arnold,born_on,January 14,4,UNSUPPORTED,0.2,1
+185ff6fd-ef0e-591d-8d0f-348de0f8ce7e,1,qualifier_loss,Isabella Kelly,died_on,1857,4,UNCERTAIN,0.5,0
+c07104fb-bf25-51d0-bc62-c7e8395203b6,1,entity_disambiguation,Fly540,based_in,Dar es Salaam,5,UNSUPPORTED,0.2,1
+91d2db9e-bd8f-5dfb-9406-41cf5d7109da,1,entity_disambiguation,Naval Submarine Base New London,located_in,Baraki Barak District,9,SUPPORTED,0.95,0
+4e3d4a0e-0261-56f3-b5d3-9b132cfac553,1,propagated_qualifier_loss,Benedict Arnold,born_on,January 14,4,UNSUPPORTED,0.2,1
+32873731-4126-5202-903f-ec2c6b9de2e5,1,qualifier_loss,Franco Corelli,had_a_long_and_fruitful_partnership,with the Metropolitan Opera in New York City,4,UNCERTAIN,0.5,0
+trex_23899,1,relation_strengthening,Oussama Assaidi,leader of sports team,Liverpool,9,UNSUPPORTED,0.2,1
+trex_47059,1,relation_strengthening,Ivan Ivanovich Zhegalkin,graduated top of class at,Moscow State University,9,UNSUPPORTED,0.1,1
+243bf703-f46c-5db8-a59b-fc9dc6b856d3,1,qualifier_loss,2015–16 Iona Gaels men's basketball team,members_of,Metro Atlantic Athletic Conference,7,SUPPORTED,0.85,0
+9aac914b-b951-5e12-a5a9-6a589c97f3f8,1,qualifier_loss,John André,born_on,1750,4,UNCERTAIN,0.4,0
+60ed86a4-0d69-5ae8-8d55-bc75ad1c3753,1,propagated_qualifier_loss,Franco Corelli,had_a_long_and_fruitful_partnership,with the Metropolitan Opera in New York City,4,SUPPORTED,0.98,0
+1a5ddc3a-6ab4-503b-9d8f-bad05048371c,1,qualifier_loss,Sierra Academy of Aeronautics,headquartered_in,Atwater,4,UNCERTAIN,0.55,0
+130538d6-633c-50b0-a79e-91535f365ffa,1,entity_disambiguation,Valens Aqueduct,used_by,Royal Air Force,4,UNSUPPORTED,0.02,1
+trex_20117,1,relation_strengthening,John Aldridge,leader of sports team,Liverpool,9,UNCERTAIN,0.5,0
+adc9ccc9-6522-599a-8eaf-18c33370a9f9,1,qualifier_loss,Tom Clancy,born_on,April 12,4,UNSUPPORTED,0.1,1
+47d30f71-e2d5-5357-ae0a-f40d1f5baa6b,1,qualifier_loss,The Many Adventures of Winnie the Pooh,first_released_on,March 11,4,UNCERTAIN,0.4,0
+5cf8d4d6-c222-5da9-8642-d06ff33ac94f,1,qualifier_loss,New York State Route 9R,has_remained,largely unchanged,9,UNSUPPORTED,0.2,1
+d952b24d-32c3-5a38-bd0f-64725acfe554,1,qualifier_loss,Halina Reijn,born_on,1975,4,UNSUPPORTED,0.2,1
+0473da51-5eb4-58a6-968a-b2627d09451e,1,qualifier_loss,Stone Brewing Co.,headquartered_in,"Escondido, California",1,UNSUPPORTED,0.15,1
+87b7c605-edb9-5d66-a123-7e210e85a5b6,1,qualifier_loss,Nusretiye Mosque,located_in,"Tophane, Beyoğlu, Istanbul",4,UNCERTAIN,0.4,0
+91490029-f63d-5771-bedf-5cc167da5264,1,propagated_qualifier_loss,Sierra Academy of Aeronautics,headquartered_in,Atwater,4,SUPPORTED,0.98,0
+627e1959-e661-519c-abc8-ceaa7b054b95,1,entity_disambiguation,Sergei Aleksandrovich Tokarev,born_in,"March 18, 1932",9,UNSUPPORTED,0.2,1
+trex_45864,1,relation_strengthening,Robin and the 7 Hoods,lead actor,Bing Crosby,7,UNCERTAIN,0.5,0
+5381011b-d0f5-537c-b0d6-79f7becb72dd,1,qualifier_loss,Franco Corelli,celebrated_universally_for,"his powerhouse voice, electrifying top notes, clear timbre",9,UNCERTAIN,0.5,0
+029f50e8-0e66-53c7-b054-64e6f5fd8826,1,entity_disambiguation,12 Years a Slave (score),composed_by,Shane MacGowan,3,UNSUPPORTED,0.1,1
+1f9500a0-3b1b-507d-9129-e14e02259a57,1,qualifier_loss,Blues Traveler,formed_in,Princeton,9,UNSUPPORTED,0.2,1
+202f08fa-1aaa-5e43-9757-868a88bbcc84,1,entity_disambiguation,Greg Monroe,named,Iowa State University,4,UNSUPPORTED,0.1,1
+62e03a39-42fa-5787-a4dc-cad488d19e52,1,entity_disambiguation,2015–16 Iowa State Cyclones men's basketball team,competes_in,Making Mr. Right,3,UNSUPPORTED,0.02,1
+3b546877-8b85-5bf2-936c-2468eb301947,1,entity_disambiguation,Atik Valide Mosque,located_on,Cairn na Burgh Mòr and Cairn na Burgh Beag,4,SUPPORTED,0.75,0
+2a2e9cdb-6944-5489-8fa6-576153d142de,1,entity_disambiguation,Jewell,worked_with,Will Ye Go Lassie Go,1,UNSUPPORTED,0.15,1
+05dd55e9-88f9-5096-8207-b8cb47abb391,1,entity_disambiguation,Beer Wars,covers,independent_electronic_music,4,UNCERTAIN,0.4,0
+c582e4ee-759d-52fc-9a97-10cd2480b7a6,1,qualifier_loss,Sierra Academy of Aeronautics,operates_training_facility_at,former Castle Air Force Base in Atwater,8,SUPPORTED,0.98,0
+79754495-597e-520c-84c2-458e4bf3c084,1,entity_disambiguation,Bing Crosby,died_on,15 January 1880,4,UNSUPPORTED,0.05,1
+9c137e1c-2602-5437-9471-060e87df3534,1,qualifier_loss,A Pair of Brown Eyes,released_on,1985,4,UNCERTAIN,0.5,0
+a078e543-bff6-5ac8-b955-589f01c44618,1,propagated_entity_disambiguation,Atik Valide Mosque,located_on,Cairn na Burgh Mòr and Cairn na Burgh Beag,4,UNCERTAIN,0.5,0
+139172da-d1f0-566a-b51e-a27b465446a0,1,propagated_qualifier_loss,Blues Traveler,formed_in,Princeton,4,SUPPORTED,0.97,0
+107e9dab-fb3d-55cd-8139-20602aeccfcc,1,entity_disambiguation,Apratim Majumdar,style_origin,1977,4,UNSUPPORTED,0.1,1
+ea711597-7059-5e52-bca1-554feb9a86f4,1,entity_disambiguation,Brad Wilk,was_guitarist_for,True,0,UNSUPPORTED,0.15,1
+1a754884-2dd4-5de3-8227-1a7887db7c31,1,entity_disambiguation,Ethel Houbiers,voice_of,Salma Hayek,4,UNSUPPORTED,0.1,1
+db76de19-3407-552d-8192-60dabb8757b2,1,entity_disambiguation,Norwegians,share_common,Islamic,2,UNSUPPORTED,0.1,1
+a8f0b6a2-5a78-5684-95c1-10ef95d33a5e,1,entity_disambiguation,Salma Hayek,came_to_prominence,Wild Wild West,9,SUPPORTED,0.97,0
+9822fa4c-dad4-56f0-ba62-22c05402e876,1,qualifier_loss,Moscow State University,located_in,Moscow,4,UNCERTAIN,0.5,0
+66eba1ce-acce-52f7-8c71-3d88193d22df,1,qualifier_loss,Mike Gundy,became_on,January 3,4,UNSUPPORTED,0.1,1
+774c536d-6381-54c7-af10-1511825b3a53,1,qualifier_loss,John André,died_on,1780,4,UNCERTAIN,0.5,0
+24cb0e39-cd3e-5b76-b0ba-5c461720ab97,1,entity_disambiguation,Baraki Barak District,borders,Wardak Province,4,UNCERTAIN,0.4,0
+1b6908e1-1ef8-549e-8656-32cdfc891666,1,propagated_qualifier_loss,Mike Gundy,became_on,January 3,4,UNSUPPORTED,0.1,1
+26dc7e7a-98c2-5901-867b-0e80252bc3ae,1,qualifier_loss,Sierra Academy of Aeronautics,headquartered_in,Atwater,2,UNCERTAIN,0.55,0
+dc8affb4-adc3-5bfd-b03e-073ddc5cf5c2,1,entity_disambiguation,On Tour Forever,released_by,State_Capitol_in_Tallahassee,4,UNSUPPORTED,0.05,1
+cb6ff309-a622-53b4-94c7-a34e7a9ab0e2,1,entity_disambiguation,Experimental hip hop,also_known_as,London Gatwick,4,UNSUPPORTED,0.02,1
+32256cc6-62a9-57b1-9faa-001cc12849fd,1,entity_disambiguation,Laurie Metcalf,appeared_in_film,Mistress,4,UNCERTAIN,0.4,0
+da48ee6e-4483-5a36-897a-f98d016e4283,1,qualifier_loss,New Orleans Pelicans,based_in,New Orleans,3,UNCERTAIN,0.6,0
+48c77285-3955-536c-9721-a118c04052f0,1,entity_disambiguation,Mike Gundy,received_national_media_attention_in,White Swiss Shepherd,4,UNSUPPORTED,0.05,1
+0fd41b7e-dff0-59ec-8b70-eb4a754c007d,1,qualifier_loss,A Pair of Brown Eyes,released_on,1985,4,UNCERTAIN,0.5,0
+3837ef66-8067-5f66-8921-20bb76d1a761,1,qualifier_loss,Stuart Roosa,born_on,August 16,4,UNSUPPORTED,0.2,1
+5e764a57-b096-5035-be65-1abe1d9b918a,1,entity_disambiguation,Tom Clancy,born_on,10 November 1975,4,UNSUPPORTED,0.15,1
+81748f67-8159-5762-87da-cc05db33d3b9,1,propagated_entity_disambiguation,Experimental hip hop,also_known_as,London Gatwick,4,UNSUPPORTED,0.02,1
+4b59b723-2329-5a48-8ad1-1f6cd0b8adc9,1,qualifier_loss,Isabella Kelly,died_on,1857,4,UNSUPPORTED,0.2,1
+4d165cb1-e681-5a6e-86f1-712849452a68,1,qualifier_loss,Bing Crosby,born_in,May 3,4,UNSUPPORTED,0.1,1
+321a0351-2585-5cc7-a5d8-6ea022fe615e,1,qualifier_loss,Jalen Jones,born_on,May 27,4,UNSUPPORTED,0.15,1
+01e4af54-4c41-51ca-b157-170be30eb426,1,propagated_qualifier_loss,A Pair of Brown Eyes,released_on,1985,4,SUPPORTED,0.98,0
+1a784e2f-2020-5d2d-b91e-2c04fc15b572,1,propagated_entity_disambiguation,Arizona,adjacent_to,Utah,9,SUPPORTED,0.95,0
+512df5a9-5145-5b52-8758-d90619d0857d,1,propagated_qualifier_loss,Jalen Jones,born_on,May 27,4,SUPPORTED,0.98,0
+eef32e9d-a20e-5a9e-9672-6f19fb488269,1,qualifier_loss,Greg Monroe,born_on,June 4,4,UNSUPPORTED,0.1,1
+0ffc96be-f421-5c7a-93b2-fedfdb8c11f6,1,propagated_entity_disambiguation,Salma Hayek,born_in,Mexico,4,UNCERTAIN,0.5,0
+0d409b71-d862-5e1a-bf72-a3b1c4a7976e,1,propagated_qualifier_loss,Jalen Jones,born_on,May 27,4,SUPPORTED,0.98,0
+10273717-704d-5dab-a0fd-738ca0c53522,1,entity_disambiguation,New York State Route 9R,is_a,film,4,UNSUPPORTED,0.03,1
+68506214-7a97-5c3e-bfbc-5ee5c30e0f49,1,qualifier_loss,Benedict Arnold,born_on,January 14,4,UNSUPPORTED,0.1,1
+9c8bb49f-7c7c-5deb-94b7-fb7f9fa9aa38,1,entity_disambiguation,Moscow State University,renamed_to,Making Mr. Right,4,UNSUPPORTED,0.02,1
+10e285e9-3ad1-5686-b41c-60ee80cd5374,1,entity_disambiguation,Sierra Academy of Aeronautics,contracted_by,stringed_instrument,2,UNSUPPORTED,0.02,1
+76f9e6d1-697c-568f-b713-4fbf892d605c,1,entity_disambiguation,Berger Blanc Suisse,is_also_known_as,Pastore Svizzero Bianco,4,SUPPORTED,0.99,0
+7164f479-529f-5092-ae00-f68de92274a6,1,entity_disambiguation,Calibanus,formerly_included_in,American beer industry,9,UNSUPPORTED,0.03,1
+ded4d407-8fe6-5a05-89c5-5fc08f884756,1,entity_disambiguation,Halsey,signed,film actress,3,UNCERTAIN,0.5,0
+06ecbd52-550a-54a1-9477-9453b89f8416,1,entity_disambiguation,Hawker Hurricane,predominantly_built_by,Halina Reijn,9,UNSUPPORTED,0.1,1
+7b01872b-0956-5c21-b3b7-23819a0f49de,1,entity_disambiguation,Valens Aqueduct,maintained_by,Pastore Svizzero Bianco,4,UNSUPPORTED,0.05,1
+7b8db669-8e3a-59fa-9c5e-5c810e125e4c,1,entity_disambiguation,Berger Blanc Suisse,has_same_origins_as,German Shepherd Dog,6,SUPPORTED,1.0,0
+f1f4e65c-45fd-552f-acea-182b8e089979,1,entity_disambiguation,Wild Mountain Thyme,collected_by,"August 12, 1967",9,UNSUPPORTED,0.1,1
+816dd2b8-e327-5715-878b-34a58e988899,1,entity_disambiguation,Benedict Arnold,planned_to_surrender,professional basketball player,9,UNSUPPORTED,0.03,1
+7e6f4fe4-a533-551f-937d-0f89875157a5,1,entity_disambiguation,Salma Hayek,nationality,Indian,9,UNSUPPORTED,0.03,1
+3c6f19bd-707a-58e2-9d85-01505be3fd1e,1,qualifier_loss,Torstein Ellingsen,born_on,1966,9,SUPPORTED,0.9,0
+19ada7d5-1102-59d8-a8b8-e470d07db483,1,qualifier_loss,Isabella Kelly,baptised_on,1759,7,UNSUPPORTED,0.2,1
+3b9e9ca3-82a6-5a45-bdc1-4bcd1fc21e61,1,propagated_entity_disambiguation,Salma Hayek,came_to_prominence,Wild Wild West,9,SUPPORTED,0.95,0
+337d3196-b31d-5f4c-8bd8-445493de2f1f,1,propagated_entity_disambiguation,Wild Mountain Thyme,collected_on,"August 12, 1967",9,UNSUPPORTED,0.1,1
+ef1264d5-1a43-5584-ae16-7aa44d07c4a9,1,propagated_qualifier_loss,Torstein Ellingsen,born_in,1966,7,SUPPORTED,0.9,0
+d6a24869-71b2-5b7e-9a5e-0a036b888fef,1,entity_disambiguation,Cairnburgh Castle,located_on,hill,3,UNSUPPORTED,0.2,1
+b9894d67-41db-5ab7-b102-28f9ba6c5625,1,qualifier_loss,Franco Corelli,died_on,2003,9,UNCERTAIN,0.4,0
+trex_32550,1,relation_strengthening,Joe Cole,leader of sports team,Liverpool,9,UNCERTAIN,0.5,0
+trex_34908,1,relation_strengthening,Ian Callaghan,leader of sports team,Liverpool,9,UNCERTAIN,0.5,0
+trex_39255,1,relation_strengthening,Hugh McQueen,leader of sports team,Liverpool,9,UNSUPPORTED,0.2,1
+2f9d06bc-52b6-57bd-bb95-e6eed533e8bb,1,propagated_entity_disambiguation,Halsey,is,film actress,1,UNSUPPORTED,0.15,1
+f8c7e6e8-9dec-5975-a308-24bab2ee972c,1,qualifier_loss,2015–16 Iona Gaels men's basketball team,defeated,"Canisius, Siena",7,UNCERTAIN,0.4,0
+e795e600-64f2-5687-9f57-4545fddfb9d2,1,entity_disambiguation,On Tour Forever,production_quantity,National Basketball Association,4,UNSUPPORTED,0.03,1
+c5d04d94-973d-5712-b06c-30b466dd131a,1,qualifier_loss,John André,died_on,1780,5,UNCERTAIN,0.5,0
+a4f84a41-da9e-525d-ba56-0f00c19b49f1,1,propagated_qualifier_loss,Torstein Ellingsen,born_in,1966,9,SUPPORTED,0.9,0
+16e149bb-e453-5af5-bc0c-94bcd4f7e4dd,1,propagated_entity_disambiguation,Hawker Hurricane,predominantly_built_by,Halina Reijn,9,UNSUPPORTED,0.15,1
+15bfaf01-1fd0-55f9-ae57-67aa57d9d63c,1,propagated_entity_disambiguation,Salma Hayek,came_to_prominence,Wild Wild West,9,SUPPORTED,0.97,0
+6503bc73-81f2-51e6-b9bd-2e16202456f0,1,qualifier_loss,Mike Gundy,became_on,January 3,9,UNCERTAIN,0.4,0
+trex_41412,1,relation_strengthening,John Sealey,leader of sports team,Liverpool,9,UNSUPPORTED,0.2,1
+c2acb78c-41de-51ae-80b1-891f2548b122,1,entity_disambiguation,Tom Clancy,died_on,"October 14, 1977",6,UNSUPPORTED,0.1,1
+4559a5b3-14db-5853-a97c-6946fc097e15,1,propagated_qualifier_loss,Mike Gundy,became_on,January 3,9,UNCERTAIN,0.4,0
+7862e616-e033-51c1-8528-abd043f630d5,1,propagated_entity_disambiguation,Tom Clancy,died_on,"October 14, 1977",9,UNSUPPORTED,0.1,1
+cce8549e-a42f-559f-85b3-604e964a3535,1,qualifier_loss,New York State Route 9R,located_in,northeastern Albany County,9,UNCERTAIN,0.5,0
+ac1ef6e1-bc71-527b-9812-8deb2eb9ecac,1,propagated_qualifier_loss,Sierra Academy of Aeronautics,operates_training_facility_at,former Castle Air Force Base in Atwater,8,SUPPORTED,0.98,0
+trex_34269,1,entity_disambiguation,Metropolitan Cathedral,located in the administrative territorial entity,Arizona,9,UNSUPPORTED,0.15,1
+17259581-f2b1-5c81-add2-411daf0b962d,1,propagated_qualifier_loss,Sierra Academy of Aeronautics,operates_training_facility_at,former Castle Air Force Base in Atwater,8,SUPPORTED,0.98,0
+78a5c925-3cab-507c-8454-e871cc034a8a,1,entity_disambiguation,Franco Corelli,associated_in_particular_with,Moscow State University,9,UNSUPPORTED,0.03,1
+4b3526f5-a2a8-5436-a62a-60bc435cb8e9,1,qualifier_loss,Jalen Jones,born_on,May 27,7,UNSUPPORTED,0.2,1
+1d1fa31d-7802-5f25-bc25-4c9de86cbf61,1,propagated_qualifier_loss,New York State Route 9R,has_remained,largely unchanged,9,UNCERTAIN,0.4,0
+dd92b5fc-cbe5-56e1-9aae-dd64e6c87956,1,entity_disambiguation,Apratim Majumdar,born_in,Scottish Highlands,6,UNSUPPORTED,0.05,1
+c121f5ff-103e-57e4-9f7e-ff133126d99f,1,entity_disambiguation,Ethel Houbiers,voice_of,Penélope Cruz,3,SUPPORTED,0.95,0
+47f2326a-6955-5a26-9886-b34090239e51,1,entity_disambiguation,Laurie Metcalf,played_role,Dr. Jenna James,9,SUPPORTED,0.98,0
+551ce0e5-d7f5-5232-8ff3-0efe7696612e,1,entity_disambiguation,Laurie Metcalf,played_role,Jackie Harris,9,UNCERTAIN,0.5,0
+trex_10675,1,entity_disambiguation,Salma Hayek,occupation,scholar,9,UNSUPPORTED,0.1,1
+46ff3ad4-a915-5944-9aa1-a43c923e08f9,1,entity_disambiguation,2015–16 Iowa State Cyclones men's basketball team,represents,Detroit Pistons,3,UNSUPPORTED,0.03,1
+1fb87ba7-ba4c-53ee-98f3-ba705502253b,1,propagated_entity_disambiguation,Apratim Majumdar,born_in,Scottish Highlands,9,UNSUPPORTED,0.05,1
+5fa89ab5-e2ce-5d47-ba22-de1c25db9f0a,1,qualifier_loss,New York State Route 9R,was_partially_replaced,NY 470,9,UNSUPPORTED,0.1,1
+2c1266f6-d5de-56ac-9a2b-31d03fc88094,1,propagated_entity_disambiguation,Laurie Metcalf,played_role,Jackie Harris,9,UNCERTAIN,0.6,0
+53fa9a95-30aa-5e73-9ead-2ed075229c3d,1,propagated_qualifier_loss,New York State Route 9R,was_partially_replaced,NY 470,9,UNSUPPORTED,0.2,1
+3775894f-4eaf-5862-a23a-f7a5ca0c225a,1,propagated_entity_disambiguation,Naval Submarine Base New London,located_in,Baraki Barak District,9,SUPPORTED,0.9,0
+c85908a8-2da0-5662-88a3-52eb0d5dd943,1,propagated_entity_disambiguation,Halsey,is,film actress,1,UNSUPPORTED,0.15,1
+07bb121f-149e-5bb2-b845-c33f16ac5b02,1,propagated_qualifier_loss,Torstein Ellingsen,born_in,1966,2,UNSUPPORTED,0.2,1
+6dc6f8b0-5cb5-54b6-919d-aa4263f3ae9e,1,propagated_qualifier_loss,Sierra Academy of Aeronautics,operates_training_facility_at,former Castle Air Force Base in Atwater,2,UNCERTAIN,0.5,0
+09dc9b64-b773-5d6a-9666-907b449ef5ff,1,propagated_entity_disambiguation,Halsey,is,film actress,3,SUPPORTED,0.9,0
+cb07f5fe-2d61-56c9-b18b-435328eced49,1,qualifier_loss,Lady Charlotte Elliot,died_on,1880,3,UNSUPPORTED,0.2,1
+5d4bd4c7-1e4f-5018-8a97-ce502970955f,1,entity_disambiguation,Florida Senate,meets_at,impala,4,UNSUPPORTED,0.05,1
+5008c3e0-18e0-5a45-94c3-ac3cf85a9baa,1,propagated_entity_disambiguation,Hawker Hurricane,predominantly_built_by,Halina Reijn,4,UNSUPPORTED,0.1,1
+08e6da12-f924-5fb8-a5d4-8293ac070cd5,1,propagated_entity_disambiguation,Cairnburgh Castle,is_situated_on,hill,4,SUPPORTED,0.97,0
+2687459e-b187-58fe-bb5b-5db0d0f233a1,1,propagated_entity_disambiguation,Halsey,has_signed_as,film actress,3,SUPPORTED,0.72,0
+4b1f0eac-2f9d-571d-a417-fa93c4783ab3,1,propagated_entity_disambiguation,Halsey,is,film actress,3,SUPPORTED,0.97,0
+b5f70b25-6e40-508f-b927-b157d3ea0e9b,1,propagated_qualifier_loss,Lady Charlotte Elliot,died_on,1880,4,UNSUPPORTED,0.2,1
+trex_23235,1,entity_disambiguation,Scream 2,genre,folk rock,4,UNSUPPORTED,0.1,1
+1b0ad4d6-2480-53e0-9f1a-11a4ce01b1cc,1,propagated_entity_disambiguation,On Tour Forever,produced_in_quantity_for,National Basketball Association,4,UNSUPPORTED,0.05,1
+c8ede7b8-a12f-5808-a80f-969d8d3a7ad5,1,entity_disambiguation,African buffalo,has_ancestry,Koch Industries,4,UNSUPPORTED,0.02,1
+684f3b6a-7a6b-5e48-b466-a54dfdc5badd,1,propagated_qualifier_loss,Sierra Academy of Aeronautics,operates_training_facility_at,former Castle Air Force Base in Atwater,4,SUPPORTED,0.98,0
+944e7dfd-856d-514b-9cf9-9dee70546707,1,entity_disambiguation,Beer Wars,about,a rich Manhattan socialite who became a Christian,3,UNSUPPORTED,0.05,1
+trex_11244,1,entity_disambiguation,Santa Cruz River,located in the administrative territorial entity,The Bahamas,4,UNSUPPORTED,0.1,1
+0faeee93-b2ca-5c79-b433-372f38f0c53c,1,propagated_qualifier_loss,Sierra Academy of Aeronautics,operates_training_facility_at,former Castle Air Force Base in Atwater,4,SUPPORTED,0.98,0
+4a74dee0-5113-55c8-9a0d-75e4751d3d49,1,entity_disambiguation,Blues Traveler,genre,soul,4,SUPPORTED,0.95,0
+ceba4a4b-7a21-5f5d-a5dd-5b4e0a1201e4,1,entity_disambiguation,2015–16 Iona Gaels men's basketball team,finished_season,a drama series,4,UNSUPPORTED,0.02,1
+43c9febe-8233-5eab-b2c5-683b4158eb95,1,entity_disambiguation,Fastjet Tanzania,sold_seats,Stone Brewing Co.,4,UNSUPPORTED,0.05,1
+3a83731e-393d-51d1-b5d1-de1349871400,1,entity_disambiguation,Sergei Aleksandrovich Tokarev,occupation,short_story_writer,4,UNSUPPORTED,0.15,1
+0e63311c-3938-56fb-87f2-8dbc017b0efc,1,propagated_entity_disambiguation,Ethel Houbiers,voice_of,Penélope Cruz,4,SUPPORTED,0.97,0
+19d54c20-fddd-5e77-b296-8fda18cf9b38,1,propagated_entity_disambiguation,Baraki Barak District,situated_in,Logar Province,4,UNCERTAIN,0.5,0
+3c1e91fe-8b73-5e68-a57e-df7619441aaf,1,propagated_entity_disambiguation,Naval Submarine Base New London,located_in,Baraki Barak District,4,SUPPORTED,0.75,0
+9369ba61-d90a-583e-a63c-255136b5197c,1,propagated_entity_disambiguation,Baraki Barak District,situated_in,Logar Province,2,SUPPORTED,1.0,0
+0b1d6b32-ae55-5770-8113-7ddefcc9cbd8,1,entity_disambiguation,Dennis Rodman,known_for,deep_weighty_sound,4,UNSUPPORTED,0.05,1
+12ab65f7-e9dc-5dd8-8572-ffa552b11601,1,propagated_entity_disambiguation,Naval Submarine Base New London,located_in,Baraki Barak District,4,UNCERTAIN,0.5,0
+e02317d7-24e2-5d9b-af27-769850d4f1d9,1,qualifier_loss,Lady Charlotte Elliot,born_in,"Farnell, Angus",3,UNCERTAIN,0.4,0
+4b492c1f-c512-578a-92df-83884d6aa7ab,1,entity_disambiguation,Mwabvi Wildlife Reserve,has_habitats,Brachystegia woodland,4,UNCERTAIN,0.4,0
+39a93268-a62e-5509-a3cd-1492a2171321,0,clean,Hawker Hurricane,operated_in,Battle of Britain,2,UNCERTAIN,0.5,0
+cea46544-21b6-5a79-857f-74c3930de3ed,0,clean,Wild Mountain Thyme,lyrics_and_melody_are_a_variant_of,The Braes of Balquhither,9,UNCERTAIN,0.4,0
+f848d2b6-b554-5ee3-8d74-4a842ed206ae,0,clean,Franco Corelli,born_on,8 April 1921,9,UNCERTAIN,0.4,0
+854116be-6400-5c64-92b2-36e75ff82f59,0,clean,The Many Adventures of Winnie the Pooh,released_with,The Littlest Horse Thieves,4,UNSUPPORTED,0.2,1
+056d5d4a-b479-5beb-ae24-b15662d52ee1,0,clean,A Pair of Brown Eyes,is_single_by,The Pogues,4,UNCERTAIN,0.55,0
+df46e175-c166-59ec-af14-9addd2593e8f,0,clean,Apratim Majumdar,nationality,Indian,6,SUPPORTED,0.75,0
+ebf449b0-fbf1-5c62-b0ff-79dd3d0e57d7,0,clean,Isabella Kelly,born_in,Cairnburgh Castle,3,SUPPORTED,0.97,0
+b0db4aef-a4ce-5b78-bf18-7a3dd73e727b,0,clean,Nusretiye Mosque,built_in,1823-1826,4,UNCERTAIN,0.4,0
+aa005f0f-615d-5acf-abb0-1faaa2f508f8,0,clean,Calibanus,now_separated_from,Agavoideae,9,UNSUPPORTED,0.2,1
+9d3c53fc-933e-5c5d-a69a-33d71c5bf079,0,clean,Naval Submarine Base New London,also_known_as,Home of the Submarine Force,2,UNCERTAIN,0.5,0
+trex_5780,0,clean,Oak Creek Canyon,located in the administrative territorial entity,Arizona,9,UNCERTAIN,0.5,0
+a53f64ec-921e-55bf-9ab5-a93d2cf8ddf7,0,clean,Sergei Aleksandrovich Tokarev,occupation,historian,9,SUPPORTED,0.75,0
+89278a2f-8eae-582c-a01e-55795cf4f837,0,clean,Apratim Majumdar,born_in,1978,4,UNSUPPORTED,0.2,1
+ab5759b6-5bde-5fdd-85a6-72a73b3c591f,0,clean,Florida Senate,upper_house_of,legislature_of_Florida,4,SUPPORTED,0.8,0
+3a8c6094-3bf5-5275-9f77-52c6ef2e7d45,0,clean,Mwabvi Wildlife Reserve,has_species,nyala,4,UNCERTAIN,0.5,0
+49bd1d82-d79b-547f-bc61-1e0c8fe925e7,0,clean,Laurie Metcalf,appeared_in_film,Scream 2,4,SUPPORTED,0.98,0
+04c6d40a-9cf3-59e0-beb5-1a22b398cf05,0,clean,Mike Gundy,has_brother,Joseph Cale Gundy,9,SUPPORTED,0.95,0
+560f26ad-bf88-5a4a-a2b9-e0b2467ed363,0,clean,On Tour Forever,released_in,1992,4,UNCERTAIN,0.4,0
+352efc9f-79c7-55d4-b1f5-eb0b3589fc36,0,clean,Beer Wars,covers,independent_electronic_music_scene,4,UNCERTAIN,0.4,0
+trex_13437,0,clean,Sergey Karpov,employer,Moscow State University,9,UNSUPPORTED,0.2,1
+965f48a9-8b3e-5996-b048-6465095d528b,0,clean,A Pair of Brown Eyes,composed_by,Shane MacGowan,4,UNCERTAIN,0.5,0
+adf0c210-f0a5-5d07-b079-49541e8778cb,0,clean,Sergei Aleksandrovich Tokarev,died_in,1985-04-19,9,UNCERTAIN,0.4,0
+fd2554ec-bfc3-5218-a7d9-d62658604c23,0,clean,On Tour Forever,packaged_as,double album,4,UNSUPPORTED,0.2,1
+10e02bc7-d0ec-5f7e-818b-b4d1e26609b2,0,clean,Blues Traveler,known_for,extensive use of segues in live performances,9,UNCERTAIN,0.5,0
+21011c17-7e61-555f-b873-50d56ced93b4,0,clean,Isabella Kelly,was,a Scottish novelist and poet,7,UNCERTAIN,0.55,0
+96b924e0-75ab-54d3-b686-78d879998204,0,clean,Calibanus,subfamily_of,Nolinoideae,9,UNCERTAIN,0.5,0
+0342e1f0-cbe4-51a7-8557-9933d4878bec,0,clean,Blues Traveler,genre,blues rock,9,UNCERTAIN,0.5,0
+13fe5dcf-4713-5024-a655-40e72044f169,0,clean,Torstein Ellingsen,is,a music producer,9,SUPPORTED,0.98,0
+e1321be8-d209-5571-8657-c00e2b6f0ba7,0,clean,2015–16 Iona Gaels men's basketball team,represented,Iona College,7,SUPPORTED,0.85,0
+2fac940c-f7bc-5091-9788-d18c4df5f1cf,0,clean,Torstein Ellingsen,is,a music producer,4,SUPPORTED,1.0,0
+18249bf8-8d3a-5d9d-b85e-7fd29b3056a0,0,clean,Mwabvi Wildlife Reserve,has_species,sable,4,UNCERTAIN,0.4,0
+2951df83-e19a-5b4a-8fb2-adfbb64d1e82,0,clean,Isabella Kelly,born_in,Cairnburgh Castle,4,SUPPORTED,0.97,0
+abb42e57-e8f8-5457-a85b-f3eda86be97d,0,clean,Greg Monroe,drafted_by,Detroit Pistons,4,UNCERTAIN,0.6,0
+19cf8a2f-b59e-534b-9282-662694a14f27,0,clean,Bing Crosby,full_name,"Harry Lillis ""Bing"" Crosby Jr.",7,UNCERTAIN,0.5,0
+aab597ea-b6e6-5c88-828b-8cf2300c761b,0,clean,John André,hanged_as,a spy,5,UNCERTAIN,0.55,0
+8aa75eca-2e6e-577f-afe2-365e5db3291f,0,clean,Salma Hayek,started_in,Teresa,9,UNSUPPORTED,0.2,1
+1a05d334-3309-5e60-ba61-4d4bf6e7f3ed,0,clean,Calibanus,native_to,dry_areas_of_northeastern_Mexico,9,SUPPORTED,0.9,0
+57ddab24-beec-5534-a7a1-7ba64aeedeb0,0,clean,Franco Corelli,had_a_major_international_opera_career,between 1951 and 1976,9,UNCERTAIN,0.5,0
+trex_16417,0,clean,The Onedin Line,P840,Liverpool,9,UNCERTAIN,0.4,0
+27926735-4c22-5594-932e-f944e071b0ea,0,clean,Fastjet Tanzania,sold_seats,one million,4,SUPPORTED,0.95,0
+8a7c1f36-4c1c-5c40-870b-6ecd23881267,0,clean,Beer Wars,covers,use of advertising and lobbyists to control beer market,4,SUPPORTED,0.95,0
+62f07a26-3bcc-501c-a911-9d35dfe2faf6,0,clean,A Pair of Brown Eyes,peaked_at,Number 72,4,UNSUPPORTED,0.15,1
+4f0a2987-630a-5dd3-8692-454b71c21bda,0,clean,Calibanus,specifically_under,subfamily_Nolinoideae,9,UNCERTAIN,0.5,0
+7ed307b6-4d45-547f-8e6e-116bd1a16200,0,clean,Bing Crosby,occupation,singer and actor,7,SUPPORTED,0.85,0
+ef88126f-17b1-5fe9-a8b4-ba8d3d88e6a3,0,clean,12 Years a Slave (score),original_soundtrack_of,12 Years a Slave,3,UNCERTAIN,0.55,0
+56849362-ecf4-51b8-b7e9-18b8792a6794,0,clean,Calibanus,from,dry_areas_of_northeastern_Mexico,9,UNSUPPORTED,0.2,1
+0ccf3b47-1280-5fba-9d72-5c48f04da49d,0,clean,Bing Crosby,had_voice_type,warm bass-baritone,4,UNSUPPORTED,0.2,1
+2a486a86-8c20-5bf2-aec7-c857e827da18,0,clean,Tom Clancy,vice_chairman_of,community activities and public affairs committees of Baltimore Orioles,9,SUPPORTED,0.98,0
+5c26549d-81ac-5011-8473-700ce9872d06,0,clean,Blues Traveler,considered_a_key_part_of,the re-emerging jam band scene of the 1990s,9,UNCERTAIN,0.5,0
+2137cdab-d365-5630-be69-7a1e5a6ec5a9,0,clean,John André,hanged_by,the Continental Army,5,UNCERTAIN,0.55,0
+2edba6d2-1743-5f92-871a-1077e5bd0937,0,clean,Jalen Jones,currently_playing_for,New Orleans Pelicans,4,SUPPORTED,0.97,0
+4cbbe210-dc9b-5c1c-adf6-1b75f7cf7948,0,clean,On Tour Forever,packaged_as,double album,4,UNSUPPORTED,0.2,1
+trex_42893,0,clean,Utah,[Location] is next to [Location],Arizona,9,SUPPORTED,0.95,0
+de7df69e-0c32-5908-a721-65cec99a800a,0,clean,Moscow State University,founded_by,Mikhail Lomonosov,9,UNCERTAIN,0.55,0
+973c77c7-ffc6-5b5c-9dc3-cf5e2b5019ea,0,clean,Sierra Academy of Aeronautics,contracted_by,Shanghai Airlines,8,SUPPORTED,0.98,0
+dc30ef9d-db40-5ebf-8cfe-779d9a990357,0,clean,Salma Hayek,came_to_prominence,Desperado,9,UNCERTAIN,0.5,0
+3bd3a599-abf0-5119-8a7d-a1b9eb98dc72,0,clean,Mike Gundy,is_an,American football coach,4,SUPPORTED,0.98,0
+53b4ea93-1225-5db1-a265-d21f36cbac47,0,clean,College Humor,stars,Bing Crosby,4,UNCERTAIN,0.4,0
+c6a73de9-3a27-5849-924f-7dddd988a558,0,clean,Berger Blanc Suisse,originates_from,Switzerland,6,UNCERTAIN,0.6,0
+d4405abb-0d31-5e71-a15a-926b7b4e810f,0,clean,Apratim Majumdar,from,Kolkata,9,UNSUPPORTED,0.2,1
+0b980b39-74e8-5af3-aa5b-cff317a7cd0f,0,clean,Wild Mountain Thyme,also_known_as,Purple Heather,9,UNCERTAIN,0.4,0
+51488796-5877-50c8-84c7-85d5678f7f73,0,clean,Jamie Kennedy,appeared_in_film,Scream 2,4,UNCERTAIN,0.5,0
+045d75ce-e87e-5ada-8fe6-483048bcb20f,0,clean,Salma Hayek,born_on,"September 2, 1966",9,UNSUPPORTED,0.2,1
+bddae936-d6dd-5e18-851d-f432dfafd66c,0,clean,A Pair of Brown Eyes,featured_on,Rum Sodomy & the Lash,4,UNCERTAIN,0.5,0
+afeb42e8-a565-5e76-acba-ac0e17fd1353,0,clean,On Tour Forever,released_by,Blues Traveler,9,UNSUPPORTED,0.2,1
+153f4379-64dd-55a7-a2a2-3251d00ff84a,0,clean,Calibanus,formerly_in,family_Ruscaceae,9,UNSUPPORTED,0.2,1
+3418d1bd-263a-5051-8059-460c4b86af43,0,clean,Greg Monroe,named,Big East Rookie of the Year,4,UNSUPPORTED,0.2,1
+95765602-f474-57cd-a620-681252824c14,0,clean,Cairnburgh Castle,is_a,ruined castle,4,UNCERTAIN,0.4,0
+3b78ffda-d51d-56c5-bbcd-262b8da0f705,0,clean,Berger Blanc Suisse,is_also_known_as,Weisser Schweizer Schäferhund,4,UNCERTAIN,0.55,0
+b9144118-9168-5668-b8d8-93b2cfef416e,0,clean,Jalen Jones,profession,professional basketball player,7,SUPPORTED,0.95,0
+286bbf67-0608-5081-bc03-cd395f5e5e26,0,clean,Wild Mountain Thyme,in_style_of,traditional Irish folk,9,UNSUPPORTED,0.2,1
+36881526-d96b-524e-bea3-a1ff3ab1c031,0,clean,Stuart Roosa,died_on,"December 12, 1994",4,UNSUPPORTED,0.2,1
+b04898a8-2b61-5ad6-87f7-61b21b1ad337,0,clean,Jalen Jones,currently_playing_for,New Orleans Pelicans,4,SUPPORTED,0.95,0
+3af4db0e-055e-5f5e-8559-6242b1532d0b,0,clean,Courteney Cox,appeared_in_film,Scream 2,4,UNCERTAIN,0.5,0
+a695180c-0b4d-51fc-b3a5-f7e182486c13,0,clean,Hawker Hurricane,operated_by,Royal Air Force,9,SUPPORTED,0.9,0
+25d59475-cd18-53a0-b071-a2995f57cb15,0,clean,Sergei Aleksandrovich Tokarev,occupation,scholar,9,SUPPORTED,0.85,0
+45325660-7781-5e8d-994f-3582a6bda63b,0,clean,Stuart Roosa,took,500 seeds,4,UNSUPPORTED,0.2,1
+254b223e-2a51-5fef-8595-160c4979884e,0,clean,Mike Gundy,played_from,1986 to 1989,9,SUPPORTED,0.98,0
+532b0d3a-105a-536b-92ab-d46b5c34ed6c,0,clean,A Pair of Brown Eyes,based_on_melody_of,Wild Mountain Thyme,9,UNSUPPORTED,0.2,1
+45ce2e53-d68c-5783-8687-09a8990d73a7,0,clean,Salma Hayek,came_to_prominence,Wild Wild West,9,SUPPORTED,0.95,0
+35c65aec-73fd-5493-9ff2-6af23dfc63e5,0,clean,Experimental hip hop,produced,electronically,4,UNSUPPORTED,0.2,1
+trex_41629,0,clean,Fazakerley,[City] is in [Country],Liverpool,9,UNSUPPORTED,0.2,1
+68dc6d22-3e88-5882-8d2c-47f101161162,0,clean,New York State Route 9R,passes_through,residential areas,9,UNCERTAIN,0.4,0
+a682e7c9-f2c9-5bf3-88fa-5d44627e6410,0,clean,Ken Pruitt,was_member_of,Florida Senate,4,UNCERTAIN,0.4,0
+37177609-6e81-5e11-82d6-125e77a260d9,0,clean,Salma Hayek,born_on,"September 2, 1966",9,SUPPORTED,0.99,0
+4974d28e-dd18-557d-a2bc-3b108bcbde1f,0,clean,Wild Mountain Thyme,written_by,Francis McPeake 1st,9,SUPPORTED,0.95,0
+e8cc7a5b-e450-5582-8f38-99c2be7bdd63,0,clean,Franco Corelli,dubbed,the Prince of tenors,9,UNSUPPORTED,0.2,1
+9f6785c3-c698-597b-b657-bd23c540c916,0,clean,Laurie Metcalf,appeared_in_film,Making Mr. Right,9,UNCERTAIN,0.4,0
+7e24329a-c638-5504-b32f-14610687f477,0,clean,Torstein Ellingsen,is,a Norwegian drummer,9,SUPPORTED,1.0,0
+trex_7392,0,clean,The Bahamas,instance of,island country,4,UNCERTAIN,0.5,0
+20c74e61-7bcf-5ecf-b8af-eebcb86b5a94,0,clean,2015–16 Iona Gaels men's basketball team,played_home_games_at,Hynes Athletic Center,7,UNCERTAIN,0.5,0
+2672723a-1435-53c3-b036-20401998266a,0,clean,Baraki Rajan,located_in,Baraki Barak District,9,UNCERTAIN,0.4,0
+559417b8-bb3d-5744-b787-4aa229c1a44e,0,clean,Berger Blanc Suisse,has_same_origins_as,German Shepherd Dog,6,SUPPORTED,0.98,0
+28f889a0-e3d2-5271-8d60-7eb26e111d04,0,clean,Salma Hayek,born_in,Mexico,4,UNCERTAIN,0.5,0
+633c020b-212e-58c1-808f-c08303514a77,0,clean,Hawker Hurricane,designed_by,Hawker Aircraft Ltd,9,SUPPORTED,0.98,0
+cd4cd69e-4003-5958-b419-afb7255bc3fb,0,clean,Blues Traveler,genre,blues rock,9,UNCERTAIN,0.5,0
+109b5e3b-cbf4-51d6-98a3-0b73a06168ef,0,clean,New York State Route 9R,has_portions,four lanes wide in commercial districts,9,SUPPORTED,0.9,0
+2b6df990-41b6-57d8-9f07-6cd49e9bc300,0,clean,Berger Blanc Suisse,is_also_known_as,Weisser Schweizer Schäferhund,6,SUPPORTED,0.85,0
+61a31949-d41b-576f-95e5-94bbf7d34c11,0,clean,Apratim Majumdar,style,Dhrupadee Veenkar,9,SUPPORTED,0.85,0
+3eac0cb4-2385-5e7d-a214-d71115f9dacf,0,clean,New York State Route 9R,connects_to,city of Cohoes,9,UNCERTAIN,0.4,0
+6d07f969-ea66-5ae0-be39-ac2442267f25,0,clean,Blues Traveler,genre,soul,9,SUPPORTED,0.98,0
+34691fe3-ba55-54c1-b7cb-298ab40da736,0,clean,Hawker Hurricane,designed_by,Hawker Aircraft Ltd,2,UNCERTAIN,0.4,0
+trex_13727,0,clean,Treasure Cay,country,The Bahamas,4,UNCERTAIN,0.55,0
+b9f58a86-0ec1-507f-99bb-1ccb081a5e4b,0,clean,The Many Adventures of Winnie the Pooh,is,the 22nd Disney animated feature film,4,UNCERTAIN,0.4,0
+20f6bd03-048c-543d-89e2-f3f7e92478bb,0,clean,Laurie Metcalf,known_for,television roles,4,UNCERTAIN,0.4,0
+31b65d81-ac8f-5bb2-90eb-4db18216ef4d,0,clean,Tosca,starring,Franco Corelli,4,UNSUPPORTED,0.2,1
+95de6880-905b-5d4c-8ba2-26c1952753b3,0,clean,Mike Gundy,is_an,American football coach,9,SUPPORTED,0.95,0
+c5e559f4-594d-5076-ba9c-dc4385f03a3a,0,clean,Fly540,commenced_operations,2006,5,UNCERTAIN,0.4,0
+65f48c56-16ce-5c8f-a8d0-eea507f66f3c,0,clean,Jalen Jones,contract_type,two-way contract,4,UNSUPPORTED,0.2,1
+029a5ba8-fe8e-532a-b388-f04f68ec9d16,0,clean,Salma Hayek,profession,film actress,9,SUPPORTED,0.95,0
+a8f91957-7d56-502d-845e-433f1e51d970,0,clean,Benedict Arnold,later_defected_to,British Army,6,SUPPORTED,0.85,0
+4aeeba73-4b6c-514a-9b01-394cbbdbe7c1,0,clean,Gatwick Airport,distance_from,Crawley,4,UNSUPPORTED,0.2,1
+705bb437-67a6-5865-9e86-391a8dd72f96,0,clean,Franco Corelli,had_a_major_international_opera_career,between 1951 and 1976,9,UNCERTAIN,0.5,0
+4e65679e-2713-5fae-8586-25b82e965da3,0,clean,New York State Route 9R,has_a_portion,four lanes wide commercial district,9,UNSUPPORTED,0.2,1
+dc253998-4625-56a4-8876-e11890776c87,0,clean,Bing Crosby,best_selling_recording_artist,20th century,7,UNCERTAIN,0.55,0
+4427f764-29d6-5b6a-b469-3164935d50b3,0,clean,College Humor,stars,Bing Crosby,7,UNSUPPORTED,0.2,1
+3c959153-ac59-54e8-9e3c-0503e85fd383,0,clean,Isabella Kelly,also_known_as,Isabella Hedgeland,4,UNCERTAIN,0.4,0
+7288a0e2-7745-5bf9-9707-3341b1f25c1c,0,clean,Calibanus,antagonist_in,Shakespeare's_The_Tempest,9,UNSUPPORTED,0.1,1
+dace1cd3-ef90-5267-943e-961318980df8,0,clean,New York State Route 9R,passes_through,residential areas,9,UNCERTAIN,0.4,0
+trex_16238,0,clean,Sergei Aleksandrovich Tokarev,language spoken or written,Russian,9,UNCERTAIN,0.6,0
+259c29da-a201-5bbf-a3ad-2f06482edcd2,0,clean,Salma Hayek,nationality,Mexican,9,UNSUPPORTED,0.2,1
+4d587283-cdd6-54ab-97d0-e9b07cf45214,0,clean,Black Book,starring,Halina Reijn,4,UNCERTAIN,0.4,0
+70974eb2-df9e-5962-8bd7-00f5453ad048,0,clean,Jewell,worked_on,Gin and Juice,1,UNSUPPORTED,0.2,1
+54189e52-9add-5af7-a2d8-003cb8fef66b,0,clean,Mike Gundy,played_position,quarterback,9,UNCERTAIN,0.4,0
+0c9a18ba-5beb-5b51-b7b7-c1d05fe9d1b2,0,clean,On Tour Forever,includes_copies_of,Travelers and Thieves,4,UNSUPPORTED,0.2,1
+2a5d7b7b-66c0-5b1b-b117-eeac386e61a4,0,clean,Nusretiye Mosque,architectural_influence,Islamic,4,UNSUPPORTED,0.2,1
+08ec131c-477f-5b42-beb0-7f72537b7827,0,clean,Wild Mountain Thyme,also_known_as,Will Ye Go Lassie Go,9,SUPPORTED,0.85,0
+d49c31f5-a659-5978-aa34-7636c8f1d52e,0,clean,Atik Valide Mosque,located_in,Istanbul,4,UNCERTAIN,0.6,0
+78083755-2060-58ec-9a22-c037d2ac2a1f,0,clean,Berger Blanc Suisse,recognized_as,separate_breed_by_FCI,6,UNCERTAIN,0.5,0
+77bf95a4-4702-53e1-9182-729897370a5f,0,clean,Salma Hayek,came_to_prominence,From Dusk Till Dawn,9,UNCERTAIN,0.4,0
+c4896739-c5d4-5b74-bd01-3fe775c8433c,0,clean,Torstein Ellingsen,is,a music producer,9,SUPPORTED,1.0,0
+06d8da92-159f-5b2b-bef0-4208adb89a44,0,clean,Dennis Rodman,known_for,rebounding abilities,4,UNCERTAIN,0.5,0
+46790689-4e47-5360-a2eb-86cb2eb96f69,0,clean,Benedict Arnold,fought_for,American Continental Army,9,SUPPORTED,0.9,0
+b2b78f88-ef6e-545d-b0d1-84decc61e1b3,0,clean,Greg Monroe,last_pistons_player_to_wear,#10 jersey,4,UNSUPPORTED,0.2,1
+35b788f2-4d24-5f9f-ba3d-5177514fb738,0,clean,New York State Route 9R,has_a_portion,four lanes wide commercial district,9,SUPPORTED,0.97,0
+1e209bbc-c6f9-52af-ab4c-f749a2c52cd3,0,clean,New York State Route 9R,is_a,north–south state highway,9,UNCERTAIN,0.5,0
+2956abcb-b88f-581f-bba7-8290ef5caf68,0,clean,Valens Aqueduct,completed_by,Roman Emperor Valens,4,UNSUPPORTED,0.2,1
+0ad6de58-faa3-5cab-8aae-4898fcc59f49,0,clean,Beer Wars,covers,use of advertising and lobbyists to control beer market,4,SUPPORTED,0.97,0
+bc5f236b-8b6e-52fe-bc28-bc5470bca4fe,0,clean,Hawker Hurricane,operated_in,Second World War,9,SUPPORTED,0.98,0
+3e27fa10-f425-5f94-8165-16864d94f123,0,clean,Naval Submarine Base New London,is_the_primary_east_coast_submarine_base_of,United States Navy,4,SUPPORTED,0.95,0
+trex_7990,0,clean,Arizona State University,located in the administrative territorial entity,Arizona,9,UNCERTAIN,0.5,0
+6a0e3ee8-0e47-5a2b-baa9-c581e8e740c8,0,clean,Franco Corelli,appeared_on_the_stages_of,most of the major opera houses in Europe and with opera companies throughout North America,9,UNCERTAIN,0.55,0
+6f2ff38e-73c9-5d57-aa48-71ed36a0e058,0,clean,Baraki Barak District,borders,Kharwar District,9,UNCERTAIN,0.4,0
+2b59ce73-1627-50b0-b265-8f7a3c7b4d9a,0,clean,Ed Cliff,contacted,Stuart Roosa,4,UNSUPPORTED,0.1,1
+78bfc53f-f74c-5b84-9a91-8b5d9dd27228,0,clean,Ethel Houbiers,voice_of,Penélope Cruz,4,SUPPORTED,0.98,0
+d9843897-befd-5cdf-9b6c-5ff65045becf,0,clean,Wild Mountain Thyme,song_by,Francis McPeake,9,SUPPORTED,0.85,0
+92f99266-890d-5d0d-9a8b-061753672850,0,clean,Blues Traveler,genre,folk rock,9,UNSUPPORTED,0.2,1
+3b46c3d3-299a-524d-b1cc-edd190b3c2e5,0,clean,Florida Senate,convenes_at,Florida State Capitol,4,UNSUPPORTED,0.2,1
+2ad6a03a-055f-5c73-b717-18b36b7bdeb6,0,clean,Laurie Metcalf,nationality,American,9,UNCERTAIN,0.5,0
+bdce8bba-1977-50c3-9b86-653ff47e9c0f,0,clean,Wild Mountain Thyme,is_a,Scottish folk song,9,UNCERTAIN,0.5,0
+871314c2-9176-58a2-9bf4-f04ac2b9d880,0,clean,The Many Adventures of Winnie the Pooh,distributed_by,Buena Vista Distribution,4,UNCERTAIN,0.5,0
+4d9ee269-24a8-50bc-8a42-63f26ea8dd65,0,clean,Mike Gundy,head_football_coach_at,Oklahoma State University,9,SUPPORTED,0.97,0
+794d64b0-b474-5c3e-90a9-bbbad899074b,0,clean,Florida Senate,composes,Florida_Legislature,4,SUPPORTED,0.85,0
+trex_18886,0,clean,Navajo Reservation,located in the administrative territorial entity,Arizona,9,UNCERTAIN,0.55,0

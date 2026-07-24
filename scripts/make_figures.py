@@ -551,6 +551,151 @@ def fig_recall_doseresponse() -> None:
     savefig(fig, "fig_recall_doseresponse")
 
 
+_ERR_TYPES = ("entity_disambiguation", "qualifier_loss", "relation_strengthening")
+
+
+def _repro_final(path: Path) -> float:
+    """Reproduction per index case (propagated / seeded) from a trajectory CSV."""
+    rows = read_rows(path)
+    r0, rl = rows[0], rows[-1]
+    seeded = sum(float(r0.get(f"gt_seed_{t}", 0) or 0) for t in _ERR_TYPES)
+    prop = float(rl["gt_total"]) - seeded
+    return prop / seeded if seeded else float("nan")
+
+
+def _baseline_repro() -> tuple[float, float]:
+    files = ["phase32_baseline_trajectory.csv", "phase33_baseline_s43_trajectory.csv",
+             "phase33_baseline_s44_trajectory.csv", "phase33_baseline_s45_trajectory.csv"]
+    vals = [_repro_final(SUMM / f) for f in files if (SUMM / f).exists()]
+    return float(np.mean(vals)), float(np.std(vals, ddof=1))
+
+
+def fig_rq3_doseresponse() -> None:
+    print("Figure 5: RQ3 n=4 dose-responses (ch5 S5.9)")
+    p = SUMM / "phase45_rq3_replication_n4.csv"
+    if not p.exists():
+        print("  MISSING phase45_rq3_replication_n4.csv; skipped"); return
+    arms = {r["arm"]: (float(r["repro_mean"]), float(r["repro_sd"])) for r in read_rows(p)}
+    b_mean, b_sd = _baseline_repro()
+    panels = [
+        ("Write frequency", "entities / step", [(6, "wf6"), (12, None), (24, "wf24")], False),
+        ("Retrieval density", "context limit", [(3, "rd3"), (5, None), (10, "rd10")], False),
+        ("Structural density", "mean entity degree", [(1.43, "density_0.5"), (1.66, None), (2.10, "density_2.0")], True),
+    ]
+    fig, axes = plt.subplots(1, 3, figsize=(11.5, 3.9))
+    hue, hl = "#008300", "#eb6834"
+    for ax, (title, xlab, pts, is_null) in zip(axes, panels):
+        xs, ms, ss = [], [], []
+        for x, arm in pts:
+            if arm is None:
+                m, s = b_mean, b_sd
+            elif arm in arms:
+                m, s = arms[arm]
+            else:
+                continue
+            xs.append(x); ms.append(m); ss.append(s)
+        col = MUTED if is_null else hue
+        ax.errorbar(xs, ms, yerr=ss, color=col, linewidth=2.0, marker="o",
+                    markersize=7, capsize=4, markeredgecolor="#fcfcfb",
+                    markeredgewidth=0.6, zorder=4)
+        # baseline midpoint highlighted
+        ax.plot(xs[1], ms[1], "s", color=hl, markersize=8, zorder=5,
+                markeredgecolor="#fcfcfb", markeredgewidth=0.6)
+        for x, m in zip(xs, ms):
+            ax.annotate(f"{m:.2f}", xy=(x, m), xytext=(0, 8), textcoords="offset points",
+                        ha="center", fontsize=8, color=INK)
+        ax.set_title(title + ("  (n.s.)" if is_null else ""), color=INK, fontsize=10.5)
+        ax.set_xlabel(xlab, color=INK2, fontsize=9)
+        ax.set_ylim(0.0, 1.05)
+        for spine in ("top", "right"):
+            ax.spines[spine].set_visible(False)
+    axes[0].set_ylabel("Reproduction / index case (mean $\\pm$ SD, n=4)", color=INK)
+    fig.suptitle("RQ3: write-frequency and retrieval-density scale contamination; "
+                 "structural density does not (within noise)",
+                 color=INK, fontsize=11.5, y=1.02)
+    fig.tight_layout()
+    savefig(fig, "fig_rq3_doseresponse")
+
+
+def fig_scale_ladder() -> None:
+    print("Figure 6: propagation scale ladder (ch5 S5.10)")
+    p = SUMM / "phase46_scale_ladder.csv"
+    if not p.exists():
+        print("  MISSING phase46_scale_ladder.csv; skipped"); return
+    rows = read_rows(p)
+    short = {"mistral-nemo-12b": "Nemo 12B", "claude-haiku-4-5": "Haiku 4.5",
+             "claude-sonnet-5": "Sonnet 5", "claude-opus-4-8": "Opus 4.8"}
+    labels = [short.get(r["model"], r["model"]) for r in rows]
+    y = [float(r["reproduction_rate"]) for r in rows]
+    x = list(range(len(rows)))
+    fig, ax = plt.subplots(figsize=(7.0, 4.4))
+    hue, hl = "#008300", "#eb6834"
+    ax.plot(x, y, color=hue, linewidth=2.4, marker="o", markersize=9,
+            markeredgecolor="#fcfcfb", markeredgewidth=0.8, zorder=4)
+    ax.plot(0, y[0], "o", color=hl, markersize=12, markeredgecolor="#fcfcfb",
+            markeredgewidth=0.9, zorder=5, label="in-run 12B extractor")
+    for xi, yi in zip(x, y):
+        ax.annotate(f"{yi:.3f}", xy=(xi, yi), xytext=(0, 11),
+                    textcoords="offset points", ha="center", fontsize=9, color=INK)
+    ax.set_xticks(x); ax.set_xticklabels(labels)
+    ax.set_ylim(0.80, 1.0)
+    ax.set_ylabel("Reproduction of contaminated fact (n=337)", color=INK)
+    ax.set_xlabel("Synthesis model — increasing capability $\\rightarrow$", color=INK)
+    for spine in ("top", "right"):
+        ax.spines[spine].set_visible(False)
+    ax.legend(loc="lower right", frameon=False, fontsize=8.5)
+    ax.set_title("Propagation is scale-robust — reproduction rises with capability\n"
+                 "(same 337 contaminated contexts, held constant; thinking disabled)",
+                 color=INK, fontsize=11)
+    fig.tight_layout()
+    savefig(fig, "fig_scale_ladder")
+
+
+def fig_detection_ladder() -> None:
+    print("Figure 7: detection scale ladder (ch5 S5.10)")
+    rungs = [("judge_llama8b", "Llama-3.1-8B\n(in-run judge)"),
+             ("judge_haiku45", "Haiku 4.5"),
+             ("judge_sonnet5", "Sonnet 5"),
+             ("judge_opus48", "Opus 4.8")]
+    labels, recalls, fprs = [], [], []
+    for tag, lab in rungs:
+        p = SUMM / f"replay_detection_{tag}.csv"
+        if not p.exists():
+            print(f"  MISSING replay_detection_{tag}.csv; skipped"); continue
+        rows = [r for r in read_rows(p) if r["verdict"] not in ("CALL_ERROR",)]
+        contam = [r for r in rows if r["is_contam"] == "1"]
+        clean = [r for r in rows if r["is_contam"] == "0"]
+        if not contam or not clean:
+            continue
+        labels.append(lab)
+        recalls.append(sum(int(r["caught"]) for r in contam) / len(contam))
+        fprs.append(sum(int(r["caught"]) for r in clean) / len(clean))
+    if not labels:
+        print("  no detection-ladder CSVs yet; skipped"); return
+    x = np.arange(len(labels)); w = 0.38
+    fig, ax = plt.subplots(figsize=(7.6, 4.4))
+    ax.bar(x - w/2, recalls, w, color="#008300", label="recall (contaminated flagged)",
+           edgecolor="#fcfcfb", linewidth=0.6, zorder=3)
+    ax.bar(x + w/2, fprs, w, color="#b8b6ad", label="false-flag rate (clean flagged)",
+           edgecolor="#fcfcfb", linewidth=0.6, zorder=3)
+    for xi, r, f in zip(x, recalls, fprs):
+        ax.annotate(f"{r:.2f}", xy=(xi - w/2, r), xytext=(0, 3), textcoords="offset points",
+                    ha="center", fontsize=8, color=INK)
+        ax.annotate(f"{f:.2f}", xy=(xi + w/2, f), xytext=(0, 3), textcoords="offset points",
+                    ha="center", fontsize=8, color=INK2)
+    ax.set_xticks(x); ax.set_xticklabels(labels, fontsize=8.5)
+    ax.set_ylim(0.0, 1.05)
+    ax.set_ylabel("Rate on 154 contaminated / 154 clean triplets", color=INK)
+    for spine in ("top", "right"):
+        ax.spines[spine].set_visible(False)
+    ax.legend(loc="upper left", frameon=False, fontsize=8.5)
+    ax.set_title("Detection: does a frontier judge catch what the 8B judge misses?\n"
+                 "(same targets, same validator prompt; recall useless without the false-flag control)",
+                 color=INK, fontsize=10.5)
+    fig.tight_layout()
+    savefig(fig, "fig_detection_ladder")
+
+
 def main() -> None:
     print(f"Reading archived CSVs from {SUMM}")
     print(f"Writing figures to {OUTDIR}\n")
@@ -561,6 +706,12 @@ def main() -> None:
     fig_r0_by_arm()
     print()
     fig_recall_doseresponse()
+    print()
+    fig_rq3_doseresponse()
+    print()
+    fig_scale_ladder()
+    print()
+    fig_detection_ladder()
     print("\nDone.")
 
 

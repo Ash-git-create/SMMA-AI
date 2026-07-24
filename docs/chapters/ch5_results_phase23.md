@@ -677,6 +677,10 @@ Archived: `results/summaries/phase43_rq3_sir_fit.csv` (seed 42),
 `phase45_rq3_replication_n4.csv` (n=4); trajectories in
 `results/raw/contamination_{arm}[_s43..45]_*`.
 
+`[FIG fig_rq3_doseresponse]` The three β-channel dose–responses at n=4:
+write-frequency and retrieval-density scale reproduction cleanly; structural
+density (greyed, "n.s.") is flat within overlapping error bars.
+
 ### 5.9.1 Reachability is a hard threshold, not a gradient (k-hop)
 
 The k-hop arms place index cases an exact BFS distance k from the active
@@ -824,7 +828,7 @@ cadence) is addressed epidemiologically through the γ-bearing arms of
 Section 5.4 rather than as a separate β-substrate sweep; a dedicated
 audit-cadence axis is noted as deferred.
 
-## 5.10 Does model scale fix contamination? A capability-ladder replay probe
+## 5.10 Does model scale fix contamination? Capability-ladder replay probes
 
 The single most consequential external-validity question for this thesis is
 whether the propagation dynamics (RQ1–RQ3) are an artefact of the small local
@@ -858,6 +862,10 @@ over-states frontier reproduction. Archived:
 | Claude Sonnet 5 | frontier-mid | 0.964 | 0.858 |
 | Claude Opus 4.8 | frontier-top | **0.967** | 0.858 |
 
+`[FIG fig_scale_ladder]` Reproduction of the contaminated fact vs. synthesis-
+model capability, context held constant; the in-run 12B extractor is the
+left-most (orange) point.
+
 **Reproduction increases monotonically with model capability** (0.858 → 0.932
 → 0.964 → 0.967; 0 of 1,011 replay calls failed). The overlap column is
 decisive: for Sonnet and Opus the fraction of contexts where *both* the
@@ -879,18 +887,76 @@ faithfully render the provided context, corrupted value included. This
 sharpens rather than weakens the thesis's core claim, and it does so on the
 axis a reviewer is most likely to press.
 
-**Scope of the claim.** This result speaks only to **propagation** — the
-question of whether a stronger *synthesiser* reproduces a contaminated fact it
-is handed. It does not speak to **detection**: a frontier *validator* carries a
-world-knowledge channel the evidence-gated 8B judge lacks (§5.4.3), so the
-recall side of the mitigation finding (§5.4.4–5.4.5) remains judge-capability-
-contingent and is *not* claimed to be scale-robust. The propagation/detection
-split stated in the limitations is thus itself now evidenced: propagation is
-architectural and, per this ladder, if anything strengthens with scale;
-detection is contingent and untested at frontier scale. Two further caveats:
-the reproduction measure is string-containment (conservative, but blind to
-semantic paraphrase that preserves the corrupted claim), and the ladder is a
-single model family (Claude) — the capability gradient is clean, but a
-cross-family replication (e.g. a GPT or Llama rung) would rule out any
-Claude-specific context-following idiosyncrasy. Neither caveat threatens the
-direction of the effect, only its exact magnitude.
+The ladder above is one axis — a stronger *synthesiser*. The complementary
+question is whether a stronger *validator* detects the contamination the 8B
+judge misses (§5.4.3–5.4.5). The second replay probe below tests it on the same
+principle: fix the judge input, vary only the judge model.
+
+### 5.10.1 The detection axis: capability does not rescue detection
+
+The same corpus supplies the detection test. Each of the **154 unique
+contaminated triplets** — plus a matched random sample of **154 clean
+triplets** — was presented, with its co-served KG neighbours as evidence,
+through the *identical* validator system prompt and candidate/evidence format
+the in-run judge uses (`OrchestrationAgent`, imported verbatim), varying only
+the judge model. A triplet is "caught" the run's way: verdict UNSUPPORTED
+(equivalently confidence below the 0.4 quarantine threshold). Recall is scored
+on the contaminated half, the **false-flag rate** on the clean half — both are
+needed, because a judge that flags *everything* scores recall 1.0 while
+detecting nothing. Archived: `results/summaries/phase47_detection_ladder.csv`,
+per-triplet `replay_detection_judge_*.csv`.
+
+| Judge | Tier | Recall | Clean false-flag | Discrimination (R−FPR) |
+|---|---|---|---|---|
+| Llama-3.1-8B | in-run judge | 0.617 | 0.383 | +0.234 |
+| Claude Haiku 4.5 | frontier-small | 0.617 | 0.416 | +0.201 |
+| Claude Sonnet 5 | frontier-mid | 0.636 | 0.448 | +0.188 |
+| Claude Opus 4.8 | frontier-top | 0.526 | 0.240 | **+0.286** |
+
+**Detection does not improve with model capability.** All four judges cluster
+in a narrow discrimination band (+0.19 to +0.29); the strongest frontier model
+(Opus) beats the in-run 8B by only **~0.05**, and does so by becoming more
+*conservative* (lower recall 0.526, much lower false-flag 0.240) rather than by
+knowing more — it flags less overall, not more accurately. Even Opus catches
+barely half the contamination while false-flagging a quarter of clean facts:
+nowhere near the reliable detection (discrimination → 1) that would contain the
+cascade. Opus's per-type recall is diagnostic: entity-substitution 0.75 (often
+absurd, easy to reject) but qualifier-loss 0.44 and *propagated* contamination
+only 0.25–0.36 — it misses exactly the subtle and second-generation errors, as
+the structural-blindness argument (§5.4.3) predicts.
+
+The mechanism is the mirror image of the propagation result, and the *same*
+long-tail property drives both. Reproducing a contaminated fact needs only
+faithful context-following, which capability supplies in abundance — so
+propagation rises with scale. *Detecting* a corrupted long-tail fact needs
+world knowledge of that specific obscure entity, which capability does **not**
+reliably supply — so every judge falls back on the weak "absent from evidence"
+heuristic and detection stays flat. (Note this offline probe isolates the
+judge-model contribution on matched inputs; it is deliberately *not* the in-run
+6% recall of §5.4, which is additionally throttled by the audit budget, the
+live retrieval context, and propagation dynamics — the two measure different
+things and are not to be equated.)
+
+`[FIG fig_detection_ladder]` Recall and false-flag rate per judge model on the
+matched 154/154 set; no model both catches most contamination and spares the
+clean facts.
+
+### 5.10.2 Unified conclusion and caveats
+
+Taken together, the two axes give a single, uncomfortable result: **scaling the
+models makes contamination propagate more (0.858 → 0.967, strong monotone) and
+detect no better (+0.05 from 8B to frontier).** Capability strongly amplifies
+the mechanism that spreads contamination — faithful reproduction of retrieved
+context — and only marginally aids the mechanism that would contain it. The
+propagation/detection split asserted in the limitations is now evidenced on
+*both* sides, from one corpus, one instrument.
+
+Caveats, none of which threaten the direction of either effect: (1) both
+measures are lexical (string-containment reproduction; UNSUPPORTED-verdict
+detection) — conservative, but blind to semantic paraphrase that preserves the
+corrupted claim; (2) the ladder is a single model family (Claude) plus the
+in-run Llama judge — the capability gradient is clean, but a cross-family rung
+(a GPT or larger Llama) would retire any family-specific idiosyncrasy; (3) the
+detection probe reconstructs the validator's evidence from co-served facts
+rather than the live retrieval, isolating the judge-model effect at the cost of
+exact in-run fidelity.

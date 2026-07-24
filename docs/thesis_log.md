@@ -2388,3 +2388,39 @@ Claude-specific idiosyncrasy). Neither changes the direction.
 
 Cost: ~$3 total on the Anthropic key (Haiku+Sonnet+Opus). Key note: the first
 two keys Ashwin tried 401'd (revoked/invalid); the third authenticated.
+
+### 2026-07-24 (cont.) — DETECTION LADDER: capability does NOT rescue detection (ch5 §5.10.1)
+
+Second replay probe (detection half of the scale question). 154 unique
+contaminated + 154 matched clean triplets, same validator prompt/format
+(OrchestrationAgent imported verbatim), co-served facts as evidence, judge
+model varied. Caught = verdict UNSUPPORTED (conf<0.4). Both recall (on contam)
+AND clean false-flag rate reported — recall alone is useless (flag-everything
+scores 1.0). phase47_detection_ladder.csv + replay_detection_judge_*.csv.
+
+**RESULT (discrimination = recall − false-flag; NOT monotone, essentially flat):**
+  - Llama-3.1-8B (in-run):  recall 0.617, FPR 0.383, disc +0.234
+  - Haiku 4.5:              recall 0.617, FPR 0.416, disc +0.201
+  - Sonnet 5:               recall 0.636, FPR 0.448, disc +0.188
+  - Opus 4.8:               recall 0.526, FPR 0.240, disc +0.286 (best, via conservatism)
+
+All four in a narrow +0.19–0.29 band; frontier Opus beats 8B by only ~0.05, and
+by flagging LESS (not knowing more). Even Opus catches ~53% of contam while
+false-flagging 24% of clean. Opus by-type: ED 0.75, QL 0.44, propagated 0.25–0.36
+— misses the subtle + second-generation errors (structural blindness, §5.4.3).
+
+**Correction recorded:** my in-turn read leaned "flat-to-declining" after 3
+points; Opus reversed it to flat-with-best-at-top. Written up honestly as FLAT
+(no meaningful capability gain), not declining.
+
+**UNIFIED TWO-AXIS CONCLUSION (§5.10.2):** scaling makes propagation clearly
+WORSE (0.858→0.967) and detection NO BETTER (+0.05). Same T-REx long-tail
+mechanism both ways: capability buys faithful context-following (spreads
+contamination) but not knowledge of obscure facts (can't catch it). The
+propagation/detection split is now evidenced on both sides from one corpus.
+NOTE: offline detection recall (~0.6) is NOT the in-run 6% — different task
+(isolated judgment vs budget-throttled live-retrieval audit); do not equate.
+
+Figures: fig_scale_ladder (propagation), fig_detection_ladder (detection),
+fig_rq3_doseresponse (RQ3 n=4) — all rendered, archive-faithful, referenced in
+ch5. Detection ladder cost ~$1.5 Anthropic (llama rung Groq-free).
