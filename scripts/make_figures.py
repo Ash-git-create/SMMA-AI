@@ -78,6 +78,13 @@ ARM_COLOR = {
     "mitigated_tuned":     "#eda100",  # yellow
     "oracle":              "#008300",  # green
     "control":             "#e34948",  # red (reserved)
+    # task #23 noisy-oracle precision sweep: sequential green ramp (single
+    # hue, monotone lightness by realized precision) -- ordinal variable,
+    # darkest = highest precision, closest to the perfect oracle above.
+    "oracle_noisy_p75":    "#0d5c0d",
+    "oracle_noisy_p50":    "#2e8b2e",
+    "oracle_noisy_p25":    "#5cad5c",
+    "oracle_noisy_p10":    "#8ecb8e",
 }
 ARM_LABEL = {
     "baseline": "baseline",
@@ -86,6 +93,10 @@ ARM_LABEL = {
     "mitigated": "mitigated",
     "mitigated_tuned": "mitigated_tuned",
     "oracle": "oracle",
+    "oracle_noisy_p75": "noisy p75 (n=4)",
+    "oracle_noisy_p50": "noisy p50 (n=4)",
+    "oracle_noisy_p25": "noisy p25",
+    "oracle_noisy_p10": "noisy p10 (n=4)",
 }
 
 ERROR_TYPES = ("entity_disambiguation", "qualifier_loss", "relation_strengthening")
@@ -165,6 +176,35 @@ def load_fits() -> dict[str, dict]:
         "phase37_sir_fit_mitigated_seeds.csv",
         "phase38_sir_fit_oracle.csv",
         "phase39_sir_fit_mitigated_tuned.csv",
+        "phase40_sir_fit_oracle_noisy_p75.csv",
+        "phase40_sir_fit_oracle_noisy_p75_s43.csv",
+        "phase40_sir_fit_oracle_noisy_p75_s44.csv",
+        "phase40_sir_fit_oracle_noisy_p75_s45.csv",
+        "phase40_sir_fit_oracle_noisy_p50.csv",
+        "phase40_sir_fit_oracle_noisy_p50_s43.csv",
+        "phase40_sir_fit_oracle_noisy_p50_s44.csv",
+        "phase40_sir_fit_oracle_noisy_p50_s45.csv",
+        "phase40_sir_fit_oracle_noisy_p25.csv",
+        "phase40_sir_fit_oracle_noisy_p10.csv",
+        "phase40_sir_fit_oracle_noisy_p10_s43.csv",
+        "phase40_sir_fit_oracle_noisy_p10_s44.csv",
+        "phase40_sir_fit_oracle_noisy_p10_s45.csv",
+        # phase42: perfect-oracle seed replication (#24) + recall sweep (#27)
+        "phase42_sir_fit_oracle_s43.csv",
+        "phase42_sir_fit_oracle_s44.csv",
+        "phase42_sir_fit_oracle_s45.csv",
+        "phase42_sir_fit_oracle_sens75.csv",
+        "phase42_sir_fit_oracle_sens75_s43.csv",
+        "phase42_sir_fit_oracle_sens75_s44.csv",
+        "phase42_sir_fit_oracle_sens75_s45.csv",
+        "phase42_sir_fit_oracle_sens50.csv",
+        "phase42_sir_fit_oracle_sens50_s43.csv",
+        "phase42_sir_fit_oracle_sens50_s44.csv",
+        "phase42_sir_fit_oracle_sens50_s45.csv",
+        "phase42_sir_fit_oracle_sens25.csv",
+        "phase42_sir_fit_oracle_sens25_s43.csv",
+        "phase42_sir_fit_oracle_sens25_s44.csv",
+        "phase42_sir_fit_oracle_sens25_s45.csv",
     ]
     for fname in fit_files:
         p = SUMM / fname
@@ -364,6 +404,20 @@ def fig_r0_by_arm() -> None:
     mit_mean = float(np.mean(mit_r0)) if mit_r0 else np.nan
     mit_sd = float(np.std(mit_r0, ddof=1)) if len(mit_r0) > 1 else 0.0
 
+    # task #23 noisy-oracle p10/p75: R0 mean +/- SD across 4 seed replicates.
+    def _mean_sd(tags):
+        vals = [fits[t]["r0"] for t in tags if t in fits and np.isfinite(fits[t]["r0"])]
+        mean = float(np.mean(vals)) if vals else np.nan
+        sd = float(np.std(vals, ddof=1)) if len(vals) > 1 else 0.0
+        return mean, sd
+
+    p10_mean, p10_sd = _mean_sd(["oracle_noisy_p10", "oracle_noisy_p10_s43",
+                                  "oracle_noisy_p10_s44", "oracle_noisy_p10_s45"])
+    p75_mean, p75_sd = _mean_sd(["oracle_noisy_p75", "oracle_noisy_p75_s43",
+                                  "oracle_noisy_p75_s44", "oracle_noisy_p75_s45"])
+    p50_mean, p50_sd = _mean_sd(["oracle_noisy_p50", "oracle_noisy_p50_s43",
+                                  "oracle_noisy_p50_s44", "oracle_noisy_p50_s45"])
+
     # arm, R0 value, error (or None), defined?
     arms = [
         ("baseline",            None,      None,   False),  # gamma = 0
@@ -372,9 +426,13 @@ def fig_r0_by_arm() -> None:
         ("mitigated",           mit_mean,  mit_sd, True),
         ("mitigated_tuned",     None,      None,   False),  # gamma = 0
         ("oracle",              fits.get("oracle", {}).get("r0"), None, True),
+        ("oracle_noisy_p75",    p75_mean,  p75_sd, True),
+        ("oracle_noisy_p50",    p50_mean,  p50_sd, True),
+        ("oracle_noisy_p25",    fits.get("oracle_noisy_p25", {}).get("r0"), None, True),
+        ("oracle_noisy_p10",    p10_mean,  p10_sd, True),
     ]
 
-    fig, ax = plt.subplots(figsize=(7.4, 4.0))
+    fig, ax = plt.subplots(figsize=(10.2, 4.2))
     x = np.arange(len(arms))
     ymax = 0.0
     for i, (arm, val, err, defined) in enumerate(arms):
@@ -419,6 +477,80 @@ def fig_r0_by_arm() -> None:
     savefig(fig, "fig_r0_by_arm")
 
 
+# ===========================================================================
+# FIGURE 4 - recall dose-response: R0 vs validator sensitivity (ch5 S5.4.5)
+# ===========================================================================
+def fig_recall_doseresponse() -> None:
+    print("Figure 4: recall dose-response (R0 vs validator sensitivity)")
+    fits = load_fits()
+
+    # sensitivity -> list of per-seed fit tags (perfect = the oracle n=4)
+    sens_tags = {
+        1.00: ["oracle", "oracle_s43", "oracle_s44", "oracle_s45"],
+        0.75: ["oracle_sens75", "oracle_sens75_s43", "oracle_sens75_s44", "oracle_sens75_s45"],
+        0.50: ["oracle_sens50", "oracle_sens50_s43", "oracle_sens50_s44", "oracle_sens50_s45"],
+        0.25: ["oracle_sens25", "oracle_sens25_s43", "oracle_sens25_s44", "oracle_sens25_s45"],
+    }
+    xs, means, sds, allpts = [], [], [], []
+    for sens in sorted(sens_tags):
+        vals = [fits[t]["r0"] for t in sens_tags[sens]
+                if t in fits and np.isfinite(fits[t]["r0"])]
+        if not vals:
+            print(f"  MISSING fits for sensitivity {sens} -- skipped")
+            continue
+        xs.append(sens)
+        means.append(float(np.mean(vals)))
+        sds.append(float(np.std(vals, ddof=1)) if len(vals) > 1 else 0.0)
+        allpts.append((sens, vals))
+    if not xs:
+        print("  no recall-sweep fits found; figure skipped")
+        return
+
+    fig, ax = plt.subplots(figsize=(7.0, 4.4))
+    hue = "#008300"
+    # individual seed points (jittered slightly for visibility)
+    for sens, vals in allpts:
+        for v in vals:
+            ax.plot(sens, v, "o", color=hue, alpha=0.30, markersize=5,
+                    markeredgecolor="#fcfcfb", markeredgewidth=0.4, zorder=3)
+    # mean +/- SD line
+    ax.errorbar(xs, means, yerr=sds, color=hue, linewidth=2.2, marker="s",
+                markersize=7, capsize=4, zorder=4, label="mean $\\pm$ SD (n=4)")
+    for sx, sy in zip(xs, means):
+        ax.annotate(f"{sy:.2f}", xy=(sx, sy), xytext=(6, 6),
+                    textcoords="offset points", fontsize=8.5, color=INK)
+
+    # LLM-judge arm as the extrapolation anchor (mitigated, measured recall ~6%)
+    mit_tags = ["mitigated", "mitigated_s43", "mitigated_s44", "mitigated_s45"]
+    mit_r0 = [fits[t]["r0"] for t in mit_tags if t in fits and np.isfinite(fits[t]["r0"])]
+    if mit_r0:
+        mmean, msd = float(np.mean(mit_r0)), float(np.std(mit_r0, ddof=1))
+        ax.errorbar(0.06, mmean, yerr=msd, color="#eb6834", marker="D",
+                    markersize=7, capsize=4, zorder=5,
+                    label="LLM judge (measured recall $\\approx$6%)")
+        ax.annotate(f"mitigated\n{mmean:.2f}$\\pm${msd:.2f}", xy=(0.06, mmean),
+                    xytext=(8, -2), textcoords="offset points", fontsize=8,
+                    color="#eb6834", va="top")
+
+    ax.axhline(1.0, color="#d03b3b", linestyle="--", linewidth=1.4, zorder=2)
+    ax.annotate("$R_0=1$ (epidemic threshold)", xy=(0.30, 1.0), xytext=(0, 4),
+                textcoords="offset points", fontsize=9, color="#d03b3b",
+                fontweight="bold")
+    ax.set_xlabel("Validator recall (oracle sensitivity)", color=INK)
+    ax.set_ylabel("Basic reproduction number $R_0$", color=INK)
+    ax.set_xlim(0.0, 1.08)
+    ax.set_xticks([0.0, 0.25, 0.50, 0.75, 1.0])
+    ax.invert_xaxis()  # recall decreasing left->right mirrors "judge gets worse"
+    for spine in ("top", "right"):
+        ax.spines[spine].set_visible(False)
+    ax.legend(loc="upper left", frameon=False, fontsize=8.5)
+    ax.set_title("Recall dose-response: $R_0$ rises as validator recall falls\n"
+                 "(Spearman $\\rho=-0.67$, $p=0.005$, n=16)",
+                 color=INK, fontsize=11.5)
+    fig.tight_layout()
+    savefig(fig, "fig_recall_doseresponse")
+
+
 def main() -> None:
     print(f"Reading archived CSVs from {SUMM}")
     print(f"Writing figures to {OUTDIR}\n")
@@ -427,6 +559,8 @@ def main() -> None:
     fig_sir_fit()
     print()
     fig_r0_by_arm()
+    print()
+    fig_recall_doseresponse()
     print("\nDone.")
 
 

@@ -1329,3 +1329,822 @@ target quarantine precision ≈0.75) in the background via the staged
 (50,000 T-REx triplets loading). Remaining three points (p50, p25, p10)
 queue sequentially once this one finishes and is archived, per the
 one-at-a-time constraint (each does its own `load_kg --clear`).
+
+## 2026-07-23 (evening) — Oracle sweep point p75 complete; p50 launched
+
+**p75 (target audit-level precision 0.75, `oracle_sensitivity=1.0`,
+`oracle_false_alarm=0.0168`) — DONE.** Ran end-to-end in ~13 minutes (clean
+room → extraction → contamination), far faster than any judged arm since
+oracle audits cost zero Groq calls. Archived to
+`results/summaries/phase40_oracle_noisy_p75_{manifest.json,trajectory.csv}`,
+SIR fit at `phase40_sir_fit_oracle_noisy_p75.csv`.
+
+Realized final quarantine precision (`det_R_contam / (det_R_contam +
+det_R_clean)`, the same definition used for every other arm's reported
+precision, cascade collateral included) = 17/65 = **26.2%** — notably
+below both the *design target* (0.75, an audit-level flag precision that
+does not account for downstream cascade collateral) and the perfect
+oracle's realized 33.3% (16/48, `phase38_oracle`). This is expected and
+was flagged in the config comments in advance: adding false alarms on top
+of perfect recall can only ever pull realized precision down from the
+perfect-oracle ceiling, and cascade deprecation dilutes precision further
+regardless of the audit-level flag rate — the two "precision" numbers
+(design-time audit flag rate vs. realized final quarantine precision) are
+genuinely different quantities, same lesson as the #20 offline-vs-in-run
+gap but from a controllable-parameter direction this time rather than a
+model behaviour.
+
+Propagated = 15 (sum gt_prop_*), exposed = 50 (cum_exposed final), γ =
+0.0463, β = 0.0324, **R₀ = 0.699** — sub-critical, and (single seed, noted)
+even slightly *below* the perfect oracle's 0.79. Detection AUROC = 0.903,
+also nominally above the perfect oracle's 0.899 (single-seed noise at this
+sample size — 500 random clean vs a few dozen contaminated nodes — not
+claimed as a real effect). hotpot_em 0.10, fever_accuracy 0.60 (flat as
+always). Full numbers in the archived trajectory CSV.
+
+**p50 launched** (target 0.50, `oracle_false_alarm=0.0504`) via the same
+relaunch script, running normally as of this entry. p25 and p10 queue after.
+
+## 2026-07-23 (evening, cont.) — p50 complete; p25 launched
+
+**p50 (target audit-level precision 0.50, `oracle_false_alarm=0.0504`) —
+DONE.** Archived to
+`results/summaries/phase40_oracle_noisy_p50_{manifest.json,trajectory.csv}`,
+SIR fit `phase40_sir_fit_oracle_noisy_p50.csv`. Realized final quarantine
+precision = 17/84 = **20.2%** (monotone below p75's 26.2%, as expected —
+more induced false alarms, more collateral). Propagated 16, exposed 50.
+β = 0.0351, γ = 0.0458, **R₀ = 0.765** — still sub-critical (single seed),
+close to but not identical to the perfect oracle's 0.79 and p75's 0.699;
+no monotone R₀-vs-precision trend is claimed yet from 3 points at n=1 each.
+Detection AUROC 0.905. hotpot_em 0.10, fever_accuracy 0.60.
+
+**p25 launched** (target 0.25, `oracle_false_alarm=0.1513`).
+
+## 2026-07-23 (evening, cont. 2) — p25 complete; p10 (final sweep point) launched; monotone trend visible
+
+**p25 (target audit-level precision 0.25, `oracle_false_alarm=0.1513`) —
+DONE.** Archived to
+`results/summaries/phase40_oracle_noisy_p25_{manifest.json,trajectory.csv}`,
+SIR fit `phase40_sir_fit_oracle_noisy_p25.csv`. Realized final quarantine
+precision = 16/152 = **10.5%** (collateral damage `det_R_clean` grew to
+136, roughly 2x p50's 67 — cascade collateral compounds faster than the
+false-alarm rate as more clean-adjacent nodes get pulled in). Propagated
+16, exposed 54. β = 0.0358, γ = 0.0436, **R₀ = 0.823** — still
+sub-critical (single seed).
+
+**Provisional dose-response, 3 points so far (single seed each — hedge
+accordingly):**
+
+| Point | Design target | Realized precision | R₀ |
+|---|---|---|---|
+| p75 | 0.75 | 26.2% | 0.699 |
+| p50 | 0.50 | 20.2% | 0.765 |
+| p25 | 0.25 | 10.5% | 0.823 |
+| oracle (phase38) | 1.00 | 33.3% | 0.79 |
+
+A monotone R₀-vs-realized-precision trend is visible (R₀ rises as
+precision falls) — notable that even the LOWEST precision point so far
+(p25, 10.5%) stays sub-critical, well above the LLM-judge arms' realized
+precision (default 5.9%, tuned 0%) which were super/critical-to-undefined.
+This suggests recall, not precision, may be doing more of the sub-critical
+work in the oracle arms — worth stating as a hypothesis, not a conclusion,
+until p10 (target 0.10, closest to the LLM-judge regime) lands.
+
+**p10 launched** (target 0.10, `oracle_false_alarm=0.4538`) — the last
+sweep point.
+
+## 2026-07-23 (night) — Task #23 sweep COMPLETE: all 5 points sub-critical; recall, not precision, appears to be the dominant containment lever
+
+**p10 (target audit-level precision 0.10, `oracle_false_alarm=0.4538`) —
+DONE**, the final sweep point. Archived to
+`results/summaries/phase40_oracle_noisy_p10_{manifest.json,trajectory.csv}`,
+SIR fit `phase40_sir_fit_oracle_noisy_p10.csv`. Realized final quarantine
+precision = 18/271 = **6.6%** (collateral `det_R_clean` = 253, by far the
+largest of the sweep — nearly the entire audited-and-flagged population is
+now clean facts caught in cascade blast radius). β = 0.0353, γ = 0.0473,
+**R₀ = 0.746**.
+
+**Full sweep table (all single seed = 42; oracle_sensitivity = 1.0 held
+fixed throughout — only oracle_false_alarm varies):**
+
+| Point | Design target precision | Realized precision (incl. cascade) | β | γ | R₀ | Propagated | Exposed |
+|---|---|---|---|---|---|---|---|
+| p75 | 0.75 | 26.2% (17/65) | 0.0324 | 0.0463 | 0.699 | 11 | 50 |
+| p50 | 0.50 | 20.2% (17/84) | 0.0351 | 0.0458 | 0.765 | 16 | 50 |
+| p25 | 0.25 | 10.5% (16/152) | 0.0358 | 0.0436 | 0.823 | 16 | 54 |
+| p10 | 0.10 | 6.6% (18/271) | 0.0353 | 0.0473 | 0.746 | 12 | 54 |
+| oracle (phase38, perfect) | 1.00 | 33.3% (16/48) | 0.028 | 0.036 | 0.79 | — | 44 |
+
+**Retracting the mid-sweep "monotone trend" hypothesis (stated in the
+p25 entry above) — it does not survive p10.** R₀ does not move monotonically
+with realized precision (p10's R₀ 0.746 sits BELOW p25's 0.823 despite p10
+having roughly half p25's precision). At n=1 per point this is exactly the
+kind of thing the seed-noise rule warns about: with only single-seed β/γ
+fits, run-to-run fluctuation of this size (β ranges 0.032–0.036, γ ranges
+0.044–0.047 across all 4 points — a narrow band) is plausibly noise, not
+signal, and no functional R₀(precision) relationship is claimed from this
+data.
+
+**What IS robust across the sweep, and is the actual finding:** every
+single point — spanning realized precision from 6.6% to 33.3%, more than a
+5x range — stayed sub-critical (R₀ 0.699–0.823, all comfortably below 1),
+while the LLM-judge arms at broadly similar or higher realized precision
+(default 5.9%, task #14; tuned 0%, task #20) were super-critical
+(R₀ 4.46±2.36) or undefined (γ=0) respectively. The one parameter held
+fixed across the entire oracle sweep and different between the oracle and
+LLM-judge arms is **recall**: `oracle_sensitivity = 1.0` throughout (every
+contaminated node gets a fair chance at being flagged), versus the LLM
+judges' unmeasured-but-evidently-poor recall on real (replacement-type)
+contamination (the #20 structural-blindness mechanism: an evidence-gated
+judge cannot even attempt to flag a fact with no contradicting evidence).
+**Working hypothesis for RQ4: containment (R₀ sub-criticality) is driven
+predominantly by validator RECALL, not PRECISION; precision instead
+governs the collateral-damage cost of validation** (`det_R_clean` scales
+from 32 at fa=0 to 253 at fa=0.45 — a ~8x increase — while R₀ stayed in a
+narrow sub-critical band throughout). This is a single-seed, single-KG-draw
+observation across 5 points and needs replication (see #24) before being
+promoted past "hypothesis" — but it reframes the RQ4 story: judge FAILURE
+in the real arms may be a recall failure dressed up as a precision problem,
+which changes what a fix should target (catch more real contamination,
+even at higher false-alarm cost) rather than what task #20 tried (raise
+precision by refusing to flag without contradicting evidence, which this
+sweep suggests trades away exactly the wrong thing).
+
+**Task #23 CLOSED.** All 4 sweep points + the existing p=1.0 archive give
+a 5-point precision sweep at fixed recall=1.0; this is now the primary RQ4
+dose-response evidence as pre-registered. Detection AUROC across the sweep:
+0.903 (p75), 0.905 (p50), 0.902 (p25), 0.902 (p10) — flat
+around 0.90, consistent with the perfect-oracle's 0.899, and unlike the
+LLM-judge arms shows no laundering degradation regardless of induced
+false-alarm rate, because clean nodes are never re-scored upward in oracle
+mode (by construction, Section 4.3.3) — false alarms zero a clean node's
+confidence rather than inflating a contaminated one's.
+
+**Next:** #24 (oracle seed replication at p=1.0) should now target
+confirming or refuting the recall-vs-precision hypothesis — ideally by
+replicating at LEAST ONE noisy point (p10, the most judge-like) across 2-3
+more seeds, not just the perfect-oracle point, since the hypothesis lives
+in the noisy arms. Ch5 §5.4/§5.5 and the R₀ bar chart figure need
+extending with these 5 points.
+
+## 2026-07-23 (late night) — CORRECTION: p10 seed replication shows large R₀ variance; "always sub-critical" claim was premature at n=1
+
+**p10 seed 43 replicate — DONE.** Same config as p10 (target audit-level
+precision 0.10, `oracle_false_alarm=0.4538`, `oracle_sensitivity=1.0`),
+`--random-seed 43` (changes injection placement only, per the seeding
+semantics of Section 4.8.3 — LLM generation is not seed-controlled).
+Archived to `results/summaries/phase40_oracle_noisy_p10_s43_
+{manifest.json,trajectory.csv}`, SIR fit
+`phase40_sir_fit_oracle_noisy_p10_s43.csv`.
+
+**β = 0.0503, γ = 0.0522, R₀ = 0.964** — nominally still sub-critical, but
+this is a swing of **+0.22 in R₀** from a single seed change at the same
+precision point (seed 42: 0.746; seed 43: 0.964). Propagated = 20 (vs.
+seed 42's 12), exposed = 92 (vs. 54) — the seed-43 draw produced
+substantially more spread by every raw count, not just the fitted R₀.
+Realized precision this seed: 22/243 = 9.05% (close to seed 42's 6.6%, so
+the precision knob itself is behaving consistently — the spread outcome
+varies, not the validator's realized behaviour).
+
+**This directly weakens the "all 5 points robustly sub-critical" framing
+from the sweep-completion entry a few hours ago.** That entry was written
+at n=1 per point and is now shown to have understated the variance: R₀ at
+p10 alone spans at least [0.746, 0.964] across 2 seeds — comfortably
+inside sub-critical territory so far, but close enough to 1.0 that a third
+seed landing above 1 would not be shocking. Per the project's seed-noise
+discipline (single-run differences below ~2 baseline SD are noise; no
+headline survives on n=1), **the "recall drives containment" hypothesis is
+NOT retracted, but its confidence is downgraded** — it may still be right
+that recall matters more than precision for containment, but "sub-critical
+across a 5x precision range" was an overclaim built on single-seed points
+that plausibly have their own multi-seed spread just like every other arm
+in this project has shown (baseline 17.8±4.0 propagated; full-Trio ~10x
+variance amplification, task #14). A third p10 seed (44) is running now to
+see whether [0.746, 0.964, ?] clusters sub-critical or straddles 1.0.
+
+**Lesson for the write-up discipline, recorded per rule 5 (retractions are
+recorded, not overwritten):** the sweep-completion entry's "all 5 points
+sub-critical" line stands as written (it was true of the data available at
+the time) but must now be read alongside this correction — ch5 must not
+quote that line without the multi-seed caveat that follows here.
+
+## 2026-07-23 (still later) — p10 seed 44: SUPER-CRITICAL (R₀=1.105). p10 straddles the threshold; launching seed 45 to complete n=4
+
+**p10 seed 44 replicate — DONE.** Same config, `--random-seed 44`.
+Archived to `results/summaries/phase40_oracle_noisy_p10_s44_
+{manifest.json,trajectory.csv}`, SIR fit
+`phase40_sir_fit_oracle_noisy_p10_s44.csv`.
+
+**β = 0.0472, γ = 0.0428, R₀ = 1.105 — SUPER-CRITICAL.** This is the first
+super-critical result in the entire noisy-oracle sweep, and it appears at
+p10 (the lowest tested precision, still under perfect recall). Propagated
+= 18, exposed = 65 — both mid-range between seed 42 and seed 43's counts,
+so this is not an outlier-count run producing an outlier fit; the SIR fit
+genuinely crossed the line.
+
+**p10 across 3 seeds (42/43/44): R₀ = [0.746, 0.964, 1.105], mean = 0.938,
+SD = 0.181 (n=3).** The mean sits just under 1.0 but the SD is wide enough
+that the interval straddles the critical threshold — this is NOT a
+robustly sub-critical arm. Contrast with the ~2-SD noise-hedging rule: a
+single point 1.105 is well within 1 SD of the 3-seed mean, i.e., this
+looks like real spread around a borderline-critical mean, not an outlier
+to be explained away.
+
+**Revised reading of task #23 (supersedes the earlier "recall alone keeps
+containment sub-critical" framing):** perfect recall does NOT guarantee
+sub-criticality by itself. At the higher-precision sweep points (p75, p50,
+p25 — each still single-seed, not yet replicated) R₀ stayed comfortably
+under 1; at the lowest precision tested (p10, ≈6-9% realized), R₀ is
+genuinely borderline across seeds, with one seed already over. The
+interpretation now on the table: recall may raise the FLOOR on
+containment relative to the LLM-judge arms (whose R₀ was unambiguously
+super-critical, 4.46±2.36, at similar-or-better precision) — i.e. recall
+matters and the earlier hypothesis direction is not wrong — but it is not
+a free pass at arbitrarily low precision; there is likely still a
+precision floor below which even perfect-recall validation loses
+sub-criticality. p10's realized precision (6.6-9%) may be near or below
+that floor. This needs the higher-precision points replicated too before
+any quantitative floor estimate is defensible — right now only p10 has
+seed replication.
+
+**Launching seed 45** to complete an n=4 envelope at p10 (matching this
+project's established multi-seed convention — baseline and mitigated arms
+both used seeds 42-45), so the p10 point can be reported with the same
+n=4 mean±SD format already used throughout Chapter 5, rather than as an
+n=3 orphan.
+
+## 2026-07-23 (close-out) — p10 n=4 envelope complete: R₀ = 0.911 ± 0.158, 1/4 seeds super-critical. Task #23/#24-extension DONE.
+
+**p10 seed 45 — DONE.** β = 0.0325, γ = 0.0393, R₀ = 0.828. Archived to
+`results/summaries/phase40_oracle_noisy_p10_s45_{manifest.json,
+trajectory.csv}`, SIR fit `phase40_sir_fit_oracle_noisy_p10_s45.csv`.
+
+**p10 full n=4 envelope (seeds 42/43/44/45): R₀ = [0.746, 0.964, 1.105,
+0.828], mean = 0.911, SD = 0.158.** In the same mean±SD format as every
+other multi-seed arm in this thesis: **R₀ = 0.911 ± 0.158 (n=4)**. 1 of 4
+seeds (44) crossed into super-critical territory; the mean sits
+sub-critical but well within its own SD of the threshold, so "sub-critical"
+is a mean-level statement with real single-seed exceptions, not a uniform
+property of the arm.
+
+**Final, properly-hedged reading of task #23 for RQ4 (supersedes both the
+mid-sweep monotone-trend claim and the "robustly sub-critical across the
+whole precision range" claim — both explicitly retracted per rule 5):**
+
+| Arm | Realized precision | n | R₀ (mean ± SD) |
+|---|---|---|---|
+| p10 (noisy oracle, perfect recall) | 6.6–9% | 4 | **0.911 ± 0.158** |
+| p25 (noisy oracle, perfect recall) | 10.5% | 1 | 0.823 |
+| p50 (noisy oracle, perfect recall) | 20.2% | 1 | 0.765 |
+| p75 (noisy oracle, perfect recall) | 26.2% | 1 | 0.699 |
+| oracle (perfect, phase38) | 33.3% | 1 | 0.79 |
+| mitigated (LLM judge, task #14) | 5.9% pooled | 4 | 4.46 ± 2.36 |
+| mitigated_tuned (LLM judge, task #20) | 0% | 1 | undefined (γ=0) |
+
+The headline that survives: **at every tested precision level under
+perfect recall — including p10's 6.6–9%, comparable to or below the
+LLM-judge arms' realized precision — mean R₀ stays sub-critical**, and the
+gap to the LLM-judge arms (4.46±2.36, wildly super-critical, at similar or
+better precision) is large. Perfect recall is doing real work. **But it is
+not a hard guarantee**: p10's own seed variance shows individual runs can
+cross the threshold even under perfect recall, when precision is low
+enough — recall widens the margin, it does not eliminate the cliff. The
+p75/p50/p25 points remain single-seed and their true variance is unknown;
+given how much p10 moved (0.746→1.105 range), they should not be treated
+as more certain than p10's pre-replication single point looked.
+
+**Task #23 (noisy-oracle precision sweep) and the ad-hoc #24 extension
+(seed replication at the p10 point) are DONE.** This is now the complete,
+correctly-hedged primary RQ4 dose-response evidence base: 4 precision
+points (1 with n=4, 3 with n=1) plus the existing perfect-oracle anchor,
+against the LLM-judge failure arms. Remaining open item, not blocking:
+p75/p50/p25 could be replicated to the same n=4 standard if time allows
+before 2026-07-31, but the core RQ4 claim (recall matters, is not
+sufficient alone) is already defensible without them.
+
+**Neo4j window used for:** 4 sweep points + 3 seed replicates = 7 full
+contamination runs today, all zero-Groq-judge-call oracle audits — the
+"cheaper sweep" prediction from earlier in the day held up well in
+practice.
+
+## 2026-07-24 — Extending seed replication to p75/p50/p25; p75 seed 43 is ALSO super-critical (R₀=1.096)
+
+Following up on the p10 n=4 result, replicating p75/p50/p25 to the same
+n=4 standard to check whether p10's seed variance was unusual or the norm
+across the whole sweep. Launched p75/p50/p25 seeds 43-45 sequentially
+(`run_oracle_point_seed.ps1`, generalizes the p10 seed-replicate script to
+any sweep point).
+
+**p75 seed 43 — DONE.** β = 0.0424, γ = 0.0387, **R₀ = 1.096 —
+SUPER-CRITICAL.** Archived to `results/summaries/phase40_oracle_noisy_p75_
+s43_{manifest.json,trajectory.csv}`, SIR fit
+`phase40_sir_fit_oracle_noisy_p75_s43.csv`.
+
+**This is an important update to the emerging picture.** p75 was the
+*highest*-precision sweep point (26.2% realized at seed 42) and its first
+seed looked the most comfortably sub-critical of the four (0.699). A
+second seed crossing to 1.096 suggests the seed-to-seed R₀ variance seen
+at p10 is not special to low precision — it may be a property of this
+whole experimental setup (consistent with the baseline arm's own
+substantial multi-seed spread, 17.8±4.0 propagated, and the ~10x variance
+amplification documented for the full-Trio arm in task #14). **Working
+revision: seed variance in this pipeline is large enough that NO single
+noisy-oracle point should be treated as reliably sub-critical or
+super-critical from fewer than ~4 seeds — including p75, p50, and p25,
+which are still single-seed as of the previous entries.** This reframes
+task #23's contribution: the LLM-judge arms' failure (R₀ 4.46±2.36,
+consistently and by a wide margin super-critical across all 4 of their
+seeds) is categorically different from anything seen in the oracle sweep
+so far — even the "worst" oracle point's seed spread does not approach
+that magnitude — but the oracle sweep's own within-point variance is
+turning out to be a substantial part of the story, not a nuisance to
+average away.
+
+p75 seed 44 launched next.
+
+## 2026-07-24 (cont.) — p75 seed 44 ALSO super-critical (R₀=1.197); p75 running mean now ~1.0. Seed 45 launched.
+
+**p75 seed 44 — DONE.** β = 0.0467, γ = 0.0390, **R₀ = 1.197 —
+SUPER-CRITICAL**, higher than seed 43's 1.096. Archived to
+`results/summaries/phase40_oracle_noisy_p75_s44_{manifest.json,
+trajectory.csv}`, SIR fit `phase40_sir_fit_oracle_noisy_p75_s44.csv`.
+
+**p75 across 3 seeds (42/43/44): R₀ = [0.699, 1.096, 1.197], mean = 0.997,
+SD = 0.267 (n=3).** Two of three seeds are now super-critical. The running
+mean sits almost exactly ON the critical threshold — this is a much
+starker result than p10's eventual 0.911±0.158 (1/4 super-critical). If
+this holds through seed 45, **p75 — the point with the HIGHEST realized
+precision in the entire noisy-oracle sweep (26.2% at seed 42) — may turn
+out to be no more reliably sub-critical than the lowest-precision point
+(p10)**, which would be a genuinely surprising and important result:
+realized precision, across the tested 6.6%-26.2% range, may simply not be
+predictive of single-run R₀ under perfect recall; only the recall/no-recall
+distinction (oracle-family vs. LLM-judge arms) shows a large, consistent
+effect. Seed 45 launched to complete p75's n=4.
+
+## 2026-07-24 (cont.) — p75 n=4 complete: R₀ = 0.928 ± 0.256, 2/4 seeds super-critical. Nearly identical mean to p10, wider variance.
+
+**p75 seed 45 — DONE.** β = 0.0287, γ = 0.0399, R₀ = 0.719. Archived to
+`results/summaries/phase40_oracle_noisy_p75_s45_{manifest.json,
+trajectory.csv}`, SIR fit `phase40_sir_fit_oracle_noisy_p75_s45.csv`.
+
+**p75 full n=4 envelope (seeds 42/43/44/45): R₀ = [0.699, 1.096, 1.197,
+0.719], mean = 0.928, SD = 0.256 (n=4). β = 0.0376 ± 0.0084, γ = 0.0410 ±
+0.0036.** 2 of 4 seeds (43, 44) are super-critical.
+
+**Direct comparison, both now n=4:**
+
+| Point | Realized precision (seed 42) | R₀ mean ± SD (n=4) | Super-critical seeds |
+|---|---|---|---|
+| p75 | 26.2% | **0.928 ± 0.256** | 2/4 |
+| p10 | 6.6% | 0.911 ± 0.158 | 1/4 |
+
+**This is the clearest statement of the finding yet:** across a 4× spread
+in realized precision (6.6% vs 26.2%), the mean R₀ is essentially
+identical (0.93 vs 0.91) — and if anything the HIGHER-precision point has
+MORE variance and a higher super-critical rate, the opposite of what a
+precision-driven story would predict. Under this experimental design
+(perfect recall, precision varied only via induced false alarms), realized
+precision in the 6-26% range shows no visible relationship to single-run
+R₀ outcome. What separates this whole family from the LLM-judge arms
+(4.46 ± 2.36, all 4 seeds badly super-critical, no seed anywhere near
+sub-critical) is not precision — it is recall. The mechanism candidate:
+under perfect recall, every truly contaminated node that gets audited is
+eventually caught; what varies run-to-run is the RACE between exposure
+growth (β, driven by which entities get sampled and how fast contamination
+reaches the active retrieval subgraph) and the audit's targeted-audit
+coverage of the growing contaminated set — a timing/coverage story, not a
+judge-quality story, once recall is saturated at 1.0.
+
+Moving to p50 replication next (seeds 43-45) to see whether its mean also
+clusters near ~0.9-0.95, which would further support the "precision
+doesn't distinguish outcomes once recall=1.0" reading.
+
+## 2026-07-24 (cont.) — p50 seed 43: R₀=0.892 (sub-critical). Seed 44 running.
+
+**p50 seed 43 — DONE.** β = 0.0460, γ = 0.0516, R₀ = 0.892 — sub-critical.
+Archived to `results/summaries/phase40_oracle_noisy_p50_s43_
+{manifest.json,trajectory.csv}`, SIR fit
+`phase40_sir_fit_oracle_noisy_p50_s43.csv`. p50 so far (seeds 42/43):
+[0.765, 0.892] — consistent with the ~0.9 clustering seen at p10/p75.
+Seed 44 launched.
+
+## 2026-07-24 (methodological note) — p50 seed 44 exposes a construction-level insensitivity in the R₀ metric to the false-alarm/precision knob
+
+**p50 seed 44 — DONE.** β = 0.0472, γ = 0.0428, R₀ = 1.1048641074366614
+(SUPER-CRITICAL). Archived to `results/summaries/phase40_oracle_noisy_p50_
+s44_{manifest.json,trajectory.csv}`, SIR fit
+`phase40_sir_fit_oracle_noisy_p50_s44.csv`.
+
+**This value is numerically identical (13 significant figures) to p10
+seed 44's fitted R₀.** Before reporting it, this was checked for a script
+bug — `diff` against `phase40_oracle_noisy_p10_s44_trajectory.csv` shows
+the two trajectory files ARE genuinely different runs (different
+`quarantined`/`cascaded`/`det_R_clean`/`hotpot_avg_facts` at every step —
+e.g. final `det_R_clean` 55 vs 241, final `hotpot_avg_facts` 4.62 vs 4.62
+matched here but diverged at step 5: 4.92 vs 4.66). **What matches exactly,
+at every one of the 10 steps, is `gt_total` and `det_R_contam`** — the two
+columns `fit_sir.py`'s I(t)/R(t) reconstruction actually uses (Section
+4.6.4: `I(t) = gt_total − det_R_contam`, `R(t) = det_R_contam`;
+`det_R_clean` — the column the false-alarm knob actually drives — is
+excluded from the reconstruction by design, since it is collateral
+damage, not part of the epidemic curve).
+
+**Mechanistic explanation, not a bug:** p50 and p10 share `random_seed=44`
+(fixing injection placement and per-step entity sampling identically) and
+`oracle_sensitivity=1.0` (fixing which genuinely-contaminated audited
+nodes get caught — the same ones, in the same steps, in both configs).
+Only `oracle_false_alarm` differs (0.0504 vs 0.4538), and that knob only
+ever flags CLEAN nodes, feeding `det_R_clean`. The two runs' operational
+columns (extraction volume, quarantine counts) visibly diverge from step 6
+onward — collateral quarantining IS happening at different rates and IS
+perturbing what gets retrieved and extracted — but in this particular
+seed's run, that perturbation never happened to touch the specific
+entities/facts that determine `gt_total`/`det_R_contam`, so the epidemic
+curve the SIR model is fit to came out identical by coincidence. (**By
+contrast, p75 seed 44 and p10 seed 44 — same seed, same sensitivity — got
+DIFFERENT R₀ (1.197 vs 1.105), so this coincidence is run-specific, not a
+general identity.**)
+
+**This is a real, useful caveat on the whole task #23 dose-response
+finding, not just a data-integrity note:** the R₀ metric as currently
+computed is *insensitive by construction* to the false-alarm/precision
+knob except through an indirect, sometimes-negligible feedback path
+(collateral quarantine → retrieval floor exclusion → different extraction
+context → different propagation). Part of why R₀ has clustered so tightly
+around ~0.9 across four very different induced false-alarm rates
+(0.0168→0.4538, a 27× range) may therefore be a property of the
+measurement construction, not solely an empirical fact about the system.
+**The "recall matters, precision doesn't (once recall=1.0)" reading from
+the earlier entries should be read as: recall visibly and directly moves
+`det_R_contam`/R₀ (it enters the reconstruction formula); precision (via
+induced false alarms) only moves R₀ THROUGH an indirect, run-dependent
+retrieval-feedback channel that is frequently but not always negligible.**
+This should be stated explicitly in ch5 rather than left implicit —
+otherwise a reader could reasonably think the sweep proves precision is
+causally inert for containment, when the more defensible claim is that
+this experimental design's R₀ metric has limited *sensitivity* to
+precision, for a specific, identifiable structural reason.
+
+p50 seed 45 launched (final seed for p50's n=4).
+
+## 2026-07-24 (p50 complete) — p50 n=4: R₀ = 0.870 ± 0.173, 1/4 super-critical. Cross-point identity (p50_s45 == p75_s45 exactly) confirms the construction-insensitivity mechanism.
+
+**p50 seed 45 — DONE.** β = 0.0287, γ = 0.0399, R₀ = 0.719. Archived to
+`results/summaries/phase40_oracle_noisy_p50_s45_{manifest.json,
+trajectory.csv}`, SIR fit `phase40_sir_fit_oracle_noisy_p50_s45.csv`.
+
+**This fitted (β, γ, R₀, RMSE) quadruple is numerically identical to p75
+seed 45's**, not just p50/p10 seed 44's from the earlier entry. Consistent
+with the mechanism already identified: at the two LOWEST false-alarm rates
+in the sweep (p75: 0.0168, p50: 0.0504), collateral quarantine volume is
+small enough that it very often does not intersect the handful of entities
+actively sampled per step, so the reconstructed epidemic curve — and
+therefore the fitted R₀ — comes out identical across configs at a shared
+seed. This is expected to happen LESS often at p10 (fa=0.4538, the
+sweep's highest collateral rate) — consistent with p10 seed 44 diverging
+from a construction-identity coincidence in only one of its four seeds
+while p75/p50 show it more often at the low end.
+
+**p50 full n=4 envelope (seeds 42/43/44/45): R₀ = [0.765, 0.892, 1.105,
+0.719], mean = 0.870, SD = 0.173 (n=4). β = 0.0393 ± 0.0089, γ = 0.0450 ±
+0.0050.** 1 of 4 seeds (44) super-critical.
+
+**Updated three-point comparison, all now n=4:**
+
+| Point | Realized precision (seed 42) | R₀ mean ± SD | Super-critical seeds |
+|---|---|---|---|
+| p50 | 20.2% | **0.870 ± 0.173** | 1/4 |
+| p10 | 6.6% | 0.911 ± 0.158 | 1/4 |
+| p75 | 26.2% | 0.928 ± 0.256 | 2/4 |
+
+All three cluster in a narrow 0.87–0.93 mean band despite the precision
+axis spanning 6.6–26.2% (4×). p75 (highest precision) has BOTH the
+highest mean AND by far the highest variance/super-critical rate of the
+three — if anything mildly *anti*-correlated with precision, though this
+is 3 points at n=4 each and not a claim to lean on quantitatively. Given
+the construction-insensitivity mechanism documented above, this clustering
+should be read primarily as evidence that **the false-alarm/precision
+knob, as currently wired, has limited leverage over the fitted R₀ metric**
+— not as strong evidence that precision is causally inert for
+containment in general. The next methodologically cleaner test (not
+undertaken here, time-boxed) would use a metric sensitive to
+`det_R_clean` directly, or redesign the noisy-oracle mechanism so induced
+false alarms are drawn from the actively-retrieved pool rather than the
+full audit candidate pool, guaranteeing feedback into propagation.
+
+p25 remains single-seed (0.823). Given the diminishing marginal insight
+from further n=4 replication at this point — the construction-
+insensitivity mechanism, once understood, already explains most of why
+these points cluster — replication effort now shifts to writing this up
+correctly in ch5 rather than running a fourth n=4 point.
+
+## 2026-07-24 (parallel work) — Judge in-run recall MEASURED (task #28): LLM judge catches 6% of contamination; perfect recall at the same audit budget catches 30%
+
+Token-free analysis over existing archives (Sonnet agent, verified by me
+against the trajectories before acceptance — oracle 16/49=0.3265,
+tuned 0/54=0.0000 spot-checks match). New:
+`scripts/measure_judge_recall.py`, `results/summaries/phase41_judge_recall.csv`.
+
+End-of-run catch rate (det_R_contam / gt_total at final step — "of all
+contaminated nodes that ever existed, what fraction was quarantined"),
+audit budget verified identical across all 20 runs from their manifests
+(1×25 targeted audits/step):
+
+| Arm | n | Catch rate |
+|---|---|---|
+| Noisy-oracle family pooled (oracle_sensitivity=1.0) | 13 | **0.295 ± 0.049** |
+| oracle perfect (seed 42) | 1 | 0.327 |
+| ablation_validation (LLM judge) | 1 | 0.092 |
+| mitigated (LLM judge, default) | 4 | **0.060 ± 0.035** |
+| mitigated_tuned (LLM judge, quote-first) | 1 | **0.000** |
+
+**The judge-recall deficit is now a measured number: 0.235** (pooled
+perfect-recall calibration 0.295 minus the mitigated arm's 0.060) — the
+LLM judge achieves roughly ONE FIFTH of the catch rate that its own audit
+budget supports. Two readings drop out immediately: (1) the "structural
+blindness" claim (task #20) is quantified — default prompt 6%, tuned
+prompt exactly 0%; (2) the perfect-recall arms only reach ~30%, NOT 100% —
+targeted-audit COVERAGE is its own separate bottleneck (the audit only
+sees 25 of the cycle's read/written nodes per step, and contamination
+that never re-enters a retrieval neighborhood is never audited at all).
+So the containment chain has two multiplicative losses: coverage (~0.3
+ceiling at this budget) × judge recall (~0.2 of that ceiling for the
+default 8B judge). Mitigation design should attack whichever term is
+cheaper to move — and #23-B (recall dose-response, running) directly
+measures the R₀ consequence of the second term.
+
+Caveat honestly recorded by the agent and kept: the seeded-vs-propagated
+split of CAUGHT nodes is not derivable from the archives (det_R_contam is
+an aggregate; no per-node quarantine log exists) — noted in the CSV
+rather than approximated. If per-node quarantine attribution matters
+later, run_contamination.py would need a small logging addition
+[PHASE-4].
+
+## 2026-07-24 (parallel work) — Statistical hardening complete (task #29): RQ4 R₀ separation is significant (MWU); variance-amplification claim confirmed as suggestive-only, not overturned
+
+Formal tests over archived fits (Sonnet agent; I independently
+re-verified the three load-bearing results below against the raw fit CSVs
+before accepting). New: `scripts/stats_tests.py`,
+`results/summaries/phase41_stats_tests.csv` (33 rows). Agent's aggregation
+cross-checked against known archive values (baseline propagated
+17.75±4.03, AUROC 0.8985±0.0066) — exact matches.
+
+**Load-bearing results, re-verified by me:**
+- **R₀ mitigated (4.46, n=4) vs oracle_noisy_p10 (0.911, n=4): Welch
+  p=0.057, Mann-Whitney p=0.0286.** Per discipline rule 4 both are
+  reported; the MWU (perfect group separation — every mitigated seed's R₀
+  exceeds every p10 seed's) is the headline, and it is significant. Same
+  pattern vs p50 and p75 (MWU p=0.0286 all three). This is NEW support for
+  the core RQ4 claim: the recall-bearing (oracle-family) arms are
+  significantly more contained than the LLM-judge mitigated arm, not just
+  descriptively lower. Bootstrap 95% CI on the mean R₀ difference excludes
+  0 (p10: [1.71, 5.54]).
+- **AUROC baseline (0.899) vs mitigated (0.859): Welch p=0.0040, MWU
+  p=0.0286.** Confirms the 2026-07-12 confidence-laundering finding as the
+  one cleanly-significant full-Trio effect. Unchanged.
+- **Variance-amplification claim tested, NOT overturned but pinned as
+  suggestive:** β variance ratio mitigated/baseline = 6.61× (I recomputed:
+  baseline β SD 0.0101, mitigated 0.0259), Levene p=0.5145, F-ratio
+  p=0.155 — NOT significant at n=4. This is fully consistent with what ch5
+  §5.4.1 already says ("suggestive, not conclusive, at n=4"; the spread-
+  metric F(3,3) p≈0.09 quoted there is a different quantity — propagated/
+  exposed count variance, ~10× — from the β-fit variance the agent tested,
+  6.6×). No retraction: the claim was always hedged as suggestive and the
+  formal test agrees it should stay that way. ACTION for the ch5 pass: the
+  "Restated finding" summary line ("multiplies outcome variance roughly
+  tenfold") states the point estimate without the inline hedge that the
+  detailed bullet above it carries — tighten that one line so the summary
+  can't be quoted out of its hedge. Everything else in §5.4.1 is fine.
+- Within-sweep null contrasts (p75/p50/p10 mutually): all null (Welch
+  p=0.72-0.91, MWU p=0.77-1.00) — supports the "R₀ clusters, precision
+  doesn't separate them" reading of §5.4.4.
+- Baseline-vs-mitigated propagated/exposed: all null (within seed noise),
+  consistent with the "no mean spread effect" finding.
+
+Per-run realized quarantine precision across the 13 phase40 noisy runs:
+4.6%-37.8% (embedded in the CSV's test_note column). Two construction-
+identical fit pairs (p10_s44≡p50_s44, p50_s45≡p75_s45; documented
+2026-07-24) flagged in every contrast that touches them, not silently
+pooled.
+
+## 2026-07-24 (parallel work) — ch2 literature review DRAFTED (task #30) — CITATIONS NOT YET INDEPENDENTLY VERIFIED
+
+Sonnet agent drafted `docs/chapters/ch2_literature_review.md`: 9 sections
+(shared-memory MAS → adversarial poisoning → error cascades →
+epidemiological models → provenance/ULDB → KG quality → LLM-as-judge →
+synthesis+positioning table), 21 references the agent reports as
+search-verified. **STATUS: DRAFT, citations pending MY independent
+verification** — LLM-generated literature reviews carry a fabricated-
+citation risk that is unacceptable in a thesis, so no ch2 claim or
+reference is canonical until each of the 21 entries is confirmed against a
+real source by me (or Ashwin). The agent already excluded one unverifiable
+item (an Apart Research sprint writeup) rather than cite it shakily, and
+flagged several preprints (Chu 2026, Lin et al. 2026) as non-peer-reviewed
+— good signs, but verification is still mine to do.
+
+Genuinely thin literature areas the agent surfaced (useful — these are
+where the thesis's novelty is strongest): (1) no prior work fits an
+epidemic model to PERSISTENT multi-agent memory contamination (closest
+2026 papers study transient single-episode consensus); (2) essentially no
+peer-reviewed SIR-quantification of any AI-system failure propagation
+outside two 2026 preprints; (3) KG error-detection literature is uniformly
+static/post-hoc and none addresses REPLACEMENT contamination — exactly the
+§5.4.3 blind spot, now literature-motivated rather than just asserted;
+(4) LLM-judge literature reports aggregate agreement, not precision/recall
+against a low-base-rate positive class (the decomposition this thesis
+needed). These thin spots strengthen the priority claim but each needs a
+confirming second search before the thesis states "unstudied" outright.
+
+## 2026-07-24 (parallel work) — RQ3 machinery built + reviewed (task #21): k-hop placement + KG density manipulation, both worktree-isolated, both code-reviewed by me
+
+Two Sonnet agents built the RQ3 implementation in isolated git worktrees
+(main tree was running live experiments). Both reviewed by me for
+correctness; both mergeable, HELD pending chain-idle + live-Neo4j smoke
+test (neither agent touched port 7687, correctly).
+
+**k-hop graded seed placement** (worktree agent-a630e8d4...): new
+`src/injection/khop_placement.py` (BFS over the Entity-Triplet bipartite
+graph, exact-k via smaller-distance exclusion, honest early-stop on
+frontier exhaustion), `Neo4jClient.get_adjacent_triplets` (batched Cypher,
+one query/hop), `--seed-khop {0,1,2,3}` in run_contamination.py (default
+None = existing path bit-identical), per-index-case `khop` field in the
+manifest for auditing, configs khop{1,2,3}.yaml (unmitigated baseline
+substrate). 22 unit tests pass against a fake adjacency client; --help and
+config-parse verified. Reviewed: BFS logic correct. Live-test TODO:
+hub-entity query latency on the real 50K KG, whether hop-2/3 frontiers
+stay bounded/non-empty, end-to-end manifest khop population. Converts RQ1's
+binary reachability result (active vs random) into a distance GRADIENT.
+
+**KG density manipulation** (worktree agent-ab1e2b14...): new
+`src/graph/density.py` (pure functions), `--density`/`--density-seed`/
+`--tag` on load_kg.py with a --clear guard + realized-density JSON sidecar,
+`docs/phase4_density_protocol.md`. Density defined as MEAN ENTITY DEGREE
+(verified against the actual retrieval predicate `t.subject IN [key] OR
+t.object IN [key]`, distinct from and crossable with the context_limit
+retrieval-cap proxy). Sparsification (<1.0): degree-weighted Efraimidis-
+Spirakis subsampling with coverage protection (never zeroes an entity's
+last triplet). Densification (>1.0): concentration-by-restriction (never
+fabricates triplets — ranks entities by degree, unions neighborhoods),
+with best-prefix rollback to avoid the overshoot where late low-degree
+entities drag mean degree back down. 20+ assertions pass on synthetic
+fixtures; O(n) at 50K scale (~0.35s). Reviewed: both algorithms correct;
+the overshoot fix is real and necessary. IMPORTANT WRITE-UP CAVEAT the
+agent surfaced: densification-by-restriction changes n_entities AND
+n_triplets (it's a subgraph), so density>1 arms are NOT the same KG size as
+baseline — a covariate to REPORT (protocol doc flags it), not hide. Both
+operations refuse to run without --clear. Carries [PENDING-#21-RUN].
+
+RQ3 now has all four axes buildable: write frequency (entities_per_step,
+config-only), validation interval (audits_per_step, config-only), graph
+density (real KG manipulation, just built), retrieval density
+(context_limit, config-only) — plus the k-hop distance gradient. Runs
+launch after chain 1 frees Neo4j and both worktrees are merged +
+live-smoke-tested.
+
+## 2026-07-24 (verification) — ch2 citation spot-check: 4 riskiest recent citations VERIFIED real with correct arXiv IDs
+
+Independently verified (WebFetch/WebSearch) the four highest-fabrication-
+risk ch2 citations — the recent 2025/2026 arXiv preprints that carry the
+novelty-priority argument:
+- MINJA [Dong et al., arXiv:2503.03704] — REAL, title/authors/topic exact
+  (memory injection attacks on LLM agents via query-only interaction).
+- Chu 2026 security survey [arXiv:2604.23338] — REAL (the suspicious-
+  looking arXiv number resolves correctly to the exact claimed title).
+- Hallucination Cascade [Jamshidi et al., arXiv:2606.07937] — REAL, exact
+  title/authors, multi-agent LLM error propagation.
+- Epidemiology of Model Collapse (bilayer SIR) [Wang, arXiv:2606.05168] —
+  REAL, exact title, the closest prior work to this thesis's framing.
+All four arXiv IDs in ch2's reference list match the real ones exactly (a
+fabricated ID on a real paper would have been the subtler failure — did
+not occur). This strongly indicates the agent did genuine verification, so
+the recent-preprint set is trustworthy.
+
+REMAINING for ch2 to be final (not blockers, but must happen before
+submission): (1) confirm the ~14 classic/established citations (Kermack-
+McKendrick 1927, Hayes-Roth 1985, Daley-Kendall 1964, Widom 2005,
+Benjelloun 2008, Green-Karvounarakis-Tannen 2007, Paulheim 2017, Zheng
+2023, Shumailov 2023, etc. — all well-known, low fabrication risk, verify
+for page/volume accuracy); (2) confirm VENUE attributions on preprints —
+ch2 says "MINJA NeurIPS 2025" but the arXiv page does not itself confirm
+NeurIPS acceptance, so venue claims need a targeted check (the papers are
+real regardless); (3) Ashwin's own scholarly review of framing/positioning.
+Task #30 stays in_progress for these; the fabrication-risk concern is
+substantially retired.
+
+## 2026-07-24 (CHAIN 1 RESULTS) — TWO major findings: (A) the R₀=0.79 "only sub-critical arm" headline is RETRACTED; (B) a CLEAN recall dose-response — the result the precision sweep could not produce
+
+Chain 1 completed all 6 runs (perfect-oracle seeds 43/44/45 for task #24;
+recall sweep sensitivity 0.75/0.50/0.25 at seed 42 for task #27). Archived
+phase42_*; SIR fits phase42_sir_fit_*.
+
+### (A) RETRACTION — perfect oracle is NOT robustly sub-critical (task #24)
+
+Perfect oracle across 4 seeds: **R₀ = [0.79 (s42), 1.096 (s43), 1.197
+(s44), 0.780 (s45)], mean 0.966 ± 0.213, 2/4 SUPER-CRITICAL.**
+
+**This retracts the §5.4.2 headline "R₀ = 0.79, the only sub-critical
+configuration observed" (thesis_log 2026-07-12, task #18).** That was a
+single-seed value and it was a favourable draw: replication shows the
+perfect oracle straddles the epidemic threshold exactly like every noisy
+point, with half its seeds super-critical. Per discipline rule 5 this is
+recorded, not overwritten — §5.4.2 must state the retraction and carry the
+n=4 envelope.
+
+Note (construction-insensitivity, already documented 2026-07-24):
+oracle_s43 (1.0957) and oracle_s44 (1.1974) are numerically identical to
+p75_s43 and p75_s44 — perfect oracle has false_alarm=0, p75 has 0.0168, and
+at that seed the tiny collateral difference never touched the sampled
+entities, so the epidemic curves coincide. Expected, not a bug.
+
+**What survives, and is arguably STRONGER for being honest:** the RQ4
+verdict was never "the oracle achieves containment" as an absolute — it is
+the *comparison*. Restated: perfect judgement brings R₀ from the LLM judge's
+4.46 ± 2.36 (badly super-critical, all 4 seeds; §5.4.1) down to ~1.0
+(borderline, straddling the threshold). The judge-quality gap is real and
+large; the destination is the critical threshold, not comfortable
+containment. This is a more defensible and more interesting claim than "one
+perfect run got 0.79".
+
+### (B) THE CLEAN RECALL DOSE-RESPONSE (task #27) — recall is the causal lever
+
+Recall sweep at seed 42 (oracle_sensitivity varied, false_alarm=0 so the
+recall axis is clean), R₀ vs sensitivity:
+
+| Sensitivity (recall) | R₀ | γ |
+|---|---|---|
+| 1.00 (perfect, = oracle s42) | 0.790 | 0.0360 |
+| 0.75 | 0.827 | 0.0383 |
+| 0.50 | 0.948 | 0.0327 |
+| 0.25 | 1.067 | 0.0287 |
+
+**Monotone: R₀ rises as recall falls, crossing the epidemic threshold
+between sensitivity 0.50 and 0.25.** This is the dose-response the PRECISION
+sweep (§5.4.4) structurally could not produce — and the mechanism is exactly
+the one predicted by the construction-insensitivity analysis: the recall
+knob determines WHICH contaminated nodes are caught, so it moves
+`det_R_contam` and therefore γ DIRECTLY (γ falls 0.038→0.029 as recall
+drops), and R₀ = β/γ rises. The precision/false-alarm knob only moved
+`det_R_clean` (excluded from the SIR reconstruction), so it could not move
+R₀ except through an inconsistent indirect path. **Recall vs. precision is
+now settled, not inferred: recall is the causal containment lever; precision
+governs collateral cost.** This resolves the open question §5.4.4 had to
+leave hanging.
+
+**Caveat (rule 2): the recall dose-response is single-seed (42).** Given how
+far seeds 43/44 moved the perfect-oracle point, the monotonicity at seed 42
+alone must be replicated before it is a headline. Chain 2 (recall sweep
+seeds 43/44/45, 9 runs) launched immediately to build n=4 at each
+sensitivity. The MECHANISM (γ tracks recall by construction) is robust
+regardless; the exact monotone shape needs the replication.
+
+### Consequence for the RQ4 narrative (both findings together)
+The mitigation story is now: (1) LLM-judge validation fails badly (R₀ 4.46,
+structural recall deficit measured at 0.235, §5.4.1/#28); (2) even PERFECT
+judgement only reaches the epidemic threshold, not comfortable containment
+(oracle n=4 mean ~0.97, #24 retraction); (3) within perfect-recall regimes,
+R₀ tracks recall monotonically and is insensitive to precision (#27 + §5.4.4);
+so (4) the binding lever is recall, and the achievable ceiling of
+content-based validation in this architecture is ~R₀ 1, i.e. containment is
+marginal even in the best case — which redirects the design conclusion
+toward provenance-level defences (§5.7c) rather than better judges.
+
+## 2026-07-24 (CHAIN 2 RESULTS) — Recall dose-response completed to n=4: a STRONG, statistically-supported curve, and seed 42 was an outlier-low draw (task #27 DONE)
+
+Chain 2 (9 runs, sens 0.75/0.50/0.25 × seeds 43/44/45) archived phase42_
+oracle_sens*_s*; SIR fits phase42_sir_fit_*. The n=4 dose-response is much
+stronger and cleaner than seed 42 alone suggested — seed 42 was the lowest
+draw at EVERY sensitivity level:
+
+| Sensitivity (recall) | mean γ | mean R₀ ± SD | super-crit | per-seed R₀ |
+|---|---|---|---|---|
+| 1.00 (perfect) | 0.0375 | 0.97 ± 0.21 | 2/4 | 0.79/1.10/1.20/0.78 |
+| 0.75 | 0.0291 | 1.45 ± 0.53 | 3/4 | 0.83/1.19/1.95/1.83 |
+| 0.50 | 0.0223 | 1.87 ± 0.62 | 3/4 | 0.95/2.09/2.15/2.30 |
+| 0.25 | 0.0138 | 3.78 ± 1.86 | 4/4 | 1.07/5.13/4.12/4.81 |
+
+**Spearman ρ(sensitivity, R₀) = −0.67, p = 0.005 (n=16) — recall
+significantly predicts R₀.** Mean γ falls monotonically with recall
+(0.038→0.029→0.022→0.014) — the direct mechanism (recall → det_R_contam →
+γ). This is now a HEADLINE result, not a provisional single-seed one; the
+[PENDING-CHAIN2] marker is resolved and §5.4.5 rewritten to n=4.
+
+**The loop is closed: the dose-response extrapolates into the LLM-judge
+arms.** sens-0.25 (R₀ 3.78) is adjacent to the mitigated arm's
+independently-fitted 4.46±2.36, and the LLM judge's measured recall (6%,
+#28) sits BELOW 0.25 — so the judge arms are not a separate phenomenon,
+they are the bottom of this same recall axis. The §5.4.3 prompt-tuning
+failure is explained: it moved precision while recall stayed pinned near
+zero. **The whole RQ4 result now collapses onto ONE axis: validator recall
+sets R₀; precision, prompt, and cascade architecture are all second-order.**
+This is the strongest and most unifying RQ4 statement the project has
+produced, and every number traces to phase38/phase41/phase42 archives.
+
+Caveat kept (rule 4): adjacent sensitivity levels don't each separate at
+4-vs-4 (p=0.20 each, because seed 42 is consistently lowest); the FULL-axis
+Spearman trend is what carries significance. Per-level SD inflates toward
+low recall because near-zero γ makes β/γ variance explode — noted in §5.4.5.
+
+Task #27 DONE. Immediate next: regenerate fig_r0_by_arm with the oracle
+n=4 + full recall-sweep points (a recall dose-response panel is now
+warranted as its own figure); merge worktrees + live-test; launch RQ3.
