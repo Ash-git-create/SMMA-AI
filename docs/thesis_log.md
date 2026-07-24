@@ -2186,3 +2186,92 @@ k-hop gradient ✓running, graph-density = NEXT (separate chain, load_kg
 --density {0.5,2.0} per phase4_density_protocol.md), validation-interval =
 DEFERRED (needs either an audit-cadence flag or an oracle-substrate
 audits_per_step sweep — token-free but needs a small design decision).
+
+### 2026-07-24 (cont.) — RQ3 chain 3 partial results + structural-density infeasibility
+
+**Background-task reaping diagnosed.** Chain 3 was killed three times mid-run
+(all status "killed", never "failed" — no run errored). Cause: background
+tasks are reaped after a short idle window; they survive only while the
+session stays actively engaged (the first launch ran ~50 min across active
+turns; the idle relaunches died in 6–17 min). One death also involved an
+orphaned child from a prior "killed" task colliding on Neo4j (both running
+load_kg --clear). Fix: verify no stray python before relaunch, and hold the
+session active with a Monitor loop for the duration. No data lost — every
+completed run had already archived before its chain died.
+
+**Completed + archived (baseline substrate, γ=0, seed 42):** khop1/2/3, wf6.
+SIR fits (scratch, to be re-fit into results/summaries when chain completes):
+  - **k-hop: β = 0.0000 at k=1, 2, AND 3.** Zero contaminated facts served
+    across all steps of all three runs (mechanism confirmed directly). A seed
+    even ONE hop outside the active retrieval subgraph never propagates —
+    same outcome as the #10 random-placement control. RQ1 reachability
+    sharpens from "binary" to a **hard threshold at the retrieval horizon**;
+    the "graded" k-hop design is empirically a step function, not a gradient.
+  - **write-frequency: wf6 (entities_per_step 6, half baseline) → β 0.0193,
+    empirical reproduction 0.175/seed** vs baseline seed-42 β 0.055,
+    emp-repro 0.538. Halving write frequency ~thirds the reproduction — a
+    clean β-channel dose-response (wf24 pending to complete the monotone
+    triple).
+
+**Structural-density axis is infeasible on T-REx as loaded (offline finding,
+no Neo4j spent).** Dry-run of apply_density against the real 50,000-triplet
+file: baseline mean entity degree is **1.66 (median 1.0, p90 2.0)** — a
+near-tree/forest, not a hub-and-spoke graph. The achievable structural range
+is hard-capped by this structure: requested factors 0.1–0.7 all realize
+**0.86** (coverage protection blocks drops — almost every triplet is some
+entity's sole triplet), and 2.0–5.0 all realize **1.26** (best-prefix
+concentration peaks at mean degree 2.10). So the *structural* density knob
+can only deliver a ~1.5× contrast, not the intended 4×.
+  - **Decision (per "comprehensive, gapless, don't compromise"):** the
+    primary RQ3 density evidence is the **retrieval-density axis**
+    (context_limit, rd3/rd10 — varies freely, already running). The two
+    structural endpoints (realized 0.86/1.26) still get run as a
+    documented-limitation confirmatory arm so both operationalizations are
+    reported; realized factors cited from kg_density_*.json sidecars, not the
+    requested 0.5/2.0. This sparsity ceiling is itself a reportable property
+    of using T-REx for a density study — surfaced, not hidden.
+  - phase4_density_protocol.md "What still needs live-Neo4j validation" item 2
+    (realized density on the ACTUAL T-REx distribution) is now resolved
+    offline; the [PENDING-#21-RUN] marker stays until the two arms run.
+
+### 2026-07-24 (cont.) — RQ3 COMPLETE: all 4 β/reach axes archived + written (§5.9)
+
+All seven fixed-KG arms (phase43_rq3_sir_fit.csv) + both structural-density
+arms (phase44_density_sir_fit.csv) archived and fitted; ch5 §5.9 written
+(5.9.1–5.9.5). Headline RQ3 findings, all seed-42 single, hedged against the
+4-seed baseline envelope (repro 0.452±0.101, β 0.0437±0.0101):
+
+  - **k-hop = hard threshold, not gradient.** β=0, propagated=0, exposed=0 at
+    k=1/2/3; 0 contaminated facts served across all steps. A seed one hop out
+    is as inert as random placement (§5.3). AUROC at chance (0.485–0.491) at
+    all k reproduces "detectability is a cascade property" three more times.
+  - **Write frequency: velocity saturates, reach does not.** wf6 repro 0.175
+    (2.7 SD below), wf24 repro 0.675 (2.2 SD above) but β flat vs baseline
+    (0.056 vs 0.055) — above baseline, extra writes add reach (exposed 143 =
+    2.3× baseline) at an unchanged per-contact rate.
+  - **Retrieval density (context_limit): clean monotone dose-response**, both
+    estimators. repro 0.25→0.54→0.70, β 0.026→0.055→0.063 across ctx 3→5→10.
+    Primary density operationalization.
+  - **Structural density (mean degree): large INVERSE effect.** Denser graph
+    → slower spread: repro 0.842→0.538→0.135 (β 0.070→0.055→0.013) as mean
+    degree rises 1.43→1.66→2.10. ~6× swing over a 1.5× density change, both
+    endpoints >3 SD out. Mechanism: the two density knobs act on the SAME
+    retrieval bottleneck from opposite sides — context_limit widens the
+    window (more contaminated facts admitted, higher β); structural degree
+    raises clean-fact competition for a FIXED window (contaminated share
+    diluted, lower β). Confound checked: seeded 38/40/37, RS-only difference,
+    does not drive the ED/QL reproduction. density_0.5 realized 0.86× live,
+    matching the offline dry-run exactly (load integration verified E2E).
+  - **[PENDING-#21-RUN] RESOLVED.** All density arms run; validation-interval
+    axis remains DEFERRED (handled epidemiologically via §5.4 γ-arms).
+
+**Infra note:** background tasks are reaped when the session idles between
+re-invocations; a single long run with no intermediate events (density_2.0,
+1st attempt) died at ~step 5. Fix that worked: Monitor with a ~3-min step
+heartbeat re-invokes frequently enough to hold the session warm through a
+full ~15-min run. Every completed run archived before any kill — no data
+lost across the whole reap saga.
+
+**Chapter:** ch5 title updated Phase 2–3 → Phase 2–4 (now carries RQ3).
+RQ3 arms are single-seed; multi-seed replication of the retrieval-/write-/
+density extremes is the thesis→paper hardening step (task #33).
