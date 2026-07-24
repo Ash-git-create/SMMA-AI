@@ -1,0 +1,5 @@
+model,tier,reproduction_rate,n_contexts,overlap_with_nemo
+mistral-nemo-12b,in-run (baseline),0.858,337,n/a
+claude-haiku-4-5,frontier-small,0.932,337,0.858
+claude-sonnet-5,frontier-mid,0.964,337,0.858
+claude-opus-4-8,frontier-top,0.967,337,0.858

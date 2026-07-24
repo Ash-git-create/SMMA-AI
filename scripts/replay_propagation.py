@@ -48,7 +48,9 @@ sys.path.insert(0, str(ROOT))
 
 from loguru import logger
 
-from src.agents.llm_client import _GroqClient, _MistralClient, _OllamaClient
+from src.agents.llm_client import (
+    _AnthropicClient, _GroqClient, _MistralClient, _OllamaClient,
+)
 
 RAW_DIR = ROOT / "results" / "raw"
 SUMMARIES_DIR = ROOT / "results" / "summaries"
@@ -62,9 +64,11 @@ def build_client(provider: str, model: str):
         return _GroqClient(model)
     if provider == "mistral":
         return _MistralClient(model)
+    if provider == "anthropic":
+        return _AnthropicClient(model)
     if provider == "ollama":
         return _OllamaClient(model)
-    raise ValueError(f"unknown provider {provider!r} (groq|mistral|ollama)")
+    raise ValueError(f"unknown provider {provider!r} (groq|mistral|anthropic|ollama)")
 
 
 def corrupted_values(record: dict) -> list[str]:
@@ -107,7 +111,7 @@ def main() -> None:
     ap.add_argument("--corpus", nargs="*", default=["contamination_prompts_*.jsonl"],
                     help="Glob(s) under results/raw for the prompt corpus.")
     ap.add_argument("--model", required=True, help="Model id to replay (e.g. llama-3.3-70b-versatile).")
-    ap.add_argument("--provider", required=True, choices=["groq", "mistral", "ollama"])
+    ap.add_argument("--provider", required=True, choices=["groq", "mistral", "anthropic", "ollama"])
     ap.add_argument("--tag", required=True, help="Short label for the output file + rows.")
     ap.add_argument("--limit", type=int, default=0, help="Max records (0 = all).")
     ap.add_argument("--sleep", type=float, default=1.0, help="Seconds between calls.")

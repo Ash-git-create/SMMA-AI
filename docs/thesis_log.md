@@ -2352,3 +2352,39 @@ Surviving RQ3 claims now bulletproof at n=4. Corpus for the propagation replay
 probe (`scripts/replay_propagation.py`, built + logic-validated; Nemo baseline
 0.75 on wf6_s43) is complete across all in-subgraph arms; scale ladder
 (12B→70B→123B) is the next step for the model-scale question.
+
+### 2026-07-24 (cont.) — SCALE LADDER: propagation reproduction RISES with capability (ch5 §5.10)
+
+The model-scale question ("would a frontier model resist a contaminated
+retrieved fact?") answered empirically via the propagation replay probe: 337
+contaminated-context records (n_contam>0, from the RQ3 --log-prompts corpus)
+replayed through a Claude capability ladder, context held constant, thinking
+disabled, same string-containment reproduction measure applied to every model
+incl. Nemo's own logged paragraph. Ladder built: added _AnthropicClient to
+llm_client.py (no temperature — Sonnet/Opus 400 on it; thinking disabled for
+apples-to-apples single-pass gen), --provider anthropic in replay_propagation,
+anthropic SDK installed + in requirements. 0/1011 calls failed.
+
+**RESULT (phase46_scale_ladder.csv; monotone increasing):**
+  - Mistral Nemo 12B (in-run): 0.858
+  - Claude Haiku 4.5:          0.932
+  - Claude Sonnet 5:           0.964
+  - Claude Opus 4.8:           0.967
+Overlap-with-Nemo = 0.858 for Sonnet AND Opus = Nemo's own rate exactly →
+Nemo's reproduced set is a strict SUBSET of the frontier models'. Opus
+reproduces everything Nemo does PLUS ~11% Nemo missed. Frontier models are
+STRICTLY MORE contaminating on this corpus, not less.
+
+**Interpretation:** bigger models do NOT fix non-adversarial cascade; they
+intensify propagation, because faithful context-following (what capability
+buys) faithfully renders contaminated context too — and on T-REx long-tail
+entities there is no parametric prior to override it with. Sharpens the core
+claim on the exact axis a reviewer presses. SCOPE: this is PROPAGATION only;
+DETECTION (RQ4 recall) remains judge-capability-contingent and is explicitly
+NOT claimed scale-robust — the propagation/detection split is now itself
+evidenced. Caveats: string-containment (blind to semantic paraphrase),
+single model family (cross-family GPT/Llama rung would rule out a
+Claude-specific idiosyncrasy). Neither changes the direction.
+
+Cost: ~$3 total on the Anthropic key (Haiku+Sonnet+Opus). Key note: the first
+two keys Ashwin tried 401'd (revoked/invalid); the third authenticated.

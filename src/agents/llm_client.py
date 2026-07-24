@@ -222,6 +222,34 @@ class _OllamaClient(_BaseClient):
         return resp.json()["message"]["content"]
 
 
+class _AnthropicClient(_BaseClient):
+    """Claude via the Anthropic API — used only by the offline model-scale
+    replay probes (scripts/replay_propagation.py), never in the in-run
+    contamination pipeline. Anthropic separates `system` from `messages`, and
+    Sonnet-5/Opus rejects `temperature`/`top_p` (400) — so this client does not
+    pass a sampling parameter, and disables thinking so the generation is
+    apples-to-apples with Nemo's single-pass synthesis (no reasoning tokens)."""
+
+    def __init__(self, model: str):
+        import anthropic
+        self._anthropic = anthropic
+        self._client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY
+        self.model = model
+        self.provider = "anthropic"
+
+    def _chat_raw(self, prompt: str, system: Optional[str]) -> str:
+        kwargs = dict(
+            model=self.model,
+            max_tokens=_MAX_TOKENS,
+            thinking={"type": "disabled"},
+            messages=[{"role": "user", "content": prompt}],
+        )
+        if system:
+            kwargs["system"] = system
+        resp = self._client.messages.create(**kwargs)
+        return "".join(b.text for b in resp.content if b.type == "text").strip()
+
+
 def get_client(role: ModelRole) -> _BaseClient:
     """Return the appropriate LLM client for the given role."""
     if role == ModelRole.EXTRACTION:

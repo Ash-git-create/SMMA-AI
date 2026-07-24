@@ -823,3 +823,74 @@ dose–response evidence. The validation-interval component of RQ3 (audit
 cadence) is addressed epidemiologically through the γ-bearing arms of
 Section 5.4 rather than as a separate β-substrate sweep; a dedicated
 audit-cadence axis is noted as deferred.
+
+## 5.10 Does model scale fix contamination? A capability-ladder replay probe
+
+The single most consequential external-validity question for this thesis is
+whether the propagation dynamics (RQ1–RQ3) are an artefact of the small local
+extraction model (Mistral Nemo 12B) — i.e. whether a frontier model, handed a
+contaminated fact from shared memory, would *resist* it where Nemo reproduces
+it. Swapping the synthesis model inside a live run cannot answer this cleanly:
+a different model changes prose, triplet volume, and entity coverage, so β
+would move through many channels unrelated to the one quantity of interest —
+*given the same contaminated context, does the model reproduce the corrupted
+fact?* The clean instrument holds the input fixed and varies only the model.
+
+**Design (replay probe).** During the RQ3 seed-replication runs,
+`run_contamination.py --log-prompts` archived, for every synthesis unit, the
+verbatim (system prompt, retrieval context, prompt, Nemo's paragraph,
+propagation outcome). The **337 contexts in which a contaminated fact was
+served** (`n_contam > 0`) form the corpus. Each was replayed — the identical
+system+prompt, unchanged — through a four-tier capability ladder, with thinking
+disabled so every model performs the same single-pass generation Nemo did.
+"Reproduction" is scored identically for every model, including Nemo's own
+logged paragraph: the served corrupted object value appears (case-insensitive)
+in the generated paragraph. This is a conservative measure — a model that
+paraphrases the value away scores as *not* reproducing — so it under-, never
+over-states frontier reproduction. Archived:
+`results/summaries/phase46_scale_ladder.csv` and the per-record
+`replay_propagation_{haiku45,sonnet5,opus48}.csv`.
+
+| Model | Tier | Reproduction (n=337) | Overlap with Nemo |
+|---|---|---|---|
+| Mistral Nemo 12B | in-run extractor/synthesiser | 0.858 | — |
+| Claude Haiku 4.5 | frontier-small | 0.932 | 0.831 |
+| Claude Sonnet 5 | frontier-mid | 0.964 | 0.858 |
+| Claude Opus 4.8 | frontier-top | **0.967** | 0.858 |
+
+**Reproduction increases monotonically with model capability** (0.858 → 0.932
+→ 0.964 → 0.967; 0 of 1,011 replay calls failed). The overlap column is
+decisive: for Sonnet and Opus the fraction of contexts where *both* the
+frontier model and Nemo reproduce the corrupted value equals Nemo's own rate
+(0.858) exactly — meaning the set of facts Nemo reproduces is a strict *subset*
+of what the frontier models reproduce. Opus does not merely match Nemo; it
+reproduces everything Nemo does **plus** an additional ~11% of contexts Nemo
+missed. On this corpus the frontier models are **strictly more contaminating**
+than the 12B extractor, not less.
+
+**Interpretation.** Bigger models do not neutralise non-adversarial cascade;
+if anything they intensify the propagation half of it. The mechanism is the
+one identified throughout this chapter — transmission is governed by
+context-following, and faithful context-following is precisely what
+capability buys. On T-REx long-tail entities (a plant genus, a regional
+aeronautics academy) even a frontier model has no strong parametric prior to
+override the retrieved fact with, so it does what it is trained to do:
+faithfully render the provided context, corrupted value included. This
+sharpens rather than weakens the thesis's core claim, and it does so on the
+axis a reviewer is most likely to press.
+
+**Scope of the claim.** This result speaks only to **propagation** — the
+question of whether a stronger *synthesiser* reproduces a contaminated fact it
+is handed. It does not speak to **detection**: a frontier *validator* carries a
+world-knowledge channel the evidence-gated 8B judge lacks (§5.4.3), so the
+recall side of the mitigation finding (§5.4.4–5.4.5) remains judge-capability-
+contingent and is *not* claimed to be scale-robust. The propagation/detection
+split stated in the limitations is thus itself now evidenced: propagation is
+architectural and, per this ladder, if anything strengthens with scale;
+detection is contingent and untested at frontier scale. Two further caveats:
+the reproduction measure is string-containment (conservative, but blind to
+semantic paraphrase that preserves the corrupted claim), and the ladder is a
+single model family (Claude) — the capability gradient is clean, but a
+cross-family replication (e.g. a GPT or Llama rung) would rule out any
+Claude-specific context-following idiosyncrasy. Neither caveat threatens the
+direction of the effect, only its exact magnitude.
