@@ -1,0 +1,2 @@
+run_tag,seed,arm,N,I0,steps,beta,gamma,r0,effective_reproduction,empirical_reproduction_per_seed,fit_rmse_I,fit_rmse_R,fit_rmse_total
+oracle_noisy_p75,42,unknown,50818.0,40.0,10,0.0323860166483415,0.046345929288078666,0.6987888072550095,0.032356568857238616,0.275,0.909563460528451,1.505401242242608,1.2436918004220496
