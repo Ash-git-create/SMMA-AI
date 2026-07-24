@@ -651,152 +651,175 @@ substrate (γ = 0, no validator), so β is isolated from any recovery channel.
 Graph density is treated separately in Section 5.9.4 because it is a
 load-stage property, not a run parameter.
 
-The primary velocity measure here is the **model-free reproduction per index
-case** (propagated ÷ seeded, as in Section 5.6), not the fitted β: at one
-seed per arm the SIR β fit is the noisier of the two estimators, and the
-reproduction metric can be read directly against the 4-seed baseline
-envelope (0.452 ± 0.101 reproduction; β 0.0437 ± 0.0101; Sections 5.1, 5.5).
-β is reported alongside as the SIR-consistent corroboration.
+Every arm is replicated to **n=4 (seeds 42–45)**; the per-axis n=4 tables and
+tests are in §5.9.1–5.9.4 and `phase45_rq3_replication_n4.csv`. The primary
+velocity measure is the **model-free reproduction per index case**
+(propagated ÷ seeded, as in Section 5.6), read against the 4-seed baseline
+envelope (0.452 ± 0.088 reproduction; β 0.0437 ± 0.0087; Sections 5.1, 5.5);
+the fitted β is reported alongside as SIR-consistent corroboration. The
+seed-42 pass (below) is retained for the reach columns (propagated, exposed,
+probe) it uniquely reports — but its single-seed reproduction/β values are
+superseded by the n=4 means in the subsections, and two of them (wf24 β,
+structural density) proved to be seed-42 tail values (§5.9.2, §5.9.4).
 
-| Arm | knob | Propagated | Exposed | Reproduction/seed | β (fit) | Probe (s10) | AUROC |
+| Arm (seed 42) | knob | Propagated | Exposed | Reproduction | β | Probe (s10) | AUROC |
 |---|---|---|---|---|---|---|---|
 | khop1 | seed 1 hop out | **0** | **0** | **0.000** | 0.0000 | 0.677 | 0.485 |
 | khop2 | seed 2 hops out | **0** | **0** | **0.000** | 0.0000 | 0.886 | 0.491 |
 | khop3 | seed 3 hops out | **0** | **0** | **0.000** | 0.0000 | 0.750 | 0.490 |
 | wf6 | writes ÷2 (eps 6) | 7 | 36 | 0.175 | 0.0193 | 0.809 | 0.879 |
 | rd3 | retrieval 3 | 10 | 32 | 0.250 | 0.0259 | 0.800 | 0.890 |
-| **baseline (s42)** | eps 12, ctx 5, k 0 | 21 | 62 | 0.538 | 0.0550 | 0.667 | 0.891 |
+| **baseline** | eps 12, ctx 5, k 0 | 21 | 62 | 0.538 | 0.0550 | 0.667 | 0.891 |
 | wf24 | writes ×2 (eps 24) | 27 | 143 | 0.675 | 0.0557 | 0.650 | 0.915 |
 | rd10 | retrieval 10 | 28 | 116 | 0.700 | 0.0626 | 0.650 | 0.913 |
 
-Archived: `results/summaries/phase43_rq3_sir_fit.csv`; per-arm trajectories in
-`results/raw/contamination_{khop1..3,wf6,wf24,rd3,rd10}_*`.
+Archived: `results/summaries/phase43_rq3_sir_fit.csv` (seed 42),
+`phase45_rq3_replication_n4.csv` (n=4); trajectories in
+`results/raw/contamination_{arm}[_s43..45]_*`.
 
 ### 5.9.1 Reachability is a hard threshold, not a gradient (k-hop)
 
 The k-hop arms place index cases an exact BFS distance k from the active
-retrieval subgraph (Section 3.x), intended as a graded relaxation of the
-Section 5.3 binary control. Empirically there is no gradient: **at k = 1, 2,
-and 3 alike, propagation and exposure are exactly zero**, and the mechanism
-is confirmed directly — the count of contaminated facts served into any agent
-context across all ten steps is 0 for all three runs. A seed one hop outside
-the retrieval horizon is as inert as one placed randomly across the whole KG
-(Section 5.3). Reachability is therefore effectively a step function at the
-retrieval boundary, not a distance-decaying quantity: the retrieved set,
-not graph proximity to it, is what determines whether an error can transmit.
-The three k-hop AUROC values (0.485–0.491) sit at chance, reproducing the
-Section 5.3 finding that detectability is a property of the cascade rather
-than of the seeded node — with no cascade, the detector has no signal — now
-shown across three independent placements.
+retrieval subgraph, intended as a graded relaxation of the Section 5.3 binary
+control. Empirically there is no gradient: **at k = 1, 2, and 3 alike,
+propagation and exposure are exactly zero — across all four seeds (42–45)**,
+and the mechanism is confirmed directly: the count of contaminated facts
+served into any agent context across all ten steps is 0 in every one of the
+twelve runs. This settles the one boundary question the graded design raised —
+whether a k=1 seed, sitting exactly one hop out, might be pulled in as the
+active subgraph grows over the run. It is not, on any seed. A seed one hop
+outside the retrieval horizon is as inert as one placed randomly across the
+whole KG (Section 5.3). Reachability is therefore a step function at the
+retrieval boundary, not a distance-decaying quantity: the retrieved set, not
+graph proximity to it, determines whether an error can transmit. All twelve
+AUROC values sit at chance (~0.49), reproducing the Section 5.3 finding that
+detectability is a property of the cascade rather than of the seeded node —
+with no cascade, the detector has no signal — now shown seed-robustly across
+three placements.
 
-### 5.9.2 Write frequency: velocity saturates, reach does not
+### 5.9.2 Write frequency: a monotone increase in both velocity and reach (n=4)
 
-Halving the write rate (wf6) drops reproduction to 0.175 — 2.7 baseline SD
-below the mean — a clear suppression of velocity. Doubling it (wf24) raises
-reproduction to 0.675 (2.2 SD above) but the fitted β is essentially
-unchanged from baseline (0.0557 vs 0.0550, ≈ 1.2 SD, within the β-noise
-envelope). The two estimators together tell a saturation story: **below
-baseline, write frequency is rate-limiting for transmission; above it, the
-per-contact rate has saturated and additional writes add contamination
-through sheer volume rather than a higher β.** Reach confirms this from the
-other side — wf24's cumulative exposure (143) is 2.3× baseline (62) even
-though its β is flat, because more write-back events expose more contexts at
-the same transmission probability. Velocity and reach are separable, and
-write frequency past the saturation point moves only reach.
+Each level replicated to n=4 (seeds 42–45; `phase45_rq3_replication_n4.csv`).
+Reproduction is monotone and cleanly separated at both ends:
 
-### 5.9.3 Retrieval density: the clean monotone dose–response
+| entities/step | Reproduction (n=4) | β (n=4) |
+|---|---|---|
+| wf6 (÷2) | 0.176 ± 0.051 | 0.0161 ± 0.0047 |
+| baseline | 0.452 ± 0.088 | 0.0437 ± 0.0087 |
+| wf24 (×2) | 0.915 ± 0.209 | 0.0688 ± 0.0092 |
+
+Neither adjacent pair's reproduction distributions overlap (wf6 max 0.25 <
+baseline min 0.308; baseline max 0.538 < wf24 min 0.675), and β rises
+monotonically 0.016 → 0.044 → 0.069 (wf24 is ~2.9 baseline-SD above). Write
+frequency raises *both* the per-contact transmission rate and total reach.
+
+**Retraction (single-seed → n=4; discipline rule 5).** The seed-42-only
+analysis reported here in an earlier draft claimed write-frequency *velocity
+saturates* above baseline — that seed's wf24 β (0.056) sat flat against
+baseline (0.055) while only reach climbed. The n=4 fit dissolves that
+saturation: seed 42's flat β was the low tail of the wf24 β distribution
+(0.056 vs the 0.069 mean), and across four seeds β increases monotonically.
+The "velocity saturates, reach climbs" story does not survive replication and
+is withdrawn; the honest result is a monotone dose–response in both
+estimators. wf24's seed-44 run reaches reproduction 1.24 (super-critical),
+consistent with the seed-44 super-criticality seen across arms (§5.4.1) and
+the source of the wider wf24 SD.
+
+### 5.9.3 Retrieval density: the clean monotone dose–response (n=4)
 
 Retrieval density (context_limit, the number of KG facts served per
-synthesis/extraction unit) produces the cleanest dose–response of the three
-knobs, monotone in *both* estimators: reproduction 0.250 → 0.538 → 0.700 and
-β 0.026 → 0.055 → 0.063 across ctx 3 → 5 → 10. The low and high arms sit 2.0
-and 2.5 reproduction-SD from the baseline mean respectively. More facts
-retrieved per unit means more opportunities to pull a contaminated fact into
-a working context, and unlike write frequency the effect does not visibly
-saturate across the tested range. Cumulative exposure scales with it (32 →
-62 → 116). This is the operationalization of "density" that behaves as RQ3's
-hypothesis expects — which matters because the *structural* density knob
-(next) cannot be pushed far enough on this KG to test the same hypothesis.
+synthesis/extraction unit) is the cleanest and best-replicated of the three
+knobs, monotone in *both* estimators at n=4:
 
-### 5.9.4 Structural graph density: a large inverse effect over a bounded range
+| context_limit | Reproduction (n=4) | β (n=4) |
+|---|---|---|
+| rd3 = 3 | 0.277 ± 0.070 | 0.0252 ± 0.0041 |
+| baseline = 5 | 0.452 ± 0.088 | 0.0437 ± 0.0087 |
+| rd10 = 10 | 0.743 ± 0.139 | 0.0589 ± 0.0110 |
+
+The extreme contrast is statistically supported despite n=4: rd3 vs rd10 on
+reproduction gives Welch t p=0.005 and Mann–Whitney U p=0.029 (the smallest
+value attainable at this n, i.e. perfect rank separation; both tests per
+discipline rule 4). More facts retrieved per unit means more opportunities to
+pull a contaminated fact into a working context, and the effect does not
+saturate across the tested range. This is the operationalization of "density"
+that behaves as RQ3's hypothesis expects — and, as the next subsection shows,
+it is the *only* density axis whose effect survives replication.
+
+### 5.9.4 Structural graph density: no effect that survives replication
 
 Structural density — mean entity degree, manipulated at load time via
-`--density` (Section 3.x, `src/graph/density.py`) — was intended to span
-0.5× to 2.0× the baseline. It cannot, on this KG. The loaded T-REx graph has
-mean entity degree **1.66** (median 1.0, p90 2.0): it is a near-forest, so
-sparsification is blocked almost immediately by the coverage-preservation
-rule (nearly every triplet is some entity's only triplet) and densification
-by restriction runs out of hub concentration. The realized achievable range
-is hard-capped at **[0.86×, 1.26×]** regardless of the requested factor
-(measured directly against the 50,000-triplet file; any request ≤ 0.7
-realizes 0.86, any request ≥ 2.0 realizes 1.26). The live load confirms the
-offline figure — the `--density 0.5` arm realized 0.8611 against Neo4j,
-matching the dry run exactly.
+`--density` (`src/graph/density.py`) — was intended to span 0.5× to 2.0× the
+baseline. It cannot, on this KG. The loaded T-REx graph has mean entity
+degree **1.66** (median 1.0, p90 2.0): it is a near-forest, so sparsification
+is blocked almost immediately by the coverage-preservation rule (nearly every
+triplet is some entity's only triplet) and densification by restriction runs
+out of hub concentration. The realized achievable range is hard-capped at
+**[0.86×, 1.26×]** regardless of the requested factor (any request ≤ 0.7
+realizes 0.86, any ≥ 2.0 realizes 1.26; the live `--density 0.5` load realized
+0.8611, matching the offline figure exactly).
 
-The retrieval-density axis (Section 5.9.3) is therefore the primary density
-operationalization, and the two structural arms sit at the achievable
-endpoints (realized 0.86× / 1.26×). Even over this narrow ~1.5× span they
-produce a large, monotone, and — importantly — *inverse* effect:
+Over that narrow achievable range, and at n=4 (seeds 42–45), there is **no
+structural-density effect distinguishable from noise:**
 
-| Structural density | Mean degree | Propagated | Exposed | Reproduction/seed | β (fit) | AUROC |
-|---|---|---|---|---|---|---|
-| density 0.5 (realized 0.86×) | 1.43 | 32 | 78 | **0.842** | 0.0702 | 0.916 |
-| baseline (1.00×) | 1.66 | 21 | 62 | 0.538 | 0.0550 | 0.891 |
-| density 2.0 (realized 1.26×) | 2.10 | **5** | **27** | **0.135** | 0.0130 | 0.871 |
+| Structural density | Mean degree | Reproduction (n=4) | β (n=4) |
+|---|---|---|---|
+| density 0.5 (realized 0.86×) | 1.43 | 0.517 ± 0.212 | 0.0450 ± 0.0168 |
+| baseline (1.00×) | 1.66 | 0.452 ± 0.088 | 0.0437 ± 0.0087 |
+| density 2.0 (realized 1.26×) | 2.10 | 0.375 ± 0.153 | 0.0325 ± 0.0125 |
 
-Archived: `results/summaries/phase44_density_sir_fit.csv`; realized-density
-sidecars `results/raw/kg_density_density_{0.5,2.0}.json` (cite realized, not
-requested, factors). Seeded counts are 38/40/37 (the density-restricted pools
-admit 8/10/7 RS candidates; RS barely propagates, so this does not confound
-the ED/QL-driven reproduction — Section 5.6).
+The means trend weakly inverse, but every pairwise test is null: sparse vs
+dense Welch t p=0.384 / Mann–Whitney U p=0.686; sparse vs baseline p=0.65 /
+0.69; dense vs baseline p=0.48 / 0.69. The sparse–dense reproduction gap is
+1.6 baseline SD — inside the 2-SD noise band (discipline rule 3). Archived:
+`results/summaries/phase45_rq3_replication_n4.csv`.
 
-**Denser graphs suppress contamination; sparser graphs amplify it.**
-Reproduction falls monotonically 0.842 → 0.538 → 0.135 as mean degree rises
-1.43 → 1.66 → 2.10 — a ~6× swing across a mere 1.5× density change, with both
-endpoints more than 3 baseline-SD from the mean (Section 5.1 envelope). This
-is the *opposite* of the naive "denser graph = more contamination to
-encounter" reading, and it is mechanistically the same story as the
-random-placement control (Section 5.3): what governs transmission is the
-share of a retrieved context that is contaminated, not the absolute amount of
-contamination present. In a sparse neighbourhood a contaminated fact has few
-clean competitors and dominates whatever context is served; in a denser one
-it competes with more clean facts for the same capped retrieval window
-(`context_limit = 5`) and is diluted out.
+**Retraction (single-seed → n=4; discipline rule 5).** An earlier draft of
+this subsection reported a *large inverse* structural-density effect — "denser
+graphs suppress contamination, sparser graphs amplify it," a ~6× reproduction
+swing (0.842 → 0.135) with both endpoints >3 baseline-SD out — and built a
+mechanistic account of the two density knobs as a "matched pair" moving β in
+opposite directions through the retrieval bottleneck. That entire finding
+rested on seed 42, which turns out to be the extreme of *both* replication
+distributions: seed 42's sparse reproduction (0.842) is the maximum of
+[0.842, 0.568, 0.316, 0.342] and its dense value (0.135) is the minimum of
+[0.135, 0.526, 0.351, 0.486]. Seeds 43–45 sit near or across baseline in both
+arms. The dramatic swing was seed noise amplified by the two endpoints landing
+at opposite tails. The inverse effect, its 6× magnitude, and the "matched
+pair" mechanism are all **withdrawn**; the replicated result is a null over
+the achievable range.
 
-This makes the two density knobs a matched pair acting on a single mechanism —
-the retrieval bottleneck — from opposite sides. Raising `context_limit`
-(Section 5.9.3) *widens* the window, admitting more contaminated facts and
-raising β; raising structural degree increases the clean-fact *competition*
-for a fixed window, lowering the contaminated share and suppressing β. They
-are not redundant operationalizations of one hypothesis but complementary
-probes of the same retrieval-competition dynamic, and they move β in opposite
-directions exactly as that dynamic predicts.
-
-Two caveats. First, single seed per arm (as throughout Section 5.9): the
-effect is reported as a strong monotone trend across three ordered levels
-with >3 SD endpoint separation, not a seed-replicated result — replication is
-the same #33 hardening step. Second, the achievable range is bounded by the
-T-REx sparsity ceiling above, so the *magnitude* of the density effect at
-factors beyond [0.86×, 1.26×] is an extrapolation this KG cannot test; a
-denser source graph would be needed to probe whether the suppression
-continues, saturates, or reverses. The extraction-stage density covariate
-from `phase4_density_protocol.md` (how much KG context each stage-2 unit
-actually saw) is recorded in the arm manifests for attribution but does not
-change the direction of the stage-3 result reported here.
+The dilution intuition (a contaminated fact competes with more clean facts in
+a denser neighbourhood) may still be directionally correct — the means do lean
+that way — but it is not supported at the density contrast this KG permits,
+and it is emphatically *not* the large effect seed 42 suggested. Testing it
+would require a source graph dense enough to push structural density well
+beyond 1.26×, which T-REx cannot provide. The clean density result RQ3 does
+establish is the **retrieval**-density axis (§5.9.3), which is robust at n=4;
+the structural axis is reported here as a bounded null with its retraction
+recorded.
 
 ### 5.9.5 Scope and limitations
 
-Every arm in this section is **single-seed (42)**; the baseline 4-seed
-envelope is the noise yardstick but the RQ3 arms themselves are n = 1. The
-dose–responses are therefore established as *directional trends consistent
-across the ordered levels of each knob* (three points each for write
-frequency and retrieval density, three placements for k-hop), not as
-seed-replicated effects. The reproduction-metric separations (≈ 2–2.7
-baseline SD at the extreme arms) are reported against the baseline envelope,
-not as within-arm significance. Multi-seed replication of the retrieval- and
-write-frequency extremes is the natural hardening step (carried as task #33)
-and is the axis on which this section would move from thesis-grade to
-paper-grade. The validation-interval component of RQ3 (audit cadence) is
-addressed epidemiologically through the γ-bearing arms of Section 5.4 rather
-than as a separate β-substrate sweep; a dedicated audit-cadence axis is noted
-as deferred.
+Every arm in this section was replicated to **n=4 (seeds 42–45)**;
+`phase45_rq3_replication_n4.csv` holds the per-arm reproduction and β with SD.
+The replication was decisive in both directions. It **confirmed** the
+write-frequency and retrieval-density dose–responses (both monotone in
+reproduction *and* β, with the retrieval-density extreme reaching Welch
+p=0.005 / MWU p=0.029) and the k-hop hard-threshold null (β=0 at every
+distance, all four seeds; §5.9.1). It **overturned** two single-seed claims,
+both now retracted in place (rule 5): write-frequency β "saturation" (§5.9.2,
+in fact monotone at n=4) and the large inverse structural-density effect
+(§5.9.4, in fact a null over the achievable range). Both over-claims traced to
+seed 42 sitting at a distribution tail — the precise failure mode the
+single-seed discipline rules exist to catch, here caught before the claims
+entered the thesis as headlines.
+
+The replication runs were executed Groq-free (`--no-eval`); the SIR/reach/β
+metrics do not depend on the task-eval or probe path, so the probe (§5.9's
+persistence column) remains n=1 for the replication seeds and is reported at
+seed 42 only — a deliberate, cost-motivated omission, not a gap in the
+dose–response evidence. The validation-interval component of RQ3 (audit
+cadence) is addressed epidemiologically through the γ-bearing arms of
+Section 5.4 rather than as a separate β-substrate sweep; a dedicated
+audit-cadence axis is noted as deferred.

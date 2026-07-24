@@ -1,0 +1,21 @@
+# RQ3 seed replication (task #33/#21): arm=wf24, seed=43.
+# no_eval (Groq-free: SIR/reach/AUROC unaffected, probe/task omitted);
+# log_prompts builds the model-scale replay corpus.
+steps: 10
+entities_per_step: 24
+injections_per_type: 15
+pool_per_key: 50
+context_limit: 5
+retrieval_threshold: 0.0
+audits_per_step: 0
+audit_sample: 50
+eval_every: 5
+eval_questions: 50
+probe_limit: 60
+probe_facts: 8
+random_seed: 43
+eval_seed: 42
+sleep: 1.0
+tag: wf24_s43
+no_eval: true
+log_prompts: true

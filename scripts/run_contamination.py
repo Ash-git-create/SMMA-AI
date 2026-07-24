@@ -339,6 +339,7 @@ def transmission_cycle(
             if tid not in audit_candidates:
                 audit_candidates.append(tid)
 
+        unit_tx = []
         for r in records:
             exposed, payload = check_transmission(r, parent_ids, payloads)
             if exposed:
@@ -349,7 +350,7 @@ def transmission_cycle(
                 )
                 payloads[r["id"]] = payload  # carries onward: 2nd generation
                 new_infected += 1
-                transmissions.append({
+                tx = {
                     "step":    step,
                     "id":      r["id"],
                     "subject": r["subject"],
@@ -357,7 +358,33 @@ def transmission_cycle(
                     "object":  r["object"],
                     "root_type": payload["root_type"],
                     "payload":  payload["after"],
-                })
+                }
+                transmissions.append(tx)
+                unit_tx.append(tx)
+
+        # Replay corpus (--log-prompts): the identical (context, prompt) this
+        # unit ran, plus Nemo's paragraph and whether it propagated, so a
+        # larger model can be replayed on the same input offline.
+        if getattr(args, "_prompt_log", None):
+            with open(args._prompt_log, "a", encoding="utf-8") as _pl:
+                _pl.write(json.dumps({
+                    "step": step,
+                    "key": key,
+                    "n_facts": len(facts),
+                    "n_contam": n_contam,
+                    "context_facts": [
+                        {"subject": f["subject"], "predicate": f["predicate"],
+                         "object": f["object"], "error_type": f.get("error_type"),
+                         "id": f["id"]}
+                        for f in facts
+                    ],
+                    "system": _SYNTH_SYSTEM,
+                    "prompt": prompt,
+                    "paragraph": paragraph,
+                    "propagated": len(unit_tx),
+                    "transmissions": unit_tx,
+                }, ensure_ascii=False) + "\n")
+
         if args.sleep > 0:
             time.sleep(args.sleep)
 
@@ -549,6 +576,17 @@ def run_experiment(args) -> None:
     ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     rng = random.Random(args.random_seed)
 
+    # Verbatim synthesis-prompt corpus for the offline model-scale replay
+    # probes (propagation replay): each record pairs the exact facts served +
+    # prompt with Nemo's paragraph and the ground-truth propagation outcome,
+    # so a larger model can be fed the identical context and its reproduction
+    # rate compared with context held constant. Off by default (adds one
+    # JSONL append per synthesis unit; no LLM cost).
+    args._prompt_log = (
+        str(RESULTS_DIR / f"contamination_prompts_{args.tag}_{ts}.jsonl")
+        if getattr(args, "log_prompts", False) else None
+    )
+
     manifest_path = (Path(args.extraction_manifest)
                      if args.extraction_manifest else latest_extraction_manifest())
     keys = load_active_keys(manifest_path)
@@ -591,8 +629,9 @@ def run_experiment(args) -> None:
                "n_facts_served": 0, "n_contam_facts_served": 0,
                "audited": 0, "quarantined": 0, "cascaded": 0}
         row.update(measure(client, 0))
-        row.update(run_task_eval(client, eval_llm, 0, ts, args))
-        row.update(run_probe_eval(client, eval_llm, payloads, 0, ts, args))
+        if not getattr(args, "no_eval", False):
+            row.update(run_task_eval(client, eval_llm, 0, ts, args))
+            row.update(run_probe_eval(client, eval_llm, payloads, 0, ts, args))
         trajectory.append(row)
 
         # ---- Transmission cycles ----
@@ -617,8 +656,9 @@ def run_experiment(args) -> None:
 
             row = {"step": step, "cum_exposed": cum_exposed, **cycle, **audit}
             row.update(measure(client, step))
-            is_eval_step = (step == args.steps or
-                            (args.eval_every > 0 and step % args.eval_every == 0))
+            is_eval_step = (not getattr(args, "no_eval", False) and
+                            (step == args.steps or
+                             (args.eval_every > 0 and step % args.eval_every == 0)))
             if is_eval_step:
                 row.update(run_task_eval(client, eval_llm, step, ts, args))
                 row.update(run_probe_eval(client, eval_llm, payloads, step, ts, args))
@@ -712,6 +752,8 @@ def main() -> None:
     parser.add_argument("--eval-every",          type=int,   default=5,    help="Task eval every k steps (0 = only step 0 and final)")
     parser.add_argument("--eval-questions",      type=int,   default=50,   help="Questions per dataset per eval (match baseline for comparability)")
     parser.add_argument("--probe-limit",         type=int,   default=60,   help="Max corrupted-node probe questions per eval step")
+    parser.add_argument("--log-prompts",         action="store_true",      help="Archive verbatim synthesis (context, prompt, paragraph, propagation) as JSONL for offline model-scale replay probes")
+    parser.add_argument("--no-eval",             action="store_true",      help="Skip task-eval + probe (the only Groq consumers). SIR/reach/AUROC metrics are unaffected; probe/task columns are omitted. For Groq-free RQ3 seed replication.")
     parser.add_argument("--probe-facts",         type=int,   default=8,    help="KG facts retrieved per probe question")
     parser.add_argument("--extraction-manifest", type=str,   default=None, help="Path to extraction manifest CSV (default: latest)")
     parser.add_argument("--random-seed",         type=int,   default=42)

@@ -2275,3 +2275,80 @@ lost across the whole reap saga.
 **Chapter:** ch5 title updated Phase 2–3 → Phase 2–4 (now carries RQ3).
 RQ3 arms are single-seed; multi-seed replication of the retrieval-/write-/
 density extremes is the thesis→paper hardening step (task #33).
+
+### 2026-07-24 (cont.) — external-validity re-evaluation + RQ3 replication launch
+
+**Strategic re-evaluation (prompted by "will bigger models change this?").**
+Split the thesis's findings by their dependence on model scale:
+  - PROPAGATION (RQ1 reachability, RQ2 error-type ranking, RQ3 velocity/
+    density) is ARCHITECTURAL — retrieval-augmented agents follow retrieved
+    context incl. wrong context regardless of scale (knowledge-conflict
+    literature). Survives frontier models. Strengthened by the fact that the
+    KG is T-REx LONG-TAIL facts, exactly where a bigger model has no
+    parametric prior to resist a contaminated fact with.
+  - DETECTION (RQ4 validator recall/precision) is JUDGE-CAPABILITY-
+    CONTINGENT: a frontier judge adds a world-knowledge channel the evidence-
+    gated 8B judge lacks. The structural-blindness result holds; the recall
+    ceiling could lift with a stronger judge. This is now an explicit,
+    bounded limitation rather than an unstated assumption.
+  - Rejected my own first idea (one arm with a frontier synthesis model) as
+    CONFOUNDED — different model = different prose/volume/coverage, β shifts
+    through many channels unrelated to "does it trust a contaminated fact."
+    Correct instrument = REPLAY: hold the served (context, prompt) constant,
+    vary only the model. Precedent: the #25 second-rater offline replay;
+    never-switch-the-judge invariant applies to in-run judging, not offline
+    replay.
+
+**Decision:** RQ3 replication runs GROQ-FREE (the dose-response is SIR/reach/
+AUROC, none of which touch Groq); the freed budget goes to offline replay
+probes (propagation + detection) across model sizes to measure the scale
+question empirically instead of hedging it in prose. Downgrades the earlier
+"full-Groq 10–14 day crawl" plan as over-investment on a secondary RQ.
+
+**Code (run_contamination.py):** added `--log-prompts` (archives verbatim
+synthesis context+prompt+paragraph+propagation as JSONL → the replay corpus,
+zero LLM cost) and `--no-eval` (skips task-eval + probe, the only Groq
+consumers; SIR/reach/AUROC unaffected, probe/task columns omitted). Both
+config-settable; oracle/khop/validator_prompt flags verified intact.
+
+**Launched:** RQ3 seed replication — 9 arms (wf6/wf24, rd3/rd10, khop1/2/3,
+density_0.5/2.0) × seeds 43/44/45 = 27 runs, each no_eval + log_prompts,
+n=4 to match the baseline envelope. Density arms hold density-seed=42 (same
+KG structure) and vary only the contamination seed. khop1_s43 leads as the
+end-to-end smoke test of the new path. [PENDING-#33-RQ3-RUN] until archived
++ fitted; replay probes follow from the logged corpus.
+
+### 2026-07-24 (cont.) — RQ3 replication COMPLETE (27 runs): 2 retractions, 2 confirmations
+
+All 27 runs archived + fitted to n=4 (`phase45_rq3_replication_n4.csv`). The
+replication was decisive both ways; §5.9 rewritten to n=4. [PENDING-#33-RQ3-RUN]
+RESOLVED. (Survived one full session-process exit mid-chain; resumable script
+skipped the archived runs and resumed — no data lost.)
+
+**CONFIRMED (robust at n=4):**
+  - Retrieval-density: reproduction 0.277→0.452→0.743, β 0.025→0.044→0.059
+    (ctx 3→5→10). rd3 vs rd10 Welch p=0.005, MWU p=0.029. The cleanest axis.
+  - Write-frequency: reproduction 0.176→0.452→0.915, β 0.016→0.044→0.069
+    (÷2→×2). Monotone, clean separation both ends.
+  - k-hop hard threshold: β=0, propagated=0, contam-served=0 at k=1/2/3 across
+    ALL 4 seeds. The k=1 boundary (could it leak as subgraph grows?) does NOT
+    leak on any seed. §5.9.1 single-seed caveat lifted.
+
+**RETRACTED (single-seed → n=4, rule 5, recorded in §5.9.2 / §5.9.4):**
+  - Write-freq "β saturates above baseline" — seed-42's flat wf24 β (0.056) was
+    the low tail; n=4 β is monotone (0.069 mean). Write freq raises BOTH rate
+    and reach.
+  - Structural-density "large inverse effect / 6× swing / matched-pair
+    mechanism" — rested ENTIRELY on seed 42 being the extreme of both arms'
+    distributions (sparse 0.842=max, dense 0.135=min). n=4: sparse 0.517±0.21,
+    dense 0.375±0.15; all pairwise tests null (sparse-vs-dense Welch p=0.384,
+    MWU p=0.686; gap 1.6 baseline SD, within noise). The inverse effect, its
+    magnitude, and the mechanism are withdrawn; replicated result is a null
+    over the achievable [0.86x,1.26x] range.
+
+**Value:** replication caught two over-claimed single-seed results BEFORE they
+became thesis headlines — exactly the failure mode the discipline rules target.
+Surviving RQ3 claims now bulletproof at n=4. Corpus for the propagation replay
+probe (`scripts/replay_propagation.py`, built + logic-validated; Nemo baseline
+0.75 on wf6_s43) is complete across all in-subgraph arms; scale ladder
+(12B→70B→123B) is the next step for the model-scale question.
