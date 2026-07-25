@@ -91,7 +91,8 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from src.agents.extraction_agent import ExtractionAgent
-from src.agents.llm_client import ModelRole, get_client
+from src.agents.llm_client import ModelRole, get_client, make_anthropic_client
+from src.agents.orchestration_agent import OrchestrationAgent
 from src.agents.validation_agent import ValidationAgent
 from src.evaluation.metrics import detection_auroc
 from src.graph.neo4j_client import Neo4jClient
@@ -650,9 +651,26 @@ def run_experiment(args) -> None:
                                 neo4j_client=client,
                                 propagate_confidence=args.trio_confidence)
         synth_llm = get_client(ModelRole.EXTRACTION)   # Mistral Nemo: extraction & synthesis
-        eval_llm = get_client(ModelRole.ORCHESTRATION)
+        eval_llm = get_client(ModelRole.ORCHESTRATION)  # Groq judge — task eval/probes; NEVER redirected (CLAUDE.md rule 7)
+
+        # Task #34 cross-family judge replication: route ONLY the in-run
+        # validator's judge to Claude Haiku via an explicit llm_client
+        # injection, so eval_llm above (same ModelRole.ORCHESTRATION) stays
+        # on Groq untouched. No-op (None) unless --validator-provider is set.
+        validator_orchestrator = None
+        if (getattr(args, "validator_provider", None) == "anthropic"
+                and not args.oracle_validation and args.audits_per_step > 0):
+            validator_orchestrator = OrchestrationAgent(
+                infection_threshold=args.quarantine_threshold,
+                validator_prompt=args.validator_prompt,
+                llm_client=make_anthropic_client(args.validator_model),
+            )
+            logger.info(f"Validator judge routed to anthropic:{args.validator_model} "
+                        f"(eval judge unchanged: groq)")
+
         validator = (ValidationAgent(neo4j_client=client,
                                      quarantine_threshold=args.quarantine_threshold,
+                                     orchestration_agent=validator_orchestrator,
                                      oracle=args.oracle_validation,
                                      oracle_sensitivity=args.oracle_sensitivity,
                                      oracle_false_alarm=args.oracle_false_alarm,
@@ -807,6 +825,17 @@ def main() -> None:
                         help="Judge prompt for the ValidationAgent: 'tuned' = the task #20 "
                              "quote-first prompt (evidence-then-verdict, absence-of-evidence "
                              "is not contradiction); same model and JSON contract")
+    parser.add_argument("--validator-provider",  type=str,   default=None, choices=["anthropic"],
+                        help="Task #34 cross-family judge replication: route ONLY the in-run "
+                             "validator's LLM judge to this provider (currently only "
+                             "'anthropic' is supported). Default None = unchanged Groq judge "
+                             "(byte-identical to pre-#34 behaviour). Ignored when "
+                             "--oracle-validation is set (oracle makes zero judge calls) or "
+                             "--audits-per-step is 0. The eval judge (task/probe questions) "
+                             "is never affected — it stays on Groq regardless.")
+    parser.add_argument("--validator-model",     type=str,   default="claude-haiku-4-5",
+                        help="Model ID for --validator-provider anthropic (default: "
+                             "claude-haiku-4-5)")
     parser.add_argument("--trio-confidence",     action="store_true",      help="Trio confidence propagation at write time (derived conf = f(parents))")
     parser.add_argument("--eval-every",          type=int,   default=5,    help="Task eval every k steps (0 = only step 0 and final)")
     parser.add_argument("--eval-questions",      type=int,   default=50,   help="Questions per dataset per eval (match baseline for comparability)")

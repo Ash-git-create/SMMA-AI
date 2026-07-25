@@ -109,6 +109,17 @@ class OrchestrationAgent:
         "default" = the original judge prompt (Phase 2/3 arms).
         "tuned" = the task #20 quote-first judge — same model, same JSON
         contract, stricter rules for UNSUPPORTED verdicts.
+    llm_client:
+        Optional pre-built LLM client (e.g. from
+        llm_client.make_anthropic_client(...)) to use instead of the
+        role-default client. Used by the task #34 cross-family judge
+        replication to route ONLY the in-run validator's judge to Claude
+        Haiku, without touching get_client()/ORCHESTRATION_PROVIDER — which
+        would also redirect the eval judge (same ModelRole.ORCHESTRATION,
+        used by run_contamination.py's task-eval/probe questions) and thus
+        violate the "never switch the Groq judge model mid-experiment"
+        invariant (CLAUDE.md rule 7). If None (default), behaviour is
+        byte-identical to before this parameter existed.
     """
 
     def __init__(
@@ -118,12 +129,13 @@ class OrchestrationAgent:
         retrieval_threshold: float = 0.0,
         neo4j_client: Optional[Neo4jClient] = None,
         validator_prompt: str = "default",
+        llm_client=None,
     ):
         self.agent_id = agent_id
         self.infection_threshold = infection_threshold
         self.retrieval_threshold = retrieval_threshold
         self._external_client = neo4j_client
-        self._llm = get_client(ModelRole.ORCHESTRATION)
+        self._llm = llm_client if llm_client is not None else get_client(ModelRole.ORCHESTRATION)
         if validator_prompt not in ("default", "tuned"):
             raise ValueError(f"Unknown validator_prompt: {validator_prompt!r}")
         self._system_prompt = (

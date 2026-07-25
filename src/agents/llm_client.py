@@ -250,6 +250,18 @@ class _AnthropicClient(_BaseClient):
         return "".join(b.text for b in resp.content if b.type == "text").strip()
 
 
+def make_anthropic_client(model: str) -> _AnthropicClient:
+    """Build a standalone Anthropic client, bypassing get_client()/role
+    dispatch entirely. Used to inject a Claude judge into a SPECIFIC
+    consumer (e.g. the in-run validator's OrchestrationAgent) without
+    touching ORCHESTRATION_PROVIDER — which would also redirect the eval
+    judge (same ModelRole.ORCHESTRATION) that must stay on Groq
+    (llama-3.1-8b-instant) per the experiment invariants (CLAUDE.md rule 7).
+    Reads ANTHROPIC_API_KEY same as get_client's mistral/groq paths read
+    their own keys."""
+    return _AnthropicClient(model)
+
+
 def get_client(role: ModelRole) -> _BaseClient:
     """Return the appropriate LLM client for the given role."""
     if role == ModelRole.EXTRACTION:

@@ -1,0 +1,42 @@
+# Task #34 — cross-family judge replication: mitigated Trio arm with the
+# in-run validator's LLM judge routed to Claude Haiku (claude-haiku-4-5)
+# instead of the default Groq Llama-3.1-8B. Identical to
+# contamination_mitigated.yaml except: validator_provider/validator_model
+# (the judge swap), no_eval (Groq-free — the #34 claims are AUROC/quarantine
+# precision/R0, all computed from final node state, not task-eval), and the
+# per-seed random_seed/tag. Confirms whether the in-run mechanisms
+# (confidence-laundering AUROC degradation, ~6% quarantine precision, R0)
+# reproduce with a Claude judge, i.e. are not Llama-specific.
+steps: 10
+entities_per_step: 12
+injections_per_type: 15
+pool_per_key: 50
+
+# Retrieval (the beta channel) — Trio confidence floor ON
+context_limit: 5
+retrieval_threshold: 0.5
+
+# Validation (the gamma channel) — targeted audits ON, judge = Claude Haiku
+audits_per_step: 1
+audit_sample: 25           # capped: each audited node = 1 LLM call
+audit_targeted: true       # audit what agents read/wrote this cycle
+quarantine_threshold: 0.4
+validator_provider: anthropic
+validator_model: claude-haiku-4-5
+
+# Trio confidence propagation at write time — derived conf = f(parents)
+trio_confidence: true
+
+# Task measurement — Groq-free (no_eval skips task-eval + probe, the only
+# Groq consumers in this runner; SIR/reach/AUROC/quarantine-precision are
+# unaffected)
+eval_every: 5
+eval_questions: 50
+probe_limit: 60
+probe_facts: 8
+no_eval: true
+
+# Reproducibility + rate limiting
+random_seed: 43
+sleep: 1.0
+tag: mitigated_haiku_s43
