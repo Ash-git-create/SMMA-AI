@@ -1,0 +1,6 @@
+level,precision_pct,false_alarm_rate,n_seeds,realized_precision_mean,contam_fraction_served_mean,contam_fraction_served_sd,cum_exposed_mean,cum_exposed_sd,probe_contam_rate_mean,probe_contam_rate_sd,det_R_clean_mean,det_R_clean_sd
+"p100 (FA=0.0, perfect oracle anchor)",100,0.0,4,0.3475,0.0474,0.0144,59.25,16.9189,0.601,0.0759,27.75,7.1822
+p75 (FA=0.0168),75,0.0168,4,0.2844,0.0501,0.012,60.75,15.3052,0.5945,0.0694,39.5,11.2101
+p50 (FA=0.0504),50,0.0504,4,0.1941,0.0514,0.0136,62.0,17.4547,0.577,0.0911,67.25,10.6575
+p25 (FA=0.1513),25,0.1513,1,0.1053,0.0491,,54.0,,0.5962,,136.0,
+p10 (FA=0.4538),10,0.4538,4,0.0654,0.0567,0.0135,66.75,17.5,0.6078,0.0819,240.75,14.0564

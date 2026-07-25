@@ -579,6 +579,127 @@ posed: audit cadence is a genuine lever on contamination reach, but only at the
 extreme where validation is deferred across the whole propagating window; graded
 in-run cadence, for a perfect validator, is second-order.
 
+### 5.4.7 Does validator precision matter at all? The indirect-harm test
+
+Section 5.4.4 established, and Section 5.4.5 confirmed by elimination, that
+precision (`oracle_false_alarm`) cannot move R₀ — the SIR reconstruction's
+epidemic-curve fit uses only `gt_total` and `det_R_contam`, and
+`det_R_clean` (the column false alarms actually drive) never enters it. That
+R₀-insensitivity is structural, not a design flaw to fix. But R₀ is not the
+only channel through which over-quarantining could matter: a false alarm
+still removes a *clean* node from the retrieval-active pool, so even with
+R₀ blind to it, the contaminated *share* of what agents are actually served
+could rise as the clean pool thins — a harm channel invisible to the SIR fit
+but visible in the raw trajectories. This section tests that hypothesis
+directly, using the same noisy-oracle precision sweep as §5.4.4
+(`oracle_sensitivity = 1.0` fixed at ceiling, only `oracle_false_alarm`
+varied) plus the perfect-oracle arm as the zero-false-alarm anchor —
+entirely offline, from the already-archived trajectories.
+
+**Data available.** Four `oracle_false_alarm` levels, labelled by their
+design-target precision: p10 (FA = 0.4538, n = 4 seeds 42/43/44/45), p50
+(FA = 0.0504, n = 4), p75 (FA = 0.0168, n = 4), and p25 (FA = 0.1513,
+**single-seed only, seed 42** — flagged per thesis discipline rule 2 and
+left unreplicated for the same reason §5.4.4 left it unreplicated: the time
+budget favoured widening the confirmed-effect axis (§5.4.5, §5.4.6) over a
+fourth precision seed). The perfect-oracle arm (FA = 0.0, n = 4: seed 42
+from `phase38_oracle`, seeds 43–45 from `phase42_oracle_s{43,44,45}`) is
+the p100 anchor. All five points share seeds 42–45 (where replicated),
+`oracle_sensitivity = 1.0`, and identical injection placement per seed, so
+only the false-alarm rate differs within each seed-matched group
+(`phase40_oracle_noisy_p{10,25,50,75}[_s{43,44,45}]_trajectory.csv`,
+`phase38_oracle_trajectory.csv`, `phase42_oracle_s{43,44,45}_trajectory.csv`;
+per-seed and aggregate computations archived in
+`results/summaries/phase49_precision_indirect_raw.csv` and
+`phase49_precision_indirect_effect.csv`).
+
+**Sanity check: the knob is doing something.** Realized precision
+(`det_R_contam / (det_R_contam + det_R_clean)`, the §5.4.4 definition) falls
+monotonically with the level means as designed — 34.8% (p100) → 28.4% (p75)
+→ 19.4% (p50) → 10.5% (p25) → 6.5% (p10) — consistent with the single-seed
+figures already reported in §5.4.4's table. Direct collateral damage
+(`det_R_clean`, clean nodes wrongly quarantined) scales dramatically:
+27.75 ± 7.18 at p100 to 240.75 ± 14.06 at p10 (n = 4 each), a ~8.7× increase
+that is unambiguous by any test — Welch t = 26.99 (p < 0.0001), Mann–Whitney
+U = 16 (p = 0.0286, the exact floor attainable at n = 4 vs n = 4), and the
+same-seed paired Wilcoxon signed-rank is positive in all four pairs
+(p = 0.125, the floor for n = 4 all-same-sign). The direct channel is real
+and large; the question is whether it leaks into contamination spread.
+
+**The indirect-harm test.** Three candidate spread metrics were checked
+against `oracle_false_alarm`: contaminated-fraction-served
+(`n_contam_facts_served / n_facts_served`, pooled across each run's
+trajectory), final `cum_exposed`, and final `probe_contam_rate`.
+
+| Level (FA rate) | n | contam-frac-served | cum_exposed | probe_contam_rate | det_R_clean (sanity) |
+|---|---|---|---|---|---|
+| p100 (0.0) | 4 | 0.0474 ± 0.0144 | 59.25 ± 16.92 | 0.601 ± 0.076 | 27.75 ± 7.18 |
+| p75 (0.0168) | 4 | 0.0501 ± 0.0120 | 60.75 ± 15.31 | 0.595 ± 0.069 | 39.50 ± 11.21 |
+| p50 (0.0504) | 4 | 0.0514 ± 0.0136 | 62.00 ± 17.45 | 0.577 ± 0.091 | 67.25 ± 10.66 |
+| p25 (0.1513) | 1 | 0.0491 | 54.00 | 0.596 | 136.00 |
+| p10 (0.4538) | 4 | 0.0567 ± 0.0135 | 66.75 ± 17.50 | 0.608 ± 0.082 | 240.75 ± 14.06 |
+
+Two readings of the trend disagree in strength, and both are reported
+rather than only the more flattering one (rule 5). Pooled across all 17
+individual runs, false-alarm rate is only weakly and non-significantly
+associated with contam-frac-served (Spearman ρ = 0.250, p = 0.334) or
+`cum_exposed` (ρ = 0.207, p = 0.426); `probe_contam_rate` shows essentially
+no relationship at all (ρ = 0.028, p = 0.914). Restricted to the four
+seed-replicated level means only (excluding the p25 singleton), the
+ordering of contam-frac-served and `cum_exposed` is perfectly monotonic in
+false-alarm rate (both rank correctly at every step p100 < p75 < p50 <
+p10); at n = 4 points this is the best possible ranking, but scipy's
+asymptotic Spearman p-value is unreliable in this regime (it reports
+p ≈ 0, which is a known small-n artefact — the honest exact permutation
+two-tailed p for a perfect n = 4 rank correlation is 2/4! ≈ 0.083, not
+0). This monotonic-but-underpowered pattern should be read as descriptive,
+not as a confirmed trend.
+
+**The extreme contrast (p10 vs. p100, the largest available false-alarm
+gap) settles it at this replication depth.** Treating the two arms as
+independent n = 4 samples: contam-frac-served 0.0567 vs. 0.0474 (Welch
+t = 0.942, p = 0.383; Mann–Whitney U = 11, p = 0.486); `cum_exposed` 66.75
+vs. 59.25 (Welch t = 0.616, p = 0.560; U = 10, p = 0.686); `probe_contam_rate`
+0.608 vs. 0.601 (Welch t = 0.122, p = 0.907; U = 9, p = 0.886). None
+clear conventional significance, and the point differences are small
+relative to the arms' own seed spread (0.9 percentage points of
+contam-frac-served against an SD of ~1.4; 7.5 nodes of `cum_exposed`
+against an SD of ~17) — both comfortably under the ~1 SD mark, well short
+of the ~2 SD "not within noise" bar (rule 3). The seed-matched paired
+Wilcoxon (same four seeds, only the false-alarm rate differs) is the most
+sensitive test available and still cannot reach significance at n = 4 —
+but it is directionally suggestive: contam-frac-served rose in all four
+paired seeds (p = 0.125, the floor for n = 4 all-same-sign), `cum_exposed`
+rose in three of four (p = 0.25), while `probe_contam_rate` showed no sign
+consistency at all (two up, two down; p = 1.0).
+
+**Verdict.** Precision does not move contamination spread at a level this
+project's own significance bar (rule 4) can confirm. The only robust,
+significant effect of the `oracle_false_alarm` knob in this entire sweep is
+on `det_R_clean` — the direct collateral channel, exactly as its mechanism
+predicts (p < 0.0001 by both Welch t and Mann–Whitney U, and monotonic by
+construction). The indirect-harm hypothesis — that thinning the clean
+retrieval pool raises the contaminated share of what gets served — is
+**not ruled out**: contam-frac-served rose in all four same-seed paired
+comparisons and ranked perfectly across the four replicated levels, a
+sign-consistency pattern unlikely to be pure noise, but it stays below
+this project's significance floor at n = 4 and its effect size (< 1 SD) is
+small next to the ~9× swing in direct collateral. `probe_contam_rate`
+shows no such pattern at all — whatever indirect signal exists is confined
+to the mechanical served-facts ratio and does not reach the LLM-facing
+probe. **Combined with §5.4.4's structural R₀-null and §5.4.5's confirmed
+recall dose–response, precision's demonstrated causal footprint in this
+thesis is limited to collateral cost (wrongly quarantining clean facts),
+not contamination spread — recall remains the only validator-quality axis
+with a confirmed, significant effect on how far contamination reaches.**
+`[PENDING-FOLLOWUP]` If the indirect-harm signal is to be confirmed or
+retired outright, the seed-matched paired design already has the right
+shape (same injection placement, only FA rate differs) — it needs more
+seeds per level (a rough power estimate from the observed ~0.9 pp effect
+and ~1.4 pp SD suggests n ≈ 10–12 per level to detect it at conventional
+power), not a redesigned mechanism. No such run was undertaken here; this
+section is offline reanalysis of the existing archive only.
+
 ## 5.5 Epidemiological fit and R₀
 
 Fitting the discrete SIR model to the empirical trajectories
