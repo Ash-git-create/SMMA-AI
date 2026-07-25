@@ -3,8 +3,9 @@
 > **Draft status (2026-07-25):** first draft for the limitations chapter.
 > Every number below is cross-checked against an archived file in
 > `results/summaries/` or against the corresponding section of Chapters 3–5
-> as drafted to date. One marker remains open pending a queued run; it is
-> flagged in place rather than silently dropped (see row 2).
+> as drafted to date. The audit-cadence sweep that row 2 previously left
+> pending has landed (`phase48_interval_*`, ch5 §5.4.6); no markers remain
+> open.
 
 This section states, without softening, where the delivered thesis diverges
 from the approved exposé (25.03.2026). Six months of empirical work
@@ -26,7 +27,7 @@ system.
 | # | Exposé commitment (§ ref) | What was delivered | Where addressed |
 |---|---|---|---|
 | 1 | §1.2 (RQ1): vary "graph density, agent count, and memory write frequency" | Agent count was never varied — no `agent_count` parameter exists in the codebase. Argued (not run): in this shared-memory architecture, agent count acts on contamination only through KG write frequency and retrieval frequency, both of which were varied directly. | ch3 §3.1; ch5 §5.9.2–§5.9.3 |
-| 2 | §1.2 (RQ3): "validation intervals" as a swept design parameter | Replaced by validation-*quality* sweeps (precision, then recall). A literal audit-cadence sweep (validate every 2/5/10 steps, seeds 42–44) is queued to close the remaining gap. `[PENDING-INTERVAL-SWEEP]` | ch5 §5.4.4, §5.4.5, §5.9.5 |
+| 2 | §1.2 (RQ3): "validation intervals" as a swept design parameter | Addressed on two axes. Validation-*quality* sweeps (precision, then recall) identified recall as the causal lever; a literal audit-*cadence* sweep (validate every 2/5/10 steps, seeds 42–44, perfect oracle, coverage held constant) then closed the exposé's exact commitment — in-run cadence is second-order but end-only deferral collapses containment (R₀ 2.25 ± 0.21, 3/3 super-critical). | ch5 §5.4.4, §5.4.5, **§5.4.6**, §5.9.5 |
 | 3 | §1.3: "strictly utilizing localized infrastructure ... to eliminate ... API constraints" | Violated. CPU-only local hardware could not run full-scale experiments; the system pivoted to hosted APIs (Mistral API, Groq API). Free-tier token ceilings then shaped the science: n=4 as standard replication depth, capped audit samples, paced runs. | ch3 §3.1; ch4 §4.1, §4.9; ch5 §5.8 |
 | 4 | §3 (Expected Outcomes): Trio-style provenance solutions will be "highly effective" | Largely refuted. Full Trio shows no mean spread benefit at n=4, pooled quarantine precision 5.9%, and the only statistically significant effect is AUROC *degradation* (confidence laundering). The oracle upper bound reaches only the epidemic threshold, not comfortable containment. | ch5 §5.4.1, §5.4.2, §5.4.5 |
 | 5 | §4.1: x-tuples as "one or more mutually exclusive alternatives" per data point | Implemented as a (value, confidence, lineage) singleton per triplet. The disjunctive/alternatives machinery exists in code but is exercised by no pipeline path. Consistently labelled "Trio-*inspired*" rather than a full x-relation implementation. | ch4 §4.2.2 |
@@ -90,14 +91,31 @@ component of RQ3 (audit cadence) is addressed epidemiologically through the
 γ-bearing arms of Section 5.4 rather than as a separate β-substrate sweep; a
 dedicated audit-cadence axis is noted as deferred."
 
-That deferral is what row 2 leaves open. A literal audit-cadence sweep — the
-oracle validator invoked every 2, 5, or 10 steps instead of every step, with
-recall and precision held at levels already characterized above, seeds
-42–44 — is the direct instrument for isolating cadence from judgement
-quality, and it had not produced archived results at the time of writing
-this section. `[PENDING-INTERVAL-SWEEP]` — this marker should be resolved
-against `results/summaries/` (a `phase48`-or-later prefix is the expected
-naming) once that sweep lands, and not left in the final submission.
+That gap is now closed. A literal audit-cadence sweep — the oracle validator
+invoked every 2, 5, or 10 steps instead of every step, with recall and
+precision held perfect and *total coverage held constant* (skipped steps'
+audit candidates accumulate and are swept in full at the next validation
+step), seeds 42–44 — was run as the direct instrument for isolating cadence
+from judgement quality (`experiments/configs/contamination_oracle_int{2,5,10}
+_s{42,43,44}.yaml`; `results/summaries/phase48_interval_*`,
+`phase48_sir_fit_interval.csv`, `phase48_interval_summary.csv`; analysed in
+ch5 §5.4.6). The result is a threshold rather than a gradient: any in-run
+cadence (every 1, 2, or 5 steps) holds mean R₀ at or below the epidemic
+threshold with 0/3 arms super-critical at intervals 2 and 5, whereas
+deferring all validation to a single end-of-run sweep drives R₀ to
+2.25 ± 0.21 with all three seeds super-critical (interval-10 vs every-step
+Welch t p = 0.0008; Mann–Whitney U p = 0.057, the n = 3-vs-4 floor). The
+mechanism is model-free: at interval 10, `det_R_contam` is exactly 0 for
+steps 1–9, so the system runs at the unmitigated reproduction number for the
+entire propagating phase and the late sweep arrives after the epidemic. The
+in-run intervals are not monotone (Spearman ρ = 0.36, p = 0.22) and n = 3
+per interval keeps every cross-interval comparison suggestive rather than
+significant — the robust, load-bearing claim is only the end-only collapse.
+This substitution history — quality axis first, cadence axis second — is
+recorded rather than smoothed over: the exposé asked one question about
+"validation intervals," and the thesis answers it as two distinct levers
+(how *good* the validator is, and *when* it runs), which is a richer result
+than the single ablation the proposal envisioned.
 
 ### 6.2.3 The "localized infrastructure" commitment was violated by hardware, and the consequence propagated into the statistics
 
