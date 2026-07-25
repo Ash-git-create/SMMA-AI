@@ -62,8 +62,8 @@ Thumbs.db
 *.log
 logs/
 
-# Claude Code local settings (personal, not shared)
-.claude/settings.local.json
+# Claude Code local state (settings + agent worktrees; personal, not shared)
+.claude/
 
 # Thesis expose (personal document, not part of code)
 Jayan.Ashwin.MT.expose.pdf
