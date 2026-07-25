@@ -507,6 +507,74 @@ zero. The whole RQ4 result collapses onto one axis: **validator recall sets
 the reproduction number; precision, prompt, and the cascade architecture
 are all second-order.**
 
+### 5.4.6 Validation cadence: containment collapses only when validation is deferred past the epidemic
+
+Sections 5.4.4–5.4.5 varied validator *quality* (precision, then recall) at a
+fixed every-step cadence. This section varies the remaining RQ3 design knob —
+validation *cadence* — while holding quality perfect and, critically, holding
+**total coverage constant**. The audit is run every *N* steps (`--validate-every`
+∈ {1, 2, 5, 10}); on skipped steps each cycle's audit candidates accumulate onto
+a backlog, and on a validation step the oracle audits the *entire* accumulated
+backlog. Because the oracle is free (no LLM calls) the backlog is audited
+uncapped, so every contaminated node is eventually examined under every cadence —
+the manipulation is **pure delay, not reduced coverage**. Interval N=1 is the
+§5.4.2 every-step oracle (n=4, seeds 42–45); the new arms are N ∈ {2, 5, 10} at
+seeds 42–44 (`experiments/configs/contamination_oracle_int{2,5,10}_s{42,43,44}.yaml`;
+`phase48_interval_*`; fits in `phase48_sir_fit_interval.csv`, aggregation in
+`phase48_interval_summary.csv`):
+
+| Interval (audit every N steps) | n | mean γ | mean R₀ ± SD | super-crit | mean propagated ± SD | R₀ per seed (42/43/44[/45]) |
+|---|---|---|---|---|---|---|
+| 1 (every step) | 4 | 0.0375 | **0.96 ± 0.21** | 2/4 | 14.0 ± 4.1 | 0.79 / 1.10 / 1.20 / 0.78 |
+| 2 | 3 | 0.0712 | **0.50 ± 0.05** | 0/3 | 11.0 ± 3.6 | 0.46 / 0.48 / 0.56 |
+| 5 | 3 | 0.0565 | **0.77 ± 0.18** | 0/3 | 14.7 ± 5.0 | 0.68 / 0.65 / 0.98 |
+| 10 (end only) | 3 | 0.0190 | **2.25 ± 0.21** | 3/3 | 18.3 ± 4.5 | 2.40 / 2.01 / 2.33 |
+
+**The finding is a threshold, not a gradient. Any in-run cadence — every 1, 2,
+or 5 steps — holds the system at or below the epidemic threshold (mean R₀ ≤ ~1.0,
+and 0/3 arms super-critical at intervals 2 and 5). Deferring all validation to a
+single end-of-run sweep (interval 10) collapses containment: R₀ = 2.25 ± 0.21
+with all three seeds super-critical** (interval-10 vs every-step Welch
+t p = 0.0008; Mann–Whitney U p = 0.057, which is the *floor* attainable at n = 3
+vs 4, i.e. the cleanest separation the rank test permits at this replication
+depth). The mechanism is direct and model-free: at interval 10 the audit fires
+only at step 10, so `det_R_contam` is exactly 0 for steps 1–9 of every seed
+(verified in the trajectories) — for the entire propagating phase γ = 0 and the
+system runs at the *unmitigated* reproduction number (β/0, the §5.4.1 regime that
+fits to R₀ ≈ 4.46). The late sweep then catches a large batch (33 contaminated
+nodes at seed 43, more than the every-step oracle's cumulative 14.5) but too late
+to have contained anything — recovery after the epidemic has run is bookkeeping,
+not mitigation.
+
+Two honesty notes constrain the claim. **First, cadence is not monotone across
+the in-run intervals**: R₀ at intervals 2 and 5 sits *below* the every-step
+baseline (0.50 and 0.77 vs 0.96), and the trend test over the full axis is not
+significant (Spearman ρ(interval, R₀) = 0.36, p = 0.22; ρ(interval, empirical
+reproduction) = 0.32, p = 0.29). We therefore do **not** claim "more frequent is
+safer" — the in-run intervals are statistically indistinguishable, and the
+apparent dip is within seed noise (interval-1 SD alone is 0.21) and partly a
+fitting artefact: a perfect oracle sweeping an accumulated backlog produces a
+steeper, cleaner R(t) recovery curve, which the constant-γ SIR fit reads as a
+*higher* γ (0.071 at interval 2 vs 0.038 at interval 1) and hence a lower β/γ.
+The load-bearing, robust claim is only the interval-10 collapse. **Second**, n = 3
+per new interval — every cross-interval comparison is suggestive, not
+significant (rule 4), and the interval-10 R₀ point estimate carries higher fit
+RMSE (6.1–9.1 vs 1.1–2.9 for the in-run arms) because a single late recovery pulse
+is exactly what a constant-γ model fits worst; read "2.25" as "decisively
+super-critical," not as a precise value.
+
+This axis complements the recall dose–response (§5.4.5) rather than duplicating
+it. There, *coverage* (recall) was the lever and timing was fixed; here coverage
+is pinned at 100% and only *timing* varies. The two converge on one statement:
+**a provenance validator contains contamination only to the extent that it
+removes contaminated nodes while the epidemic is still propagating — whether it
+misses them (low recall) or simply arrives too late (full deferral), the
+reproduction number climbs above one by the same γ-starvation mechanism.** This
+directly answers the "validation intervals" component of RQ3 that the exposé
+posed: audit cadence is a genuine lever on contamination reach, but only at the
+extreme where validation is deferred across the whole propagating window; graded
+in-run cadence, for a perfect validator, is second-order.
+
 ## 5.5 Epidemiological fit and R₀
 
 Fitting the discrete SIR model to the empirical trajectories
@@ -524,6 +592,9 @@ Fitting the discrete SIR model to the empirical trajectories
 | oracle recall 0.75 (§5.4.5, 4 seeds) | 0.0388 ± 0.0107 | 0.0291 ± 0.0100 | **1.45 ± 0.53** | 0.9–1.9 |
 | oracle recall 0.50 (§5.4.5, 4 seeds) | 0.0382 ± 0.0107 | 0.0223 ± 0.0085 | **1.87 ± 0.62** | 1.1–2.0 |
 | oracle recall 0.25 (§5.4.5, 4 seeds) | 0.0377 ± 0.0095 | 0.0138 ± 0.0103 | **3.78 ± 1.86** | 1.0–5.1 |
+| oracle cadence, every 2 steps (§5.4.6, 3 seeds) | 0.0361 ± 0.0105 | 0.0712 ± 0.0154 | **0.50 ± 0.05** | 1.6–3.3 |
+| oracle cadence, every 5 steps (§5.4.6, 3 seeds) | 0.0432 ± 0.0099 | 0.0565 ± 0.0091 | **0.77 ± 0.18** | 4.2–5.4 |
+| oracle cadence, end only (§5.4.6, 3 seeds) | 0.0424 ± 0.0088 | 0.0190 ± 0.0041 | **2.25 ± 0.21** (3/3 super-crit) | 6.1–9.1 |
 | oracle_noisy_p75 (§5.4.4, 4 seeds) | 0.0376 ± 0.0084 | 0.0410 ± 0.0036 | **0.928 ± 0.256** | 1.09–1.77 |
 | oracle_noisy_p50 (§5.4.4, 4 seeds) | 0.0393 ± 0.0089 | 0.0450 ± 0.0050 | **0.870 ± 0.173** | 1.09–2.01 |
 | oracle_noisy_p25 (§5.4.4, n=1) | 0.0358 | 0.0436 | 0.823 | 1.40 |
@@ -826,7 +897,12 @@ seed 42 only — a deliberate, cost-motivated omission, not a gap in the
 dose–response evidence. The validation-interval component of RQ3 (audit
 cadence) is addressed epidemiologically through the γ-bearing arms of
 Section 5.4 rather than as a separate β-substrate sweep; a dedicated
-audit-cadence axis is noted as deferred.
+audit-cadence axis is measured directly in **§5.4.6** (`--validate-every` sweep,
+intervals 2/5/10 at seeds 42–44): with a perfect validator and total coverage
+held constant, in-run cadence is second-order, but deferring all validation to a
+single end-of-run sweep collapses containment to R₀ = 2.25 ± 0.21 (3/3
+super-critical). The RQ3 "validation intervals" commitment is thereby closed
+rather than left deferred.
 
 ## 5.10 Does model scale fix contamination? Capability-ladder replay probes
 

@@ -2424,3 +2424,56 @@ NOTE: offline detection recall (~0.6) is NOT the in-run 6% — different task
 Figures: fig_scale_ladder (propagation), fig_detection_ladder (detection),
 fig_rq3_doseresponse (RQ3 n=4) — all rendered, archive-faithful, referenced in
 ch5. Detection ladder cost ~$1.5 Anthropic (llama rung Groq-free).
+
+## 2026-07-25 — RQ3 validation-cadence sweep (closes the exposé "validation intervals" commitment)
+
+**Done:** implemented `--validate-every N` in `run_contamination.py` (pure-delay,
+full-coverage: skipped steps accumulate their audit candidates onto a backlog,
+the flush step audits the entire backlog uncapped since oracle audits are
+LLM-free; N=1 byte-identical to prior per-step behaviour). 9 configs
+(`contamination_oracle_int{2,5,10}_s{42,43,44}.yaml`, all `no_eval` → Groq-free),
+resumable chain runner `scripts/run_interval_sweep.py`, offline unit test
+`scripts/test_validate_interval.py` (6 groups, all pass; existing khop/density/
+agents suites regress clean). Sweep ran end-to-end on Neo4j in ~1h02 (9 arms,
+~7 min each). SIR fits: `phase48_sir_fit_interval.csv`; aggregation:
+`phase48_interval_summary.csv`. Written up as ch5 §5.4.6 + R₀-table rows in §5.5;
+§5.9.5 deferral note resolved; ch6 deviations row 2 marker `[PENDING-INTERVAL-
+SWEEP]` resolved.
+
+**Finding — a threshold, not a gradient.** Perfect oracle, total coverage held
+constant, only cadence varied. R₀ by interval (mean±SD):
+  - int 1 (every step, n=4):  0.96 ± 0.21   (2/4 super-crit)  [= §5.4.2 oracle]
+  - int 2 (n=3):              0.50 ± 0.05   (0/3)
+  - int 5 (n=3):              0.77 ± 0.18   (0/3)
+  - int 10 (end only, n=3):   2.25 ± 0.21   (3/3 super-crit)
+Any in-run cadence holds R₀ at/below the epidemic threshold; deferring ALL
+validation to a single end-of-run sweep collapses containment. Interval-10 vs
+every-step: Welch t p=0.0008, Mann–Whitney U p=0.057 (the n=3-vs-4 FLOOR).
+
+**Mechanism (model-free):** at interval 10 the audit fires only at step 10, so
+`det_R_contam` is exactly 0 for steps 1–9 of every seed (verified in the
+trajectories) → γ=0 through the whole propagating phase → the system runs at the
+UNMITIGATED R₀ (~4.46, §5.4.1). The late sweep catches a big batch (33 nodes at
+s43, > every-step's cumulative 14.5) but after the epidemic has run. Recovery
+after propagation is bookkeeping, not mitigation.
+
+**Honesty constraints (recorded, not smoothed):**
+1. In-run cadence is NOT monotone — int2/int5 R₀ sit BELOW int1 (0.50, 0.77 vs
+   0.96). Trend test n.s.: Spearman ρ(interval,R₀)=0.36 p=0.22. Do NOT claim
+   "more frequent is safer." The dip is within seed noise (int1 SD alone 0.21)
+   and partly a fitting artefact: a perfect oracle sweeping an accumulated
+   backlog yields a steeper R(t), which constant-γ SIR reads as HIGHER γ (0.071
+   at int2 vs 0.038 at int1). Load-bearing claim = interval-10 collapse only.
+2. n=3 per new interval → every cross-interval comparison suggestive, not
+   significant (rule 4). Interval-10 R₀ point estimate has high fit RMSE (6.1–9.1
+   vs 1.1–2.9) because one late recovery pulse is what constant-γ fits worst —
+   read "2.25" as "decisively super-critical," not a precise value.
+
+**Connection:** complements the recall dose-response (§5.4.5). There coverage
+(recall) was the lever, timing fixed; here coverage pinned at 100%, only timing
+varies. Same γ-starvation mechanism both ways: a validator contains contamination
+only by removing contaminated nodes WHILE the epidemic is still propagating —
+whether it misses them (low recall) or arrives too late (full deferral), R₀
+climbs above 1. RQ3 "validation intervals" is thereby answered as two distinct
+levers (how good the validator is; when it runs) — richer than the single
+ablation the exposé envisioned.
