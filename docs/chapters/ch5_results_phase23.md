@@ -700,6 +700,66 @@ and ~1.4 pp SD suggests n ≈ 10–12 per level to detect it at conventional
 power), not a redesigned mechanism. No such run was undertaken here; this
 section is offline reanalysis of the existing archive only.
 
+### 5.4.8 Cross-family judge replication: the mitigation failure is not Llama-specific (Claude Haiku 4.5)
+
+Every mitigated arm to this point used the same in-run validator judge —
+Llama-3.1-8B (Groq). A reviewer's natural objection is that the whole RQ4
+failure (near-zero γ, ~6% quarantine precision, confidence laundering,
+structural blindness) could be an artefact of that one small model. This
+section retires that objection directly: the full mitigated arm was rerun at
+all four seeds (42–45) with **only the in-run validator judge swapped to a
+different model family — Anthropic's Claude Haiku 4.5** — while everything
+else (Mistral synthesis, injection placement, retrieval, the audit budget,
+and crucially the Groq task-eval judge) was held identical
+(`--validator-provider anthropic`; `contamination_mitigated_haiku_s{42..45}.yaml`;
+`phase50_mitigated_haiku_s*`; SIR fits in `phase50_sir_fit_haiku.csv`;
+head-to-head in `phase50_haiku_vs_llama_judge.csv`). Haiku is a deliberately
+size-matched swap: the original judge was a small/fast 8B model, and Haiku
+4.5 is the small/fast tier of the Claude family, so the comparison isolates
+*model family* from *capability* (the capability axis was already covered
+offline by the detection ladder, §5.10.1). The judge was genuinely engaged —
+250 Haiku audit calls per seed (`audited` column), and an offline check
+confirmed Haiku parses and reasons correctly, returning `UNSUPPORTED`
+(confidence 0.95) on a triplet whose retrieved evidence flatly contradicts it
+and `SUPPORTED` on one it corroborates — so any low in-run precision is
+genuine blindness, not a parsing failure.
+
+The two judges are statistically indistinguishable on every RQ4 failure
+metric (n = 4 each, ch5 quarantine-precision convention
+`det_R_contam / (det_R_contam + det_R_clean)`):
+
+| Metric | Llama-3.1-8B judge | Claude Haiku 4.5 judge | Test |
+|---|---|---|---|
+| Quarantine precision (pooled) | **5.9%** (14/238) | **3.6%** (8/222) | Fisher exact p = 0.281 (n.s.) |
+| Quarantine precision (per seed 42/43/44/45) | 10.4 / 3.0 / 7.3 / 2.0% | 0.0 / 7.1 / 2.0 / 3.4% | — |
+| γ (recovery rate) | 0.0080 ± 0.0055 | 0.0050 ± 0.0046 | Welch p = 0.293 (n.s.) |
+| R₀ | 4.46 ± 2.36 | super-critical, γ-starved (see below) | — |
+| Empirical reproduction / index case | ≈ 0.40 | 0.399 ± 0.061 | overlapping |
+
+Both judges quarantine almost nothing correctly (single-digit precision,
+Fisher n.s.), both leave γ pinned near zero (Welch n.s.), and both let
+contamination reproduce at essentially the unmitigated rate. The Haiku R₀
+fits are reported as "super-critical, γ-starved" rather than as point
+estimates because γ this close to zero makes β/γ numerically unstable: the
+per-seed values are seed 42 **undefined** (γ = 0 exactly — not one
+contaminated node caught in 250 audits, the tuned-Llama γ = 0 pattern of
+§5.4.3 reproduced outright), then 3.66, 12.86, and 5.08 (the 12.86 is a
+γ = 0.0032 denominator artefact, not a real tenfold effect — the stable,
+model-free `empirical_reproduction` of 0.399 ± 0.061 is the honest reach
+figure and it matches the Llama arm). The mechanism is identical to §5.4.3:
+Haiku, like Llama, is an evidence-gated judge, and replacement contamination
+leaves no contradicting evidence in the KG for either family to find.
+
+**This is the strongest available answer to the "is it just the small Llama
+model?" objection: no.** A frontier-lineage judge from a different vendor and
+architecture, size-matched to the original and verified to reason correctly
+in isolation, fails the in-run audit the same way and to the same degree.
+Combined with the offline detection ladder (§5.10.1, where capability across
+the Claude family also did not rescue discrimination), the RQ4 finding is now
+evidenced on both the family axis and the capability axis: the failure is
+structural to evidence-gated validation of replacement contamination, not a
+property of any one model.
+
 ## 5.5 Epidemiological fit and R₀
 
 Fitting the discrete SIR model to the empirical trajectories
@@ -711,6 +771,7 @@ Fitting the discrete SIR model to the empirical trajectories
 | ablation_floor | 0.0289 | 0 | — | 1.4 |
 | ablation_validation | 0.0474 | 0.0066 | **7.19** | 1.5 |
 | mitigated (4 seeds) | 0.0327 ± 0.0259 | 0.0080 ± 0.0055 | **4.46 ± 2.36** (range 2.4–7.6) | 0.5–1.6 |
+| mitigated, Haiku 4.5 judge (§5.4.8, 4 seeds) | 0.0359 ± 0.0052 | 0.0050 ± 0.0046 | **super-critical, γ-starved** (s42 γ=0 undefined; 3.66/12.86/5.08) | 0.8–1.9 |
 | mitigated_tuned (Section 5.4.3) | 0.0323 | **0.0000** | undefined (γ = 0; eff. repro 0.032/step) | 1.1 |
 | oracle, perfect (§5.4.2, seed 42) | 0.0283 | 0.0360 | 0.79 | 2.3 |
 | oracle, perfect (§5.4.2, 4 seeds) | 0.0364 ± 0.0095 | 0.0375 ± 0.0015 | **0.97 ± 0.21** (2/4 super-crit) | 1.1–1.8 |
