@@ -1,0 +1,42 @@
+# RQ3 validation-interval sweep (thesis exposé commitment: "how do
+# validation intervals affect contamination velocity and reach") —
+# oracle-validator arm, audited every 2 steps instead of every step.
+# Identical to contamination_oracle.yaml (n=4 seeds 42-45 already archived
+# as the interval=1 baseline — NOT rerun here) except validate_every: 2 and
+# no_eval: true (Groq-free; SIR/reach/AUROC are the outcomes, not task/probe
+# metrics). Skipped steps' audit_candidates accumulate onto a backlog; the
+# flush step audits the FULL backlog (pure delay, full coverage — see
+# run_contamination.py module docstring / --validate-every help).
+
+steps: 10
+entities_per_step: 12
+injections_per_type: 15
+pool_per_key: 50
+
+# Retrieval (the beta channel) — Trio confidence floor ON
+context_limit: 5
+retrieval_threshold: 0.5
+
+# Validation (the gamma channel) — targeted audits ON, oracle verdicts,
+# validated every 2 steps (and unconditionally at the final step)
+audits_per_step: 1
+audit_sample: 25
+audit_targeted: true
+quarantine_threshold: 0.4
+oracle_validation: true
+validate_every: 2
+
+# Trio confidence propagation at write time — derived conf = f(parents)
+trio_confidence: true
+
+# Task measurement — Groq-free (RQ3 replication protocol)
+eval_every: 5
+eval_questions: 50
+probe_limit: 60
+probe_facts: 8
+
+# Reproducibility + rate limiting
+random_seed: 44
+sleep: 1.0
+tag: oracle_int2_s44
+no_eval: true

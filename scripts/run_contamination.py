@@ -19,7 +19,21 @@ This runner therefore implements the epidemiological protocol:
         context → written back with DERIVED_FROM edges to the parents.
       Optional validation audits between cycles provide gamma (0 in the
       unmitigated baseline; >0 for Phase 3 mitigated runs — the same runner
-      serves both via config).
+      serves both via config). --validate-every N (task: RQ3 validation-
+      interval sweep) decouples audit FREQUENCY from audit COVERAGE: on
+      skipped steps (step % N != 0, and step != the final step) the cycle's
+      audit_candidates are queued onto a backlog instead of being audited or
+      dropped; on a flush step (step % N == 0, or unconditionally the final
+      step, so a sweep's step count can never let queued candidates escape
+      auditing) the ENTIRE accumulated backlog is audited in one pass and
+      the backlog is cleared. This is "pure delay, full coverage" — N=1
+      (default) reduces exactly to the existing per-step behavior. Because
+      the accumulated backlog can exceed --audit-sample (which was
+      calibrated for one step's candidates), targeted oracle audits
+      (--oracle-validation --audit-targeted) uncap sample_size to the
+      backlog's own length on flush so coarse intervals don't silently
+      truncate coverage — oracle audits make zero LLM calls, so this costs
+      nothing; non-oracle (judge) audits keep --audit-sample as configured.
   After every cycle — measure: SIR state counts (detected), ground-truth
       contamination counts per error type (seeded + propagated), incidence,
       and periodically the task metrics (HotpotQA EM/F1, FEVER veracity) on
@@ -159,6 +173,31 @@ def check_transmission(
             if re.search(rf"\b{re.escape(after)}\b", pred) and before not in pred:
                 return True, p
     return exposed, None
+
+
+# ---------------------------------------------------------------------------
+# Validation-interval sweep (--validate-every) — pure, Neo4j-free helpers
+# ---------------------------------------------------------------------------
+
+def accumulate_candidates(pending: list[str], new_ids: list[str]) -> None:
+    """Append new_ids onto the pending audit backlog in place, order-
+    preserving, skipping ids already queued. The backlog behind
+    --validate-every N: candidates from skipped steps roll forward instead
+    of being audited or lost."""
+    seen = set(pending)
+    for tid in new_ids:
+        if tid not in seen:
+            seen.add(tid)
+            pending.append(tid)
+
+
+def is_validate_step(step: int, total_steps: int, validate_every: int) -> bool:
+    """True on flush steps for --validate-every N: every Nth step, and
+    unconditionally the final step (so queued backlog can never escape
+    auditing solely because the sweep ended). N<=1 flushes every step —
+    identical to pre-sweep behavior."""
+    validate_every = max(1, validate_every)
+    return step % validate_every == 0 or step == total_steps
 
 
 # ---------------------------------------------------------------------------
@@ -636,23 +675,35 @@ def run_experiment(args) -> None:
 
         # ---- Transmission cycles ----
         cum_exposed = 0
+        validate_every = max(1, getattr(args, "validate_every", 1))
+        pending_audit_ids: list[str] = []  # --validate-every backlog
         for step in range(1, args.steps + 1):
             cycle = transmission_cycle(client, agent, synth_llm, keys,
                                        payloads, step, args, rng)
             all_transmissions += cycle.pop("transmissions")
             audit_ids = cycle.pop("audit_candidates")
             cum_exposed += cycle["new_exposed"]
+            accumulate_candidates(pending_audit_ids, audit_ids)
 
             audit = {"audited": 0, "quarantined": 0, "cascaded": 0}
-            if validator is not None:
+            flush = is_validate_step(step, args.steps, validate_every)
+            if validator is not None and flush:
+                flush_ids = pending_audit_ids
+                sample_size = args.audit_sample
+                if args.audit_targeted and args.oracle_validation and validate_every > 1:
+                    # Backlog can exceed audit_sample (calibrated for one
+                    # step); oracle audits are LLM-free, so uncap on flush
+                    # to guarantee full coverage of the accumulated backlog.
+                    sample_size = max(args.audit_sample, len(flush_ids))
                 for _ in range(args.audits_per_step):
                     rep = validator.run_audit_pass(
-                        sample_size=args.audit_sample,
-                        candidates=audit_ids if args.audit_targeted else None,
+                        sample_size=sample_size,
+                        candidates=flush_ids if args.audit_targeted else None,
                     )
                     audit["audited"] += rep["audited"]
                     audit["quarantined"] += rep["quarantined"]
                     audit["cascaded"] += rep["cascaded"]
+                pending_audit_ids = []
 
             row = {"step": step, "cum_exposed": cum_exposed, **cycle, **audit}
             row.update(measure(client, step))
@@ -731,6 +782,14 @@ def main() -> None:
     parser.add_argument("--audits-per-step",     type=int,   default=0,    help="Validation audit passes per cycle (gamma; 0 = unmitigated)")
     parser.add_argument("--audit-sample",        type=int,   default=50,   help="Triplets per audit pass")
     parser.add_argument("--audit-targeted",      action="store_true",      help="Audit this cycle's read/written nodes instead of uniform random")
+    parser.add_argument("--validate-every",      type=int,   default=1,
+                        help="RQ3 validation-interval sweep: audit every Nth step "
+                             "(default 1 = current per-step behavior). Skipped steps' "
+                             "audit_candidates accumulate onto a backlog instead of being "
+                             "dropped; the flush step (step %% N == 0, or unconditionally "
+                             "the final step) audits the FULL backlog, not just that step's "
+                             "candidates — pure delay, full coverage. Does not scale "
+                             "audits_per_step or audit_sample (see module docstring).")
     parser.add_argument("--quarantine-threshold", type=float, default=0.4, help="Validator quarantines below this confidence")
     parser.add_argument("--oracle-validation",   action="store_true",
                         help="Validator quarantines from ground truth (error_type) instead "
