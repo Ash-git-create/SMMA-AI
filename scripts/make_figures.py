@@ -551,6 +551,77 @@ def fig_recall_doseresponse() -> None:
     savefig(fig, "fig_recall_doseresponse")
 
 
+def fig_cadence_doseresponse() -> None:
+    print("Figure 4b: validation-cadence sweep (R0 vs audit interval, ch5 S5.4.6)")
+    p = SUMM / "phase48_sir_fit_interval.csv"
+    if not p.exists():
+        print("  MISSING phase48_sir_fit_interval.csv; skipped"); return
+    import re
+
+    # run_tag -> interval N (bare 'oracle*' rows are the every-step interval 1)
+    by_iv: dict[int, list[float]] = {}
+    for r in read_rows(p):
+        try:
+            r0 = float(r["r0"])
+        except (ValueError, KeyError):
+            continue  # 'NA' rows (gamma=0) have no R0
+        if not np.isfinite(r0):
+            continue
+        m = re.search(r"int(\d+)", r["run_tag"])
+        iv = int(m.group(1)) if m else 1
+        by_iv.setdefault(iv, []).append(r0)
+
+    xs = sorted(by_iv)
+    if not xs:
+        print("  no cadence fits found; figure skipped"); return
+    means = [float(np.mean(by_iv[i])) for i in xs]
+    sds = [float(np.std(by_iv[i], ddof=1)) if len(by_iv[i]) > 1 else 0.0 for i in xs]
+
+    fig, ax = plt.subplots(figsize=(7.0, 4.4))
+    hue = "#008300"
+    # individual per-seed points
+    for iv in xs:
+        for v in by_iv[iv]:
+            ax.plot(iv, v, "o", color=hue, alpha=0.30, markersize=5,
+                    markeredgecolor="#fcfcfb", markeredgewidth=0.4, zorder=3)
+    # mean +/- SD line; colour the end-only point orange (the containment collapse)
+    ax.errorbar(xs, means, yerr=sds, color=hue, linewidth=2.2, marker="s",
+                markersize=7, capsize=4, zorder=4, label="mean $\\pm$ SD")
+    for ix, iy, n in zip(xs, means, [len(by_iv[i]) for i in xs]):
+        # nudge sub-threshold labels DOWN-right so they clear the R0=1 line/label
+        dy = 7 if iy > 1.3 else -24
+        ax.annotate(f"{iy:.2f} (n={n})", xy=(ix, iy), xytext=(9, dy),
+                    textcoords="offset points", fontsize=8.5, color=INK)
+    # highlight the end-only collapse
+    if 10 in by_iv:
+        iy = means[xs.index(10)]
+        ax.plot(10, iy, "D", color="#eb6834", markersize=9, zorder=5,
+                label="end-only deferral (3/3 super-critical)")
+
+    ax.axhline(1.0, color="#d03b3b", linestyle="--", linewidth=1.4, zorder=2)
+    # anchor the threshold label over the open space above the "every 2" point
+    lbl_x = xs[1] if len(xs) > 1 else xs[0]
+    ax.annotate("$R_0=1$ (epidemic threshold)", xy=(lbl_x, 1.0), xytext=(0, 6),
+                textcoords="offset points", fontsize=9, color="#d03b3b",
+                fontweight="bold", ha="center")
+    ax.set_xscale("log")
+    ax.set_xticks(xs)
+    ax.set_xticklabels([("every step" if i == 1 else f"every {i}" if i < 10 else "end only")
+                        for i in xs])
+    ax.set_xlabel("Validation cadence (audit interval, perfect oracle, coverage held constant)",
+                  color=INK)
+    ax.set_ylabel("Basic reproduction number $R_0$", color=INK)
+    ax.set_ylim(0.0, max(means) + max(sds) + 0.5)
+    for spine in ("top", "right"):
+        ax.spines[spine].set_visible(False)
+    ax.legend(loc="upper left", frameon=False, fontsize=8.5)
+    ax.set_title("Validation cadence is a threshold, not a gradient:\n"
+                 "containment holds until validation is deferred past the epidemic",
+                 color=INK, fontsize=11.5)
+    fig.tight_layout()
+    savefig(fig, "fig_cadence_doseresponse")
+
+
 _ERR_TYPES = ("entity_disambiguation", "qualifier_loss", "relation_strengthening")
 
 
@@ -706,6 +777,8 @@ def main() -> None:
     fig_r0_by_arm()
     print()
     fig_recall_doseresponse()
+    print()
+    fig_cadence_doseresponse()
     print()
     fig_rq3_doseresponse()
     print()

@@ -530,6 +530,10 @@ seeds 42–44 (`experiments/configs/contamination_oracle_int{2,5,10}_s{42,43,44}
 | 5 | 3 | 0.0565 | **0.77 ± 0.18** | 0/3 | 14.7 ± 5.0 | 0.68 / 0.65 / 0.98 |
 | 10 (end only) | 3 | 0.0190 | **2.25 ± 0.21** | 3/3 | 18.3 ± 4.5 | 2.40 / 2.01 / 2.33 |
 
+`[FIG fig_cadence_doseresponse]` R₀ vs audit interval (per-seed points + mean ± SD),
+with the R₀=1 epidemic threshold and the end-only deferral flagged as the
+containment collapse.
+
 **The finding is a threshold, not a gradient. Any in-run cadence — every 1, 2,
 or 5 steps — holds the system at or below the epidemic threshold (mean R₀ ≤ ~1.0,
 and 0/3 arms super-critical at intervals 2 and 5). Deferring all validation to a
