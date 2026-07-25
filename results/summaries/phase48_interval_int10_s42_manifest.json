@@ -1,0 +1,530 @@
+{
+  "config": {
+    "steps": 10,
+    "entities_per_step": 12,
+    "injections_per_type": 15,
+    "pool_per_key": 50,
+    "seed_placement": "active",
+    "seed_khop": null,
+    "context_limit": 5,
+    "retrieval_threshold": 0.5,
+    "audits_per_step": 1,
+    "audit_sample": 25,
+    "audit_targeted": true,
+    "validate_every": 10,
+    "quarantine_threshold": 0.4,
+    "oracle_validation": true,
+    "oracle_sensitivity": 1.0,
+    "oracle_false_alarm": 0.0,
+    "oracle_seed": 42,
+    "validator_prompt": "default",
+    "trio_confidence": true,
+    "eval_every": 5,
+    "eval_questions": 50,
+    "probe_limit": 60,
+    "log_prompts": false,
+    "no_eval": true,
+    "probe_facts": 8,
+    "extraction_manifest": null,
+    "random_seed": 42,
+    "eval_seed": 42,
+    "sleep": 1.0,
+    "tag": "oracle_int10_s42",
+    "allow_dirty": false,
+    "_prompt_log": null
+  },
+  "timestamp": "20260724_225515",
+  "extraction_manifest": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\extraction_both_20260724_225513.csv",
+  "n_active_keys": 147,
+  "seed_records": [
+    {
+      "triplet_id": "11a0d7ab-dc06-58ca-a85b-7685ecf2156a",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "American",
+      "after": "Indian",
+      "subject": "Jalen Jones",
+      "khop": null
+    },
+    {
+      "triplet_id": "15221476-77fc-50c2-bbc8-7ce42d5ee1e2",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "c.\u20091939",
+      "after": "2 October 1780",
+      "subject": "New York State Route 9R",
+      "khop": null
+    },
+    {
+      "triplet_id": "4a74dee0-5113-55c8-9a0d-75e4751d3d49",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "psychedelic rock",
+      "after": "blues rock",
+      "subject": "Blues Traveler",
+      "khop": null
+    },
+    {
+      "triplet_id": "eef32e9d-a20e-5a9e-9672-6f19fb488269",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Dallas Mavericks",
+      "after": "Chicago Bulls",
+      "subject": "Dennis Rodman",
+      "khop": null
+    },
+    {
+      "triplet_id": "9fa85fff-eb8c-5f72-a8b5-be2f977f797a",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "United States Navy",
+      "after": "Tophane, Beyo\u011flu, Istanbul, Turkey",
+      "subject": "Naval Submarine Base New London",
+      "khop": null
+    },
+    {
+      "triplet_id": "feee8096-facc-5766-b260-55e33e3d874d",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "previously_unpublished_writings",
+      "after": "Indian",
+      "subject": "Armageddon in Retrospect",
+      "khop": null
+    },
+    {
+      "triplet_id": "35eb98f2-7663-5153-aafa-1c085a0d5d9b",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "1987",
+      "after": "Princeton, New Jersey",
+      "subject": "Blues Traveler",
+      "khop": null
+    },
+    {
+      "triplet_id": "ee1be1a8-c31b-5ad4-85d5-85df3c3e4d27",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Shire River",
+      "after": "Zambesi river",
+      "subject": "Mwabvi Wildlife Reserve",
+      "khop": null
+    },
+    {
+      "triplet_id": "d3a5d64c-b323-5fb1-85b9-a99a7c4f35ec",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "eighth",
+      "after": "second",
+      "subject": "Gatwick Airport",
+      "khop": null
+    },
+    {
+      "triplet_id": "208bf68f-77ae-5a26-836c-c80c9402d736",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "nearly five centuries",
+      "after": "two_species",
+      "subject": "Russia\u2013United Kingdom relations",
+      "khop": null
+    },
+    {
+      "triplet_id": "774c536d-6381-54c7-af10-1511825b3a53",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "fortifications at West Point, New York",
+      "after": "Central London",
+      "subject": "Benedict Arnold",
+      "khop": null
+    },
+    {
+      "triplet_id": "cd061a9c-4eae-55a8-ae74-5b484e5ee668",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "electronically",
+      "after": "Shane MacGowan",
+      "subject": "Experimental hip hop",
+      "khop": null
+    },
+    {
+      "triplet_id": "de7df69e-0c32-5908-a721-65cec99a800a",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Mikhail Lomonosov",
+      "after": "Sebastian Chan",
+      "subject": "Moscow State University",
+      "khop": null
+    },
+    {
+      "triplet_id": "b1be7ce3-2229-5cc1-9ce5-0550b864251b",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "2007",
+      "after": "turntablism",
+      "subject": "Mike Gundy",
+      "khop": null
+    },
+    {
+      "triplet_id": "d9bdeb38-b8e0-582d-80ba-c275d3c49ccb",
+      "error_type": "entity_disambiguation",
+      "field": "object",
+      "before": "Baraki Barak",
+      "after": "Scream 2",
+      "subject": "Baraki Barak District",
+      "khop": null
+    },
+    {
+      "triplet_id": "36e1334a-efb7-569c-9afa-4ab6068f7583",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "January 27, 2009",
+      "after": "January 27",
+      "subject": "John Updike",
+      "khop": null
+    },
+    {
+      "triplet_id": "f8c7e6e8-9dec-5975-a308-24bab2ee972c",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Canisius, Siena, Monmouth",
+      "after": "Canisius, Siena",
+      "subject": "2015\u201316 Iona Gaels men's basketball team",
+      "khop": null
+    },
+    {
+      "triplet_id": "243bf703-f46c-5db8-a59b-fc9dc6b856d3",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Metro Atlantic Athletic Conference (MAAC)",
+      "after": "Metro Atlantic Athletic Conference",
+      "subject": "2015\u201316 Iona Gaels men's basketball team",
+      "khop": null
+    },
+    {
+      "triplet_id": "19ada7d5-1102-59d8-a8b8-e470d07db483",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "4 May 1759",
+      "after": "1759",
+      "subject": "Isabella Kelly",
+      "khop": null
+    },
+    {
+      "triplet_id": "3c6f19bd-707a-58e2-9d85-01505be3fd1e",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "7 August 1966",
+      "after": "1966",
+      "subject": "Torstein Ellingsen",
+      "khop": null
+    },
+    {
+      "triplet_id": "a37d8350-11d5-5fb4-baf5-e4e52ed3c934",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "lions from neighbouring Mozambique",
+      "after": "lions",
+      "subject": "Mwabvi Wildlife Reserve",
+      "khop": null
+    },
+    {
+      "triplet_id": "4b3526f5-a2a8-5436-a62a-60bc435cb8e9",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "May 27, 1993",
+      "after": "May 27",
+      "subject": "Jalen Jones",
+      "khop": null
+    },
+    {
+      "triplet_id": "cce8549e-a42f-559f-85b3-604e964a3535",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "northeastern Albany County, New York",
+      "after": "northeastern Albany County",
+      "subject": "New York State Route 9R",
+      "khop": null
+    },
+    {
+      "triplet_id": "5381011b-d0f5-537c-b0d6-79f7becb72dd",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "his powerhouse voice, electrifying top notes, clear timbre, passionate singing and remarkable performances",
+      "after": "his powerhouse voice, electrifying top notes, clear timbre",
+      "subject": "Franco Corelli",
+      "khop": null
+    },
+    {
+      "triplet_id": "79754495-597e-520c-84c2-458e4bf3c084",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "October 14, 1977",
+      "after": "October 14",
+      "subject": "Bing Crosby",
+      "khop": null
+    },
+    {
+      "triplet_id": "045d75ce-e87e-5ada-8fe6-483048bcb20f",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "September 2, 1966",
+      "after": "September 2",
+      "subject": "Salma Hayek",
+      "khop": null
+    },
+    {
+      "triplet_id": "47d30f71-e2d5-5357-ae0a-f40d1f5baa6b",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "March 11, 1977",
+      "after": "March 11",
+      "subject": "The Many Adventures of Winnie the Pooh",
+      "khop": null
+    },
+    {
+      "triplet_id": "4fa83faa-c43b-5f9b-8c8e-b63e2f9112b5",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "22 July 1839",
+      "after": "1839",
+      "subject": "Lady Charlotte Elliot",
+      "khop": null
+    },
+    {
+      "triplet_id": "0fa434a5-c8ff-52e1-ba3a-8af0f6e4a07a",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Will Ye Go, Lassie, Go?",
+      "after": "Will Ye Go, Lassie",
+      "subject": "Wild Mountain Thyme",
+      "khop": null
+    },
+    {
+      "triplet_id": "1a5ddc3a-6ab4-503b-9d8f-bad05048371c",
+      "error_type": "qualifier_loss",
+      "field": "object",
+      "before": "Atwater, California",
+      "after": "Atwater",
+      "subject": "Sierra Academy of Aeronautics",
+      "khop": null
+    },
+    {
+      "triplet_id": "trex_47059",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "educated at",
+      "after": "graduated top of class at",
+      "subject": "Ivan Ivanovich Zhegalkin",
+      "khop": null
+    },
+    {
+      "triplet_id": "trex_45191",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Sammy Reid",
+      "khop": null
+    },
+    {
+      "triplet_id": "trex_34908",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Ian Callaghan",
+      "khop": null
+    },
+    {
+      "triplet_id": "trex_39255",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Hugh McQueen",
+      "khop": null
+    },
+    {
+      "triplet_id": "trex_49633",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Daniel Agger",
+      "khop": null
+    },
+    {
+      "triplet_id": "trex_41412",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Sealey",
+      "khop": null
+    },
+    {
+      "triplet_id": "trex_23899",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Oussama Assaidi",
+      "khop": null
+    },
+    {
+      "triplet_id": "trex_45864",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "cast member",
+      "after": "lead actor",
+      "subject": "Robin and the 7 Hoods",
+      "khop": null
+    },
+    {
+      "triplet_id": "trex_20117",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "John Aldridge",
+      "khop": null
+    },
+    {
+      "triplet_id": "trex_32550",
+      "error_type": "relation_strengthening",
+      "field": "predicate",
+      "before": "member of sports team",
+      "after": "leader of sports team",
+      "subject": "Joe Cole",
+      "khop": null
+    }
+  ],
+  "transmissions": [
+    {
+      "step": 1,
+      "id": "4f0a2987-630a-5dd3-8692-454b71c21bda",
+      "subject": "Experimental hip hop",
+      "predicate": "produced_by",
+      "object": "Shane MacGowan",
+      "root_type": "entity_disambiguation",
+      "payload": "Shane MacGowan"
+    },
+    {
+      "step": 1,
+      "id": "8e64e85e-148f-5e68-b777-afa3506c6f6a",
+      "subject": "Sierra Academy of Aeronautics",
+      "predicate": "headquartered_in",
+      "object": "Atwater",
+      "root_type": "qualifier_loss",
+      "payload": "Atwater"
+    },
+    {
+      "step": 1,
+      "id": "684f3b6a-7a6b-5e48-b466-a54dfdc5badd",
+      "subject": "Armageddon in Retrospect",
+      "predicate": "first_posthumous_collection_of",
+      "object": "Indian",
+      "root_type": "entity_disambiguation",
+      "payload": "Indian"
+    },
+    {
+      "step": 2,
+      "id": "37984ae5-57b3-5efa-b8ba-1c2ba0051f29",
+      "subject": "New York State Route 9R",
+      "predicate": "was_assigned",
+      "object": "2 October 1780",
+      "root_type": "entity_disambiguation",
+      "payload": "2 October 1780"
+    },
+    {
+      "step": 3,
+      "id": "f22c7d75-7fef-5b94-b615-fa1941468237",
+      "subject": "New York State Route 9R",
+      "predicate": "was_assigned",
+      "object": "2 October 1780",
+      "root_type": "entity_disambiguation",
+      "payload": "2 October 1780"
+    },
+    {
+      "step": 4,
+      "id": "b9cd69fc-1420-5a64-bba8-d8f61692b22e",
+      "subject": "Bing Crosby",
+      "predicate": "died_on",
+      "object": "October 14",
+      "root_type": "qualifier_loss",
+      "payload": "October 14"
+    },
+    {
+      "step": 4,
+      "id": "259c29da-a201-5bbf-a3ad-2f06482edcd2",
+      "subject": "Naval Submarine Base New London",
+      "predicate": "is_the_primary_east_coast_submarine_base_of",
+      "object": "Tophane, Beyo\u011flu, Istanbul, Turkey",
+      "root_type": "entity_disambiguation",
+      "payload": "Tophane, Beyo\u011flu, Istanbul, Turkey"
+    },
+    {
+      "step": 5,
+      "id": "d9cf5425-24a9-55ca-a3c2-72eea3f5984e",
+      "subject": "New York State Route 9R",
+      "predicate": "was_assigned",
+      "object": "2 October 1780",
+      "root_type": "entity_disambiguation",
+      "payload": "2 October 1780"
+    },
+    {
+      "step": 7,
+      "id": "f5a1c4d2-1c18-56c0-ba1e-e6b474ba4df1",
+      "subject": "Russia\u2013United Kingdom relations",
+      "predicate": "spans",
+      "object": "two_species",
+      "root_type": "entity_disambiguation",
+      "payload": "two_species"
+    },
+    {
+      "step": 8,
+      "id": "83707412-d019-58e1-9ee2-0004d6a358bd",
+      "subject": "Russia\u2013United Kingdom relations",
+      "predicate": "spans",
+      "object": "two_species",
+      "root_type": "entity_disambiguation",
+      "payload": "two_species"
+    },
+    {
+      "step": 8,
+      "id": "bd7350e5-fc6b-5309-bcef-343a8d071928",
+      "subject": "Bing Crosby",
+      "predicate": "died_on",
+      "object": "October 14",
+      "root_type": "qualifier_loss",
+      "payload": "October 14"
+    },
+    {
+      "step": 8,
+      "id": "97cd81bb-f481-522c-940e-0515c89a49ed",
+      "subject": "Armageddon in Retrospect",
+      "predicate": "first_posthumous_collection_of",
+      "object": "Indian",
+      "root_type": "entity_disambiguation",
+      "payload": "Indian"
+    },
+    {
+      "step": 9,
+      "id": "c2e423ed-5be8-575d-a689-d653b4820cc9",
+      "subject": "Armageddon in Retrospect",
+      "predicate": "first_posthumous_collection_of",
+      "object": "Indian",
+      "root_type": "entity_disambiguation",
+      "payload": "Indian"
+    },
+    {
+      "step": 9,
+      "id": "65f53c58-0acb-50bf-a9bd-567f0adf959d",
+      "subject": "Experimental hip hop",
+      "predicate": "produced_by",
+      "object": "Shane MacGowan",
+      "root_type": "entity_disambiguation",
+      "payload": "Shane MacGowan"
+    }
+  ],
+  "trajectory_csv": "D:\\Master Thesis\\SMMA_AI_Systems\\results\\raw\\contamination_oracle_int10_s42_20260724_225515_trajectory.csv"
+}
