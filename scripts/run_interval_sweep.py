@@ -22,8 +22,8 @@ where it left off — nothing is archived until run_contamination.py exits 0
 AND its trajectory/manifest are found in results/raw, so a partial run can
 never be mistaken for a complete one.
 
-This script never starts Neo4j (Desktop-managed — only Ashwin starts it,
-per CLAUDE.md); the preflight only polls and reports.
+This script never starts Neo4j (Desktop-managed and started manually);
+the preflight only polls and reports.
 
 Usage (from project root, venv active, Neo4j already started manually):
     python scripts/run_interval_sweep.py                # full 9-arm chain

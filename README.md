@@ -1,5 +1,10 @@
 # Cascading Knowledge Contamination in Shared Memory Multi-Agent AI Systems
 
+Code and experiments for a study of how non-adversarial extraction errors spread
+through the shared memory of a multi-agent LLM system, measured with an
+epidemiological (SIR) model, and whether a provenance-aware mitigation can
+contain them.
+
 ---
 
 ## The Problem
@@ -41,7 +46,7 @@ Borrowed from epidemiology, a discrete-time **SIR model** is applied to KG nodes
 - **I (Infected):** contaminated nodes containing extraction errors
 - **R (Recovered):** validated/quarantined nodes removed from active retrieval
 
-The **Basic Reproduction Number (R₀)** quantifies how fast each error type spreads across the graph under different system configurations.
+The **Basic Reproduction Number (R0)** quantifies how fast each error type spreads across the graph under different system configurations.
 
 ### Mitigation: Trio Framework
 
@@ -69,7 +74,16 @@ When a contaminated node is detected, the system walks the lineage graph and **c
 | Veracity Accuracy | Claim classification accuracy on FEVER |
 | Unsupported Sentence Ratio (USR) | % of answer sentences not traceable to a confident KG node |
 | Error Detection AUROC | How well the system detects hallucinated nodes step-by-step |
-| Basic Reproduction Number (R₀) | Contagion velocity per error type per configuration |
+| Basic Reproduction Number (R0) | Contagion velocity per error type per configuration |
+
+---
+
+## Key Findings
+
+- **Contamination spreads with no adversary.** Once a wrong fact enters the retrieval-reachable region of the shared memory, later agents read it as fact and reproduce it, while standard task metrics (EM / F1 / veracity) stay flat — the memory is quietly corrupted while the system still looks fine.
+- **Spread is gated by retrieval reachability.** A corrupted fact placed outside the retrieved region does not propagate; persistence and spread are separate properties.
+- **Harm tracks plausibility.** Entity-substitution errors (the most fact-like) reproduce most; relation-strengthening (the most flagrant) barely moves.
+- **The provenance mitigation does not reliably contain spread.** The binding factor is validator *recall* (how much contamination the checker catches), not precision or the cascade architecture; even a perfect checker only reaches the epidemic threshold rather than ending the spread.
 
 ---
 
@@ -77,32 +91,20 @@ When a contaminated node is detected, the system walks the lineage graph and **c
 
 ```
 src/
-  agents/          — ExtractionAgent, OrchestrationAgent, ValidationAgent
-  graph/           — Neo4j client, provenance schema (x-tuples, lineage)
-  sir/             — Discrete-time SIR model, R₀ calculator
-  injection/       — Controlled error injection (3 error types)
-  mitigation/      — Trio provenance-aware retrieval + cascade deprecation
-  evaluation/      — Metrics computation, experiment runner
+  agents/       — extraction, orchestration (judge), validation agents + LLM client
+  graph/        — Neo4j client, provenance schema (x-tuples, lineage), density, k-hop
+  injection/    — controlled error injection (3 error types), k-hop placement
+  mitigation/   — Trio provenance-aware retrieval + cascade deprecation
+  sir/          — discrete-time SIR model, R0 calculator
+  evaluation/   — metrics (EM, veracity, USR, AUROC)
 
-data/              — Raw and processed datasets (not committed)
-experiments/       — Experiment configuration files
-results/           — Aggregated result summaries and figures
-notebooks/         — Jupyter analysis notebooks (Phase 5)
-docs/              — Thesis outline and supplementary documentation
+scripts/              — experiment runners and analysis (load_kg, run_*, fit_sir, replay_*, stats_tests, ...)
+experiments/configs/  — YAML configs for every experiment arm
+results/summaries/    — aggregated result tables (per-run raw data is git-ignored)
+docs/figures/         — result and concept figures
+docs/setup_guide.md   — full setup instructions
+data/                 — datasets (git-ignored)
 ```
-
----
-
-## Timeline
-
-| Phase | Period | Deliverable |
-|---|---|---|
-| Ph.1 Foundation | W1–W8 (Mar–May 2026) | Working infra, datasets, agent scaffolds, SIR module |
-| Ph.2 Baseline | W9–W14 (May–Jul 2026) | End-to-end pipeline without mitigation, contamination measurements |
-| Ph.3 Mitigation | W15–W18 (Jul 2026) | Trio framework + ablation configuration system |
-| Ph.4 Experiments | W19–W21 (Jul–Aug 2026) | Full experiment matrix: baseline vs. mitigated |
-| Ph.5 Analysis | W22–W24 (Aug–Sep 2026) | SIR curves, R₀ heatmaps, RQ interpretations |
-| Ph.6 Write-up | W25–W26 (Sep 2026) | Thesis submission |
 
 ---
 
@@ -114,12 +116,31 @@ docs/              — Thesis outline and supplementary documentation
 - Python 3.11+
 - Mistral La Plateforme + Groq API keys (extraction / orchestration)
 - Neo4j Community Edition 5.x
-- Optional: Ollama as offline local fallback
+- Optional: Ollama as an offline local fallback
 - See `requirements.txt` for Python dependencies
+
+Copy `.env.example` to `.env` and fill in your Neo4j credentials and API keys before running.
 
 ---
 
-## Status
+## Reproducing the Experiments
 
-**Current Phase:** Phase 2 — Baseline pipeline & contamination measurement  
-**Last Updated:** 2026-07-02
+```bash
+# 1. Load the pristine T-REx KG into Neo4j
+python scripts/load_kg.py --clear
+
+# 2. Run a contamination experiment (config selects the arm)
+python scripts/run_contamination.py --config experiments/configs/contamination_baseline.yaml
+
+# 3. Fit the SIR model / compute R0 from the trajectory
+python scripts/fit_sir.py
+```
+
+Each arm in `experiments/configs/` is self-describing; aggregated outputs land in
+`results/summaries/`.
+
+---
+
+## License
+
+Released under the terms in [`LICENSE`](LICENSE).

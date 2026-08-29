@@ -5,13 +5,13 @@ labels (thesis Sec.5.6).
 Second rater: open-mistral-nemo via the Mistral API (src.agents.llm_client,
 ModelRole.EXTRACTION -> EXTRACTION_PROVIDER=mistral in .env). This is a
 model family independent of both raters already in the record: the human
-(task #17, Ashwin, blind) and the original judge being calibrated
+(blind human rater) and the original judge being calibrated
 (llama-3.1-8b-instant via Groq, ModelRole.ORCHESTRATION).
 
 Rubric: reuses JUDGE_SYSTEM / JUDGE_PROMPT / LABELS imported verbatim from
 audit_natural.py -- the exact 5-label fidelity rubric (SUPPORTED,
 QUALIFIER_LOSS, ENTITY_ERROR, RELATION_ERROR, UNSUPPORTED) that produced
-both the original judge verdicts and the human blind labels Ashwin scored
+both the original judge verdicts and the human blind labels the rater scored
 against (see scripts/tune_validator.py's "v0_original" variant, which
 replays this same prompt as the calibration anchor). The second rater is
 shown exactly what the human blind task showed: source_passage + subject /
@@ -24,7 +24,7 @@ File mapping (established by inspection 2026-07-23, see task #25 report):
     it correctly, verified byte-for-byte against a known char e.g. 0xE9 in
     "Jimenez"). This is the exact blind-task sheet: source_passage +
     subject/predicate/object (what the human rater was shown) + human_label
-    (Ashwin's resolved blind labels, filled in after relabeling task #17).
+    (the rater's resolved blind labels, filled in after relabeling).
     v1 (phase34_judge_calibration_blind.csv) lacked passages and was
     superseded -- not used here.
   - results/summaries/phase34_judge_calibration_results.csv (utf-8) --
@@ -273,7 +273,7 @@ def main() -> None:
             "second_rater_provider": client.provider,
             "second_rater_model": client.model,
             "original_judge_model": "llama-3.1-8b-instant (Groq, ModelRole.ORCHESTRATION)",
-            "human_rater": "Ashwin Jayan (thesis author, blind, task #17)",
+            "human_rater": "thesis author (blind)",
             "rubric_source": "audit_natural.JUDGE_SYSTEM / JUDGE_PROMPT (5-label fidelity taxonomy)",
             "date": today,
         })
